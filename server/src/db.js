@@ -6,13 +6,23 @@ const UserProfile = require("./models/user");
 const { Router } = require("express");
 const router = Router();
 
-const sequelize = new Sequelize(
-  `postgres://postgres:drawings@localhost:5432/jobs`,
-  {
-    logging: false,
-    native: false,
-  }
-);
+const sequelize = new Sequelize(process.env.DATABASE_URL, {
+  logging: false,
+  native: false,
+  pool: {
+    max: 3,
+    min: 1,
+    idle: 10000,
+  },
+  dialectOptions: {
+    ssl: {
+      require: true,
+      rejectUnauthorized: false,
+    },
+    keepAlive: true,
+  },
+  ssl: true,
+});
 
 Card(sequelize);
 UserProfile(sequelize);
