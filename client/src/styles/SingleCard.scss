@@ -1,0 +1,120 @@
+
+.single-card {
+  flex: none;
+
+  display: flex;
+  flex-direction: column;
+  z-index: 10;
+
+  width: 100%;
+  gap: 1vh;
+
+  padding: 3vh 7vh 3vh 3vh;
+  border-radius: 2vh;
+  background: var(--card-background-color);
+  overflow: hidden;
+  transition: transform 300ms var(--transition-animated);
+
+  position: relative;
+}
+
+.single-card:hover {
+  transform: scale(.97);
+}
+
+.card-information {
+  padding: 0;
+  margin: 0;
+  display: flex;
+  text-transform: capitalize;
+  padding: 0.5vh;
+
+  z-index: 11;
+}
+
+.single-card > p:first-letter {
+  text-transform: capitalize;
+}
+
+.card-information:first-child {
+  text-transform: capitalize;
+  width: fit-content;
+  font-family: var(--fantacy-font);
+  padding: 0 .5vh;
+  font-size: 3vh !important;
+  background: linear-gradient(45deg, var(--card-background-one, inherit), var(--card-background-two, inherit));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent ;
+}
+
+.card-information:nth-child(1) {
+  font-size: 2.7vh;
+  font-weight: bold;       
+  color: rgb(17, 17, 17);
+}
+
+.container-card-menu {
+  position: absolute;
+  top: 0;
+  right: 2vh;
+  display: flex;
+  flex-direction: column;
+  padding: 2vh 0 3vh 0;
+  gap: 2vh;
+
+  height: 100%;
+  width: 4vh;
+}
+
+.container-card-menu > img {
+  height: 3.3vh;
+  width: 3.3vh;
+
+  cursor: pointer;
+}
+
+.delete-message {
+  height: 100%;
+  width: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 200;
+
+  background: var(--card-background-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2vh;
+
+  transform: translateY(-100%) translateX(100%);
+  transition: transform 300ms var(--transition-animated)
+}
+
+.message-open {
+  transform: translateY(0%) translateX(0%);
+}
+
+.delete-message p {
+  font-size: 2.5vh;
+  font-weight: bold;
+}
+
+.delete-message > button {
+  padding: 1vh 3vh;
+  border: none;
+  border-radius: .5vh;
+
+  font-weight: bold;
+  color: inherit;
+  cursor: pointer;
+}
+
+.delete-message button:last-child {
+  position: absolute;
+  top: 2vh;
+  right: 2vh;
+
+  padding: .5vh 2vh;
+}

@@ -1,0 +1,63 @@
+
+.login-background-color {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  
+  background: linear-gradient(270deg,transparent, 30%, #000 );
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.form-logIn {
+  height: 80vh;
+  width: 55vh;
+  background: rgb(214, 215, 216);
+  margin: 0 20vh;
+
+  padding: 7vh 5vh 5vh 5vh;
+  border-radius: 2vh;
+
+  display: flex;
+  flex-direction: column;
+  gap: 5vh;
+
+  transform: translateX(-150%);
+  animation: tras-form-login 500ms var(--transition-animated) forwards;
+}
+
+@keyframes tras-form-login {
+  0% {
+    transform: translateX(-150%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.form-logIn[area-text=form-login-fill] .form-title,
+.form-logIn[area-text=form-login-fill] .form-title {
+
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.form-logIn[area-text=form-login-fill] .registration-button:hover,
+.form-logIn[area-text=form-login-fill] .registration-button:focus {
+
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+@media screen and (max-width: 600px) {
+  .form-logIn {
+    height: 90vh;
+    margin: 0 1vh;
+  }
+}

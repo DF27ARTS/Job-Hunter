@@ -1,0 +1,102 @@
+
+.container-landingPage {
+  background-image: url("../assets/background-img.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  background-attachment: fixed;
+  position: relative;
+
+  height: 100vh;
+  width: 100vw;
+
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
+
+
+.landing-background-img {
+  height: 100%;
+  width: 100%;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  background: linear-gradient( 45deg,  rgba(188, 120, 236, 0.700), 30%, rgba(29, 134, 163, 0.500), 70%, transparent );
+}
+
+
+.button-container {
+  height: 100%;
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 20vh;
+
+  gap: 20px;
+}
+
+$title-width: 35vw;
+.landing-title {
+
+  font-family: var(--fantacy-font);
+  font-size: calc($title-width / 5);
+  
+  margin: 0;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: $title-width;
+
+  position: relative;
+  overflow: hidden;
+  user-select: none;
+
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.landing-button {
+  height: 3rem;
+  width: 14rem;
+  border-radius: .5rem;
+  // background: #0003;
+  backdrop-filter: blur(7px);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+
+  font-size: 1.5rem;
+  color: rgb(20, 20, 20);
+  overflow: hidden;
+  position: relative;
+}
+
+.landing-button::after {
+  content: "";
+  height: 3px;
+  width: 0%;
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+
+  position: absolute;
+  bottom: 0;
+
+  left: 0;
+  right: 0;
+  
+  transition: width 200ms ease-in-out ;
+  margin: auto;
+}
+
+.landing-button:hover::after {
+  transition: width 500px ease-in-out ;
+  width: 100%;
+}
+

@@ -1,0 +1,288 @@
+
+
+.create-card-form {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  margin: auto;
+  z-index: 200;
+
+  height: 80vh;
+  width: 130vh;
+  padding: 7vh 3vh 5vh 3vh;
+  border-radius: 2vh;
+  background: var(--card-background-color);
+  box-shadow: 5px 5px 17px #0007;
+
+  display: grid;
+  grid-template-areas: 
+    "....... title ...."
+    "company role status"
+    "description description description"
+    "........ button .....";
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: 7vh 7vh 30vh 7vh;
+  grid-row-gap: 5vh;
+  grid-column-gap: 2vh;
+
+  transform: 
+    translateY(-200%)
+    translateX(200%);
+  transition: transform 400ms var(--transition-animated);
+}
+
+.create-form-activated {
+  transform: 
+    translateY(0)
+    translateX(0);
+}
+
+.create-card-form-title {
+  grid-area: title;
+
+  height: 100%;
+  width: fit-content;
+  margin: 0;
+  padding: 0 1vh;
+  user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: auto;
+  font-family: var(--fantacy-font);
+  font-size: 5vh;
+
+  background: linear-gradient(90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text ;
+  -webkit-text-fill-color: transparent;
+}
+
+.company {
+  grid-area: company;
+}
+
+.role {
+  grid-area: role;
+}
+
+.status {
+  grid-area: status;
+  border-radius: 1vh;
+  padding: 0 2vh;
+  background:  var(--card-column-background);
+  position: relative;
+
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+}
+
+.description {
+  grid-area: description;
+}
+
+.create-card-form-button {
+  grid-area: button;
+}
+
+.create-card-form > input, textarea, button {
+  border: none;
+  outline: none;
+  border-radius: 1vh;
+  padding: 0 2vh;
+  background: var(--card-column-background);
+  font-family: inherit;
+  color: inherit;
+  font-size: 2.4vh;
+}
+
+.status > span {
+  font-family: var(--fantacy-font);
+  font-size: 2.2vh;
+  color: inherit;
+}
+
+.status > p {
+  font-size: 2.4vh;
+  text-transform: capitalize;
+}
+
+.status > input {
+  border: none;
+  outline: none;
+  height: 1px;
+  opacity: 0;
+
+  position: absolute;
+  bottom: 0;
+  left: 2vh;
+}
+
+.create-card-form textarea {
+  padding: 2vh;
+  resize: none;
+}
+
+.create-card-form input::placeholder, textarea::placeholder {
+  font-family: var(--fantacy-font);
+  font-size: 2.2vh;
+  color: inherit;
+}
+
+
+// .create-card-form input::placeholder, textarea::placeholder {
+
+.create-card-form-button {
+  grid-area: button;
+
+  font-family: var(--fantacy-font);
+  font-size: 3vh;
+  cursor: pointer;
+  color: inherit;
+  user-select: none;
+
+  transition: 
+    font-size 300ms var(--transition-animated),
+    transform 200ms var(--transition-animated);
+}
+
+.create-card-form-button:hover {
+  transform: scale(1.2);
+  font-size: 3.2vh;
+}
+
+.close-create-form {
+  position: absolute;
+  top: 3vh;
+  right: 3vh;
+  height: 5vh;
+  width: 5vh;
+
+  cursor: pointer;
+}
+
+.close-create-form:focus {
+  animation: close-icon 500ms var(--transition-animated);
+}
+
+@keyframes close-icon {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.container-single-option {
+  position: absolute;
+  top: 110%;
+  left: 0;
+  right: 0;
+  margin: auto;
+  width: 80%;
+  height: 0;
+  border-radius: 1vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1vh;
+  opacity: 0;
+
+  padding: 0;
+  background: var(--card-column-background);
+  border: 2px solid var(--card-background-color);
+
+  transition: 
+    padding 200ms ease-in-out,
+    height 200ms ease-in-out;
+}
+
+.status:focus-within > .container-single-option {
+  height: 20vh;
+  padding: 2vh;
+  opacity: 1;
+}
+
+.container-single-option > span {
+  padding: 1vh 3vh;
+  border-radius: 5vh;
+  font-family: sans-serif;
+
+  font-weight: bold;
+  transform: scale(1);
+  font-size: 2.3vh;
+  color:rgb(24, 23, 23);
+  transition: transform 200ms var(--transition-animated) !important;
+
+  position: relative;
+  overflow: hidden;
+  opacity: 0;
+  visibility: hidden;
+  user-select: none;
+}
+
+.container-single-option > span > span {
+  z-index: 20;
+}
+
+.container-single-option > span:hover {
+  transform: scale(1.3);
+}
+
+.container-single-option > span::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  opacity: .3;
+  z-index: 10;
+}
+
+span[area-text=applyed]::before {
+  background: blue;
+}
+
+span[area-text=interview]::before {
+  background: green;
+}
+
+span[area-text=rejected]::before {
+  background: yellow;
+}
+
+.status:focus-within > .container-single-option > span {
+  opacity: 1;
+  visibility: visible;
+  color: inherit;
+
+  transition: 
+    opacity 100ms ease-in-out 200ms,
+    visibility 100ms ease-in-out 200ms;
+    
+}
+
+@media screen and (max-width: 600px) {
+  .create-card-form {
+    height: 95vh;
+    width: 95vw;
+    grid-template-areas: 
+      " title "
+      "company"
+      "role"
+      "status"
+      "description"
+      "button";
+    grid-template-columns: 1fr;
+    grid-template-rows: 7vh 7vh 7vh 7vh 30vh 7vh;
+    grid-row-gap: 3vh;
+  }
+
+  .create-card-form-button:hover {
+    transform: scale(1);
+    font-size: 3vh;
+  }
+}

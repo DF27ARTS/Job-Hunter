@@ -1,0 +1,256 @@
+
+
+.registration-container {
+  background-image: url("../assets/registration-img.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  object-fit: cover;
+  height: 100vh;
+  width: 100vw;
+}
+
+
+.registration-background-color {
+  height: 100vh;
+  width: 100vw;
+  padding: 0;
+  margin: 0;
+  
+  background: linear-gradient(270deg, #000, 70%, transparent);
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.registration-form {
+  height: 85vh;
+  width: 55vh;
+  background: rgb(214, 215, 216);
+  margin: 0 20vh;
+
+  padding: 5vh 7vh 10vh 5vh;
+  border-radius: 2vh;
+
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+
+  transform: translateX(150%);
+  animation: tras-form 500ms var(--transition-animated) forwards;
+}
+
+@keyframes tras-form {
+  0% {
+    transform: translateX(150%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.form-title {
+  display: flex;
+  justify-content: center;
+  font-size: 4vh;
+  font-family: var(--fantacy-font);
+
+  color:  rgb(19, 18, 18);
+}
+
+.eye-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+
+  height: 3vh;
+  width: 3vh;
+  cursor: pointer;
+}
+
+.registration-form[area-text=form-fill] .form-title,
+.registration-form[area-text=form-fill] .form-title {
+
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.container-logIn-link > p {
+  padding: 0;
+  margin: 0;
+  color:  rgb(19, 18, 18);
+}
+
+.container-logIn-link {
+  display: flex;
+  width: 100%;
+
+  align-items: center;
+  justify-content: center;
+  gap: 5vh;
+
+  font-size: 2.7vh;
+}
+
+.link-login {
+  text-decoration: none;
+}
+
+.link-login span {
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  position: relative;
+}
+
+.link-login span::after {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+
+  height: 1px;
+  width: 0;
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+
+  transition: width 200ms ease-in-out;
+}
+
+.link-login span:hover::after {
+  width: 100%;
+}
+
+.silgle-input {
+  position: relative;
+
+  height: 11%;
+  width: 100%;
+}
+
+.silgle-input input {
+  position: absolute;
+  top: 0; 
+  left: 0;
+
+  height: 100%;
+  width: 100%;
+  border-radius: 1vh;
+  outline: none;
+  font-family: inherit;
+  font-size: 2.3vh;
+
+  padding-left: 2vh;
+  background: rgb(214, 215, 216);
+  border: none;
+}
+
+.silgle-input::before,
+.silgle-input::after {
+  content: "";
+  height: 2px;
+  background: #fff;
+  border-radius: 2px;
+
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.silgle-input::before {
+  width: 100%;
+}
+
+.silgle-input::after {
+  width: 0%;
+  right: 0;
+  margin: auto;
+  background-image: linear-gradient(90deg, var(--color-one), var(--color-two));
+
+  transition: width 200ms ease-in-out;
+}
+
+.silgle-input label {
+  position: absolute;
+  top: 50%; 
+  left: 2vh;
+  font-size: 2.3vh;
+  color:  rgb(19, 18, 18);
+
+  transform: translateY(-50%);
+  transition: 
+    font-size 300ms var(--transition-animated), 
+    top 300ms var(--transition-animated) ;
+}
+
+.silgle-input input:focus + label,
+.silgle-input input:not(:placeholder-shown) + label {
+  top: 0;
+  font-size: 2vh;
+}
+
+.silgle-input:has(input:focus)::after,
+.silgle-input:has(input:not(:placeholder-shown))::after {
+  width: 100%;
+}
+
+.button-container-registration {
+  height: 9vh;
+  width: 100%;
+  background: linear-gradient(90deg, var(--color-one), var(--color-two));
+
+  padding: 2px;
+  border-radius: 1vh;
+}
+
+.button-container-registration > div {
+  height: 100%;
+  width: 100%;
+  padding: 0;
+  margin: 0;
+
+  background: rgb(214, 215, 216);
+  border-radius: .7vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.registration-button {
+  border-radius: .7vh;
+  border: none;
+  outline: none;
+
+  font-family: var(--fantacy-font);
+  font-size: 4vh;
+  background: rgb(214, 215, 216);
+  user-select: none;
+  cursor: pointer;
+
+  color: #000;
+}
+
+.registration-form[area-text=form-fill] .registration-button:hover,
+.registration-form[area-text=form-fill] .registration-button:focus {
+
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+
+
+@media screen and (max-width: 600px) {
+  .registration-form {
+    height: 90vh;
+    margin: 0 1vh;
+  }
+}

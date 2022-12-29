@@ -1,0 +1,41 @@
+
+.container-error {
+  position: fixed;
+  top: 20vh;
+  right: 20vh;
+
+  background: rgb(197, 198, 199);
+  padding: 2vh 5vh;
+  border-radius: 2vh;
+  color: rgb(83, 27, 27);
+  font-weight: bold;
+
+  box-shadow: 5px 5px 15px #0007 ;
+  // transform: translateX(200%);
+  
+  animation: 
+    error-start 300ms var(--transition-animated) forwards,
+    error-and 300ms var(--transition-animated) 3400ms forwards ;
+}
+
+.shown {
+  transform: translateX(0%);
+}
+
+@keyframes error-start {
+  0% {
+    transform: translateX(200%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes error-and {
+  0% {
+    transform: translateX(0%);
+  }
+  100% {
+    transform: translateX(200%);
+  }
+}

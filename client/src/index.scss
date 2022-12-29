@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Kaushan+Script&family=Roboto+Condensed&display=swap');
+
+:root {
+  --color-one: rgba(71,139,214,1);
+  --color-two: rgba(37,216,211,1);
+  --size: 500px;
+  --searchbar-translate: -500%;
+
+
+  // --card-column-background: rgb(238, 235, 235);
+  // --card-background-color: rgb(214, 213, 213);
+  // --body-background: #fff;
+  // --body-text-color: rgb(20, 20, 20);
+  --card-column-background: rgb(31, 30, 30);
+  --card-background-color: rgb(56, 56, 56);
+  --body-background: #000;
+  --body-text-color: #ccc;
+
+  --transition-animated: cubic-bezier(0.43, 0.18, 0.51, 1.66);
+  --fantacy-font: 'Kaushan Script', cursive;
+}
+
+*, *::after, *::before {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  margin: 0;
+  display: fblogout-buttonlex;
+  flex-direction: column;
+  font-family: 'Roboto Condensed', sans-serif;
+  background: var(--body-background);
+  color: var(--body-text-color);
+}
+
+body::-webkit-scrollbar {
+  width: 0;
+}
+
+

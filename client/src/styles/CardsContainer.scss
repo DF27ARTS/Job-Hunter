@@ -1,0 +1,291 @@
+
+
+.container-columns {
+  width: fit-content;
+  max-width: 95vw;
+  flex: 1;
+  margin: auto;
+
+  display: grid;
+  gap: 3vh;
+  grid-template-columns: repeat(var(--columns-amount, 1), 50vh);
+  grid-template-rows: 90vh;
+  overflow-y: none;
+  overflow-x: scroll;
+
+  padding: 0 0 3vh 0;
+}
+
+.container-columns::-webkit-scrollbar-track {
+  margin-inline-start: 3px;
+  margin-inline-end: 3px;
+}
+
+.container-columns::-webkit-scrollbar {
+  height: 1vh;
+  width: 0;
+  background: var(--body-background);
+}
+
+.container-columns::-webkit-scrollbar-thumb {
+  height: 1vh;
+  background: #ccc;
+  border-radius: 2vh;
+}
+
+.column {
+  padding: 2vh;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  min-height: 80vh ;
+
+  background: var(--card-column-background);
+  border-radius: 2vh;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+  opacity 400ms ease,
+  visibility 400ms ease,
+    transform 300ms var(--transition-animated);
+}
+
+.column-animation {
+  transform: translateY(0) !important;
+  opacity: 1 !important;
+  visibility: visible !important;
+}
+
+.column:nth-child(2n - 1) {
+  transform: translateY(-30%);
+}
+
+.column:nth-child(2n) {
+  transform: translateY(30%);
+}
+
+.scroll-container {
+  flex: none;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2vh;
+  width: 100%;
+  height: 70vh;
+  padding: 0 .7vh 0 0;
+
+  background: var(--card-column-background);
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+.scroll-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background: var(--card-background-color);
+  border-radius: 4px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  margin-block-start: 2vh;
+  margin-block-end: 2vh;
+}
+
+.column-title-container {
+  background: var(--card-background-color);
+  width: 100%;
+
+  display: flex;
+  justify-content: center;
+  gap: 4vh;
+  border-radius: 1.8vh 1.8vh 0 0;
+
+  position: relative;
+}
+
+.column-title-container :nth-child(1) {
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: var(--fantacy-font);
+  padding: 0 .7vh;
+  font-size: 3.5vh;
+  user-select: none;
+}
+
+.column-title-container :nth-child(2) {
+  font-weight: normal;
+  padding: 0;
+  
+  display: flex;
+  align-items: center;
+  font-size: 3vh;
+  text-transform: capitalize;
+}
+
+.cards-amount {
+  position: absolute;
+  // inset: 0  0;
+  right: 1vh;
+  top: 1vh;
+  // background: red;
+  height: 4.5vh;
+  width: 4.5vh;
+  margin: auto ;
+  font-size: 2.2vh;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  border: 2px solid var(--body-text-color);
+}
+
+
+
+
+
+
+.message-create-card {
+  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  gap: 2vh;
+  padding: 0 2vh;
+
+  grid-template-columns: repeat(3, 20vh);
+  grid-template-rows: 5vh 10vh 20vh;
+}
+
+.message-title {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+
+}
+
+.message-description {
+  margin: 0;
+}
+
+.conteiner-muck-cards {
+  background: var(--card-column-background);
+  height: 70vh;
+  width: 40vh;
+  margin: auto;
+  border-radius: 2vh;
+
+  display: flex;
+  flex-direction: column;
+  padding: 2vh;
+  gap: 2vh;
+}
+
+.muck-title {
+  background:  var(--card-background-color);
+  height: 10vh;
+  width: 100%;
+  border-radius: 2vh 2vh 0 0;
+  overflow: hidden;
+
+  position: relative;
+}
+
+.muck-title::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 100%;
+  width: 150%;
+
+  background: linear-gradient(45deg, var(--card-background-color), 50%, rgb(134, 134, 134), 75%, var(--card-background-color));
+  animation: card-animated 5000ms linear infinite;
+
+}
+
+.muck-card {
+  height: 17vh;
+  width: 100%;
+  border-radius: 2vh;
+  background:  var(--card-background-color);
+
+  position: relative;
+  overflow:  hidden;
+}
+
+.muck-card::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+  height: 100%;
+  width: 150%;
+  background: linear-gradient(45deg, var(--card-background-color), 50%, rgb(134, 134, 134), 75%, var(--card-background-color));
+
+  animation: card-animated 5000ms linear infinite;
+
+}
+
+@keyframes card-animated {
+  0% {
+    transform: translateX(-100%)
+  }
+  20% {
+    transform: translateX(200%)
+  }
+  100% {
+    transform: translateX(200%)
+  }
+}
+
+
+
+
+@media screen and (max-width: 600px) {
+  .container-columns {
+    // width: fit-content;
+    // max-width: 95vw;
+    // flex: 1;
+    // margin: auto;
+
+    // display: grid;
+    // background: red;
+    // gap: 3vh;
+    grid-template-columns: repeat(var(--columns-amount, 1), 95vw);
+    scroll-snap-type: inline mandatory;
+
+    // grid-template-rows: 90vh;
+    // overflow-y: none;
+    // overflow-x: scroll;
+
+    padding: 0 0 1vh 0;
+  }
+
+  
+  .column:nth-child(2n - 1) {
+    transform: translateY(0);
+  }
+
+  .column:nth-child(2n) {
+    transform: translateY(0);
+  }
+
+  .column {
+    scroll-snap-align: start;
+  
+    opacity: 1;
+    visibility: visible;
+    scroll-snap-align: start;
+  }
+}
