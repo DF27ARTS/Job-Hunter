@@ -138,7 +138,7 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
 router.post("/cards", [verifyToken], async (req, res) => {
   try {
     const { company, role, status, description } = req.body;
-    if ((!company || !role || !status, !description))
+    if (!company || !role || !status)
       return res.status(400).json({ error: "Missing required information" });
 
     const user = await userProfile.findOne({ where: { email: req.email } });
@@ -147,7 +147,7 @@ router.post("/cards", [verifyToken], async (req, res) => {
       company,
       role,
       status,
-      description,
+      description: description && description,
     });
 
     if (user) user.addCard(newCard);
@@ -166,8 +166,8 @@ router.post("/cards", [verifyToken], async (req, res) => {
 router.put("/cards", [verifyToken], async (req, res) => {
   try {
     const { card_id } = req.query;
-    const { company, role, status, description } = req.body;
-    if ((!company || !role || !status, !description))
+    const { company, role, status } = req.body;
+    if (!company || !role || !status)
       return res.status(400).json({ error: "Missing required information" });
 
     const cardUpdated = await card.update(req.body, {
