@@ -107,7 +107,6 @@ export const updateCard = createAsyncThunk<Card | any, Card | any>(
         card,
         config
       )
-      console.log(data)
       return data.card
     } catch (error) {
       return ThunkAPI.rejectWithValue(error);

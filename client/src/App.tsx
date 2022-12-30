@@ -1,4 +1,11 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import {
+  BrowserRouter,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+  useNavigate,
+} from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
@@ -24,32 +31,31 @@ function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const dispatch = useAppDispatch();
 
-  console.log(import.meta.env);
   useEffect(() => {
     dispatch(verifyToken());
     dispatch(getCards());
   }, [dispatch, verifyToken, getCards]);
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<LandingPage />} />
-        <Route
-          path="/registration"
-          element={
-            !isLoggedIn ? <Registration /> : <Navigate to="/home" replace />
-          }
-        />
-        <Route
-          path={"/login"}
-          element={!isLoggedIn ? <Login /> : <Navigate to="/home" replace />}
-        />
-        <Route
-          path="/home"
-          element={isLoggedIn ? <MainPage /> : <Navigate to="/login" replace />}
-        />
-      </Routes>
-    </BrowserRouter>
+    <div onLoad={() => <Navigate to="/login" />}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route
+            path="/registration"
+            element={!isLoggedIn ? <Registration /> : <Navigate to="/home" />}
+          />
+          <Route
+            path={"/login"}
+            element={!isLoggedIn ? <Login /> : <Navigate to="/home" />}
+          />
+          <Route
+            path="/home"
+            element={isLoggedIn ? <MainPage /> : <Navigate to="/login" />}
+          />
+        </Routes>
+      </BrowserRouter>
+    </div>
   );
 }
 

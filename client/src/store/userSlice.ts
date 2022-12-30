@@ -81,7 +81,6 @@ export const verifyToken = createAsyncThunk< User > (
       })
       return response.data
     } catch (error) {
-      console.log(error)
       return ThunkAPI.rejectWithValue(error)
     }
   }
