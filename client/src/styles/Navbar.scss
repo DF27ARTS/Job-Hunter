@@ -317,6 +317,14 @@ div[area-text=close-searchbar] {
     width: 10vh;
   }
 
+  .search-option-icon {
+    height: 5vh !important;
+    width: 5vh !important;
+    bottom: 0;
+    margin: auto;
+  }
+  
+
   .search-button {
     padding: 0 1.5vh;
     font-size: 2vh;
@@ -359,5 +367,10 @@ div[area-text=close-searchbar] {
   .search-icon-open-searchvar > img {
     height: 4vh;
     aspect-ratio: 1 / 1;
+  }
+
+
+  .current-options {
+    transform: translateX(0%);
   }
 }

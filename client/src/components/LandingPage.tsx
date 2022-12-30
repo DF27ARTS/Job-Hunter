@@ -14,10 +14,20 @@ const LandingPage = () => {
         <section className="button-container">
           <h1 className="landing-title">Job Hunter</h1>
           <Link className="landing-button" to="/home">
-            Let's get stated
+            <span>Let's get stated</span>
+            <div></div>
+            <div></div>
           </Link>
-          <input type="voice" />
         </section>
+
+        <div className="container-landing-links">
+          <Link className="landing-login" to="/login">
+            Sign up
+          </Link>
+          <Link className="landing-signup" to="/registration">
+            Log in
+          </Link>
+        </div>
       </div>
     </div>
   );

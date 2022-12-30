@@ -2,6 +2,8 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios, {AxiosResponse} from "axios"
 import { getCards } from "./cardSlice"
 
+const API_URL = "https://jub-hunter-production.up.railway.app"
+
 export const saveToken = (token: string): void => {
   const response = localStorage.setItem("token", token)
   return response
@@ -44,7 +46,7 @@ export const registerUser = createAsyncThunk<Object, User > (
   "user/registerUser",
   async (data, ThunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:3001/registration/register", data)
+      const response = await axios.post(`${API_URL}/registration/register`, data)
       saveToken(response.data.token)
       return response.data.user
     } catch (error) {
@@ -57,7 +59,7 @@ export const logInUser = createAsyncThunk<Object, User > (
   "user/logInUser",
   async (data, ThunkAPI) => {
     try {
-      const response = await axios.post("http://localhost:3001/registration/login", data )
+      const response = await axios.post(`${API_URL}/registration/login`, data )
       saveToken(response.data.token)
       ThunkAPI.dispatch(getCards())
       return response.data.user
@@ -72,7 +74,7 @@ export const verifyToken = createAsyncThunk< User > (
 
   async (_, ThunkAPI) => {
     try {
-      const response = await axios.get("http://localhost:3001/registration/verifyUser", {
+      const response = await axios.get(`${API_URL}/registration/verifyUser`, {
         headers: {
           Authorization: getToken(),
         },
@@ -90,7 +92,6 @@ export const UserSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    // logOutUser: (state, action:PayloadAction<User>) => {
     logOutUser:  (state) => {
       deleteToken()
       state.user = {}

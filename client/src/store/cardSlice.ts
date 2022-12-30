@@ -3,7 +3,7 @@ import axios, { AxiosRequestConfig } from "axios"
 import { InputSearchEngine } from "../components/Navbar";
 import { getToken } from "./userSlice";
 
-const API_URL = "http://localhost:3001"
+const API_URL = "https://jub-hunter-production.up.railway.app"
 
 export interface Card {
   id?: number;
@@ -71,12 +71,13 @@ export const getCardsBySearchInput = createAsyncThunk<Card[][] | any, Card | any
       )
       return data;
     } catch (error) {
+      ThunkAPI.dispatch(getCards());
       return ThunkAPI.rejectWithValue(error);
     }
   }
 )
 
-export const createCard = createAsyncThunk<Object | any, Card> (
+export const createCard = createAsyncThunk<Object | any, Card | any> (
   "cards/createCard",
   async (card, ThunkAPI) => {
     const config = {
@@ -137,6 +138,7 @@ export const CardSlice = createSlice({
     clearStorage: (state) => {
       state.cards = [[]]
       state.loading_cards = true
+      state.loading_single_card = true
     },
     closeCardError: (state) => {
       state.card_error = false
@@ -175,9 +177,11 @@ export const CardSlice = createSlice({
             state.grid_columns = action.payload.length
           }
         state.loading_cards = false
+        state.loading_single_card = false
       })
       .addCase(getCards.rejected, (state) => {
         state.loading_cards = false
+        state.loading_single_card = false
       })
 
     builder
@@ -192,6 +196,8 @@ export const CardSlice = createSlice({
             state.grid_columns = action.payload.length
           }
         state.loading_cards = false
+        state.loading_single_card = false
+
       })
       .addCase(getCardsBySearchInput.rejected, (state) => {
         state.loading_cards = false;
@@ -257,6 +263,10 @@ export const CardSlice = createSlice({
             }
           })
         })
+        if (state.showCardsByStatus) {
+          state.cards = orderByStatus(state.cards)
+          state.grid_columns = orderByStatus(state.cards).length
+        } 
         state.loading_single_card = false
         state.create_form_active = false
       })
@@ -293,7 +303,17 @@ function orderByStatus(value:Card[][] | any ): any{
     })
   });
 
-  const CardsFilterByStatus = [applyed, interview, rejected];
+  const CardsFilterByStatus = [];
+  if (applyed.length > 1) {
+    CardsFilterByStatus.push(applyed)
+  }
+  if (interview.length > 1) {
+    CardsFilterByStatus.push(interview)
+  }
+  if (rejected.length > 1) {
+    CardsFilterByStatus.push(rejected)
+  }
+
   return CardsFilterByStatus
 }
 
@@ -309,32 +329,3 @@ export const {
   setShowByStatus,
 } = CardSlice.actions
 
-
-
-function GetMonth(value: string) {
-  return value === "Jan"
-    ? 1
-    : value === "Feb"
-    ? 2
-    : value === "Mar"
-    ? 3
-    : value === "Apr"
-    ? 4
-    : value === "May"
-    ? 5
-    : value === "Jun"
-    ? 6
-    : value === "Jul"
-    ? 7
-    : value === "Aug"
-    ? 8
-    : value === "Sep"
-    ? 9
-    : value === "Oct"
-    ? 10
-    : value === "Nov"
-    ? 11
-    : value === "Dec"
-    ? 12
-    : 0;
-}

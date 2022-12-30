@@ -34,6 +34,7 @@ const Navbar = () => {
       input: inputSearch.input,
       search: inputSearch.search?.toLocaleLowerCase(),
     };
+    dispatch(clearStorage());
     dispatch(getCardsBySearchInput(value));
     setInputSearch({
       input: inputSearch.input,

@@ -79,7 +79,7 @@
   padding: 0 .7vh 0 0;
 
   background: var(--card-column-background);
-  overflow-y: scroll;
+  overflow-y: auto;
   overflow-x: hidden;
 }
 
@@ -254,20 +254,8 @@
 
 @media screen and (max-width: 600px) {
   .container-columns {
-    // width: fit-content;
-    // max-width: 95vw;
-    // flex: 1;
-    // margin: auto;
-
-    // display: grid;
-    // background: red;
-    // gap: 3vh;
     grid-template-columns: repeat(var(--columns-amount, 1), 95vw);
     scroll-snap-type: inline mandatory;
-
-    // grid-template-rows: 90vh;
-    // overflow-y: none;
-    // overflow-x: scroll;
 
     padding: 0 0 1vh 0;
   }

@@ -39,7 +39,7 @@ const FormCreateCard = () => {
     if (cardToUpdate.id) {
       const value = {
         company: input.company.toLocaleLowerCase(),
-        description: input.description.toLocaleLowerCase(),
+        description: input.description && input.description.toLocaleLowerCase(),
         role: input.role.toLocaleLowerCase(),
         status: input.status.toLocaleLowerCase(),
       };
@@ -48,7 +48,7 @@ const FormCreateCard = () => {
     } else {
       const value = {
         company: input.company.toLocaleLowerCase(),
-        description: input.description.toLocaleLowerCase(),
+        description: input.description && input.description.toLocaleLowerCase(),
         role: input.role.toLocaleLowerCase(),
         status: input.status.toLocaleLowerCase(),
       };
@@ -93,7 +93,7 @@ const FormCreateCard = () => {
         name="role"
         value={input.role}
         onChange={(e) => HandleFormChange(e)}
-        placeholder="Role"
+        placeholder="Job Title"
         type="text"
         className="role"
         required={true}
