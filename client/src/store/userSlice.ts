@@ -2,7 +2,7 @@ import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios, {AxiosResponse} from "axios"
 import { getCards } from "./cardSlice"
 
-const API_URL = "https://jub-hunter-production.up.railway.app"
+export const API_URL = "https://jub-hunter-production.up.railway.app"
 // export const API_URL = import.meta.env.API_URL || "http://localhost:3001"
 
 export const saveToken = (token: string): void => {
