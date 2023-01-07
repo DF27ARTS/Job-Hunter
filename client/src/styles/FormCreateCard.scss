@@ -265,7 +265,7 @@ span[area-text=rejected]::before {
 
 @media screen and (max-width: 600px) {
   .create-card-form {
-    height: fit-content;
+    min-height: 90vh;
     width: 95vw;
     grid-template-areas: 
       " title "
