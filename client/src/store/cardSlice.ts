@@ -1,9 +1,8 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
 import axios, { AxiosRequestConfig } from "axios"
 import { InputSearchEngine } from "../components/Navbar";
-import { getToken } from "./userSlice";
+import { API_URL, getToken } from "./userSlice";
 
-const API_URL = "https://jub-hunter-production.up.railway.app"
 
 export interface Card {
   id?: number;

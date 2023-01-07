@@ -112,7 +112,7 @@ const Registration = () => {
               autoComplete="off"
             />
             <label htmlFor="password">Password</label>
-            {password ? (
+            {!password ? (
               <img
                 onClick={() => setPassword(!password)}
                 src={openEye}

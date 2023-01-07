@@ -15,7 +15,7 @@
 .registration-background-color {
   height: 100vh;
   width: 100vw;
-  padding: 0;
+  padding: 0; 
   margin: 0;
   
   background: linear-gradient(270deg, #000, 70%, transparent);
@@ -249,8 +249,52 @@
 
 
 @media screen and (max-width: 600px) {
+
   .registration-form {
-    height: 90vh;
-    margin: 0 1vh;
+    width: 100%;
+    max-width: 350px;
+    margin: 0 15px;
+  
+    padding: 30px 30px 30px 30px;
+    gap: 20px !important;
+    min-height: 550px !important;
+  }
+
+  .form-title {
+    font-size: 30px;
+  }
+
+  .container-logIn-link {
+    font-size: 17px;
+  }
+
+  .silgle-input {
+    height: 50px !important;
+  }
+
+  .silgle-input input {
+    font-size: 17px !important;
+  }
+
+  .silgle-input label {
+    font-size: 17px;
+  }
+  
+  .silgle-input input:focus + label,
+  .silgle-input input:not(:placeholder-shown) + label {
+    font-size: 15px;
+  }
+
+  .eye-icon {
+    height: 20px;
+    width: 20px;
+  }
+
+  .button-container-registration {
+    height: 60px;
+  }
+
+  .registration-button {
+    font-size: 30px;
   }
 }

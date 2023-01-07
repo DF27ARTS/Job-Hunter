@@ -28,7 +28,6 @@
 }
 
 .container-columns::-webkit-scrollbar-thumb {
-  height: 1vh;
   background: #ccc;
   border-radius: 2vh;
 }
@@ -258,6 +257,13 @@
     scroll-snap-type: inline mandatory;
 
     padding: 0 0 1vh 0;
+  }
+
+  
+  .container-columns::-webkit-scrollbar {
+    height: .5vh;
+    width: 0;
+    background: var(--body-background);
   }
 
   

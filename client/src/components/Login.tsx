@@ -82,7 +82,7 @@ const Login = () => {
               placeholder=" "
             />
             <label htmlFor="password">Passwors</label>
-            {password ? (
+            {!password ? (
               <img
                 onClick={() => setPassword(!password)}
                 src={openEye}
