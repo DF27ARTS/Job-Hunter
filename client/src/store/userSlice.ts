@@ -1,8 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-import axios, {AxiosResponse} from "axios"
+import axios, { AxiosResponse } from "axios"
 import { getCards } from "./cardSlice"
 
-export const API_URL = "https://jub-hunter-production.up.railway.app"
+// export const API_URL = "https://jub-hunter-production.up.railway.app"
+export const API_URL = "https://jub-hunter-api.onrender.com"
 // export const API_URL = import.meta.env.API_URL || "http://localhost:3001"
 
 export const saveToken = (token: string): void => {
@@ -43,7 +44,7 @@ const initialState: userState = {
 }
 
 
-export const registerUser = createAsyncThunk<Object, User > (
+export const registerUser = createAsyncThunk<Object, User>(
   "user/registerUser",
   async (data, ThunkAPI) => {
     try {
@@ -56,11 +57,11 @@ export const registerUser = createAsyncThunk<Object, User > (
   }
 )
 
-export const logInUser = createAsyncThunk<Object, User > (
+export const logInUser = createAsyncThunk<Object, User>(
   "user/logInUser",
   async (data, ThunkAPI) => {
     try {
-      const response = await axios.post(`${API_URL}/registration/login`, data )
+      const response = await axios.post(`${API_URL}/registration/login`, data)
       saveToken(response.data.token)
       ThunkAPI.dispatch(getCards())
       return response.data.user
@@ -70,7 +71,7 @@ export const logInUser = createAsyncThunk<Object, User > (
   }
 )
 
-export const verifyToken = createAsyncThunk< User > (
+export const verifyToken = createAsyncThunk<User>(
   "user/verifyToken",
 
   async (_, ThunkAPI) => {
@@ -92,7 +93,7 @@ export const UserSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
-    logOutUser:  (state) => {
+    logOutUser: (state) => {
       deleteToken()
       state.user = {}
       state.isLoggedIn = false
@@ -143,4 +144,4 @@ export const UserSlice = createSlice({
 })
 
 export default UserSlice.reducer
-export const {logOutUser, closeError} = UserSlice.actions
+export const { logOutUser, closeError } = UserSlice.actions
