@@ -12,6 +12,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
 
+app.get("/", (req, res) => {
+  return res.json({message: "Hello, world from jub hunter api"});
+})
+
 
 app.use("/registration", routerRegistration);
 app.use("/", router);
