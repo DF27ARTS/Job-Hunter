@@ -1,8 +1,8 @@
 const express = require("express");
 const morgan = require("morgan");
 // const { database } = require("./db");
-const router = require("./routes/index");
-const { routerRegistration } = require("./routes/authorization");
+const router = require("./src/routes/index");
+const { routerRegistration } = require("./src/routes/authorization");
 const cors = require("cors");
 const app = express();
 const port = process.env.PORT || 3001;
