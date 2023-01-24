@@ -12,6 +12,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(morgan("dev"));
 app.use(cors());
 
+
 app.use("/registration", routerRegistration);
 app.use("/", router);
 
