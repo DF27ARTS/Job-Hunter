@@ -1,6 +1,6 @@
 const express = require("express");
 const morgan = require("morgan");
-const { database } = require("./db");
+// const { database } = require("./db");
 const router = require("./routes/index");
 const { routerRegistration } = require("./routes/authorization");
 const cors = require("cors");
@@ -20,11 +20,11 @@ app.get("/", (req, res) => {
 // app.use("/", router);
 
 try {
-  database.sync({ force: false }).then(() => {
+  // database.sync({ force: false }).then(() => {
     app.listen(port, async () => {
       console.log(`Server listening on port: ${port}`);
     });
-  });
+  // });
 } catch (error) {
   console.log(error);
 }
