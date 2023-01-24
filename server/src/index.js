@@ -16,9 +16,8 @@ app.get("/", (req, res) => {
   return res.json({message: "Hello, world from jub hunter api"});
 })
 
-
-app.use("/registration", routerRegistration);
-app.use("/", router);
+// app.use("/registration", routerRegistration);
+// app.use("/", router);
 
 try {
   database.sync({ force: false }).then(() => {
