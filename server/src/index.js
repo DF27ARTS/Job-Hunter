@@ -13,14 +13,14 @@ app.use(morgan("dev"));
 app.use(cors());
 
 app.get("/", (req, res) => {
-  return res.send("<h1>Hello, world from jub hunter api</h1>")
-})
+  return res.send("<h1>Hello, world from jub hunter api</h1>");
+});
 
 app.use("/registration", routerRegistration);
 app.use("/", router);
 
 try {
-  database.sync({ force: false }).then(() => {
+  database.sync({ force: true }).then(() => {
     app.listen(port, async () => {
       console.log(`Server listening on port: ${port}`);
     });
