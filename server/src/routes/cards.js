@@ -19,10 +19,10 @@ router.get("/cards", [verifyToken], async (req, res) => {
 
     cardsOrdered.length &&
       cardsOrdered.map((card) => {
-        const arraySplit = card.createdAt.toString().split(" ");
-        const day = parseInt(arraySplit[2]);
-        const month = GetMonth(arraySplit[1]);
-        const year = parseInt(arraySplit[3]);
+        const arraySplit = card.date.split("/");
+        const day = parseInt(arraySplit[0]);
+        const month = parseInt(arraySplit[1]);
+        const year = parseInt(arraySplit[2]);
         const titleDate = `${day}/${month}/${year}`;
         const date = year + month + day;
 
@@ -62,6 +62,40 @@ router.get("/cards", [verifyToken], async (req, res) => {
   }
 });
 
+
+router.get("/get_dates", [verifyToken], async (req, res) => {
+  try {
+    const { cards } = await userProfile.findOne({
+      where: { email: req.email },
+      include: [card],
+    });
+
+    const setOfDates = new Set()
+    const dates = []
+
+    cards.forEach(async (card) => {
+      setOfDates.add(card.date)
+    })
+
+    setOfDates.forEach(setDate => {
+      dates.push(setDate)
+    })
+    
+    dates.sort((a, b) => {
+      return b.split("/").reduce((sum, item) => sum + item) - a.split("/").reduce((sum, item) => sum + item)
+    })
+
+    dates.length
+      ? res.status(200).json(dates)
+      : res.status(404).json({message: "There's been an error"})
+      
+
+  } catch (error) {
+    return res.status(404).json({ error: "there's an error", message: error });
+  }
+})
+
+
 router.get("/cards/search", [verifyToken], async (req, res) => {
   try {
     const { input, search } = req.query;
@@ -77,7 +111,7 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
 
     const cardsFilter = [];
     cards.map((card) => {
-      if (card[input].includes(search)) {
+      if (card[input].toLowerCase().includes(search.toLowerCase())) {
         cardsFilter.push(card);
       }
     });
@@ -93,12 +127,13 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
     if (cardsOrdered) {
       cardsOrdered.length &&
         cardsOrdered.map((card) => {
-          const arraySplit = card.createdAt.toString().split(" ");
-          const day = parseInt(arraySplit[2]);
-          const month = GetMonth(arraySplit[1]);
-          const year = parseInt(arraySplit[3]);
+          const arraySplit = card.date.split("/");
+          const day = parseInt(arraySplit[0]);
+          const month = parseInt(arraySplit[1]);
+          const year = parseInt(arraySplit[2]);
           const titleDate = `${day}/${month}/${year}`;
           const date = year + month + day;
+          
 
           if (cardsOrdered.length === 1) {
             title = date.toString();
@@ -135,10 +170,11 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
   }
 });
 
+
 router.post("/cards", [verifyToken], async (req, res) => {
   try {
-    const { company, role, status, description } = req.body;
-    if (!company || !role || !status)
+    const { company, role, status, date, description } = req.body;
+    if (!company || !role || !status || !date)
       return res.status(400).json({ error: "Missing required information" });
 
     const user = await userProfile.findOne({ where: { email: req.email } });
@@ -147,6 +183,7 @@ router.post("/cards", [verifyToken], async (req, res) => {
       company,
       role,
       status,
+      date,
       description: description && description,
     });
 
@@ -162,6 +199,7 @@ router.post("/cards", [verifyToken], async (req, res) => {
       .json({ error: "there's been an error", message: error.message });
   }
 });
+
 
 router.put("/cards", [verifyToken], async (req, res) => {
   try {
@@ -191,6 +229,7 @@ router.put("/cards", [verifyToken], async (req, res) => {
   }
 });
 
+
 router.delete("/cards", [verifyToken], async (req, res) => {
   try {
     const { card_id } = req.query;
@@ -203,35 +242,54 @@ router.delete("/cards", [verifyToken], async (req, res) => {
     return res
       .status(404)
       .json({ error: "there's been an error", message: error.message });
-  }
+    }
 });
 
-function GetMonth(value) {
-  return value === "Jan"
-    ? 1
-    : value === "Feb"
-    ? 2
-    : value === "Mar"
-    ? 3
-    : value === "Apr"
-    ? 4
-    : value === "May"
-    ? 5
-    : value === "Jun"
-    ? 6
-    : value === "Jul"
-    ? 7
-    : value === "Aug"
-    ? 8
-    : value === "Sep"
-    ? 9
-    : value === "Oct"
-    ? 10
-    : value === "Nov"
-    ? 11
-    : value === "Dec"
-    ? 12
-    : null;
-}
+
+router.delete("/delete_rejected", [verifyToken], async (req, res) => {
+  try {
+    const { cards } = await userProfile.findOne({
+      where: { email: req.email },
+      include: [card],
+    });
+
+    cards.forEach( async (card) => {
+      if (card.status === "rejected") {
+        await card.destroy({where: {id: card.id}});
+      }
+    })
+
+    return res.status(200).json({message: "Rejected cards deleted successfully"})
+  } catch (error) {
+    return res
+    .status(404)
+    .json({ error: "there's been an error", message: error.message });
+  }
+})
+
+
+router.delete("/delete_by_date", [verifyToken], async (req, res) => {
+  try {
+    const { date } = req.query;
+
+    const { cards } = await userProfile.findOne({
+      where: { email: req.email },
+      include: [card],
+    });
+
+    cards.forEach( async (card) => {
+      if (card.date === date) {
+        await card.destroy({where: {id: card.id}});
+      }
+    })
+    
+    return res.status(200).json({message: "Cards deleted successfully"})
+  } catch (error) {
+    return res
+      .status(404)
+      .json({ error: "there's been an error", message: error.message });
+  }
+})
+
 
 module.exports = router;

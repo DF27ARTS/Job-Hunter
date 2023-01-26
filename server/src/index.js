@@ -1,7 +1,7 @@
 const express = require("express");
 const morgan = require("morgan");
 const { database } = require("./db");
-const router = require("./routes/index");
+const router = require("./routes/cards");
 const { routerRegistration } = require("./routes/authorization");
 const cors = require("cors");
 const app = express();
