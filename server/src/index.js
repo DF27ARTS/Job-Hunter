@@ -20,7 +20,7 @@ app.use("/registration", routerRegistration);
 app.use("/", router);
 
 try {
-  database.sync({ force: true }).then(() => {
+  database.sync({ force: false }).then(() => {
     app.listen(port, async () => {
       console.log(`Server listening on port: ${port}`);
     });
