@@ -19,36 +19,38 @@ router.get("/cards", [verifyToken], async (req, res) => {
 
     cardsOrdered.length &&
       cardsOrdered.map((card) => {
-        const arraySplit = card.date.split("/");
-        const day = parseInt(arraySplit[0]);
-        const month = parseInt(arraySplit[1]);
-        const year = parseInt(arraySplit[2]);
-        const titleDate = `${day}/${month}/${year}`;
-        const date = year + month + day;
+        if (card.date) {
+          const arraySplit = card.date.split("/");
+          const day = parseInt(arraySplit[0]);
+          const month = parseInt(arraySplit[1]);
+          const year = parseInt(arraySplit[2]);
+          const titleDate = `${day}/${month}/${year}`;
+          const date = year + month + day;
 
-        if (cardsOrdered.length === 1) {
-          title = date.toString();
-          singleArray = [{ title: titleDate }, card];
-          cardsFiltered.push(singleArray);
-        } else if (card.id === cardsOrdered[0].id) {
-          title = date.toString();
-          singleArray = [{ title: titleDate }, card];
-        } else if (card.id === cardsOrdered[cardsOrdered.length - 1].id) {
-          if (date.toString() === title) {
-            singleArray.push(card);
+          if (cardsOrdered.length === 1) {
+            title = date.toString();
+            singleArray = [{ title: titleDate }, card];
             cardsFiltered.push(singleArray);
-          } else {
+          } else if (card.id === cardsOrdered[0].id) {
+            title = date.toString();
+            singleArray = [{ title: titleDate }, card];
+          } else if (card.id === cardsOrdered[cardsOrdered.length - 1].id) {
+            if (date.toString() === title) {
+              singleArray.push(card);
+              cardsFiltered.push(singleArray);
+            } else {
+              cardsFiltered.push(singleArray);
+              title = date.toString();
+              singleArray = [card];
+              cardsFiltered.push(singleArray);
+            }
+          } else if (date.toString() === title) {
+            singleArray.push(card);
+          } else if (date.toString() !== title) {
             cardsFiltered.push(singleArray);
             title = date.toString();
-            singleArray = [card];
-            cardsFiltered.push(singleArray);
+            singleArray = [{ title: titleDate }, card];
           }
-        } else if (date.toString() === title) {
-          singleArray.push(card);
-        } else if (date.toString() !== title) {
-          cardsFiltered.push(singleArray);
-          title = date.toString();
-          singleArray = [{ title: titleDate }, card];
         }
       });
 
@@ -62,7 +64,6 @@ router.get("/cards", [verifyToken], async (req, res) => {
   }
 });
 
-
 router.get("/get_dates", [verifyToken], async (req, res) => {
   try {
     const { cards } = await userProfile.findOne({
@@ -70,31 +71,31 @@ router.get("/get_dates", [verifyToken], async (req, res) => {
       include: [card],
     });
 
-    const setOfDates = new Set()
-    const dates = []
+    const setOfDates = new Set();
+    const dates = [];
 
     cards.forEach(async (card) => {
-      setOfDates.add(card.date)
-    })
+      setOfDates.add(card.date);
+    });
 
-    setOfDates.forEach(setDate => {
-      dates.push(setDate)
-    })
-    
+    setOfDates.forEach((setDate) => {
+      dates.push(setDate);
+    });
+
     dates.sort((a, b) => {
-      return b.split("/").reduce((sum, item) => sum + item) - a.split("/").reduce((sum, item) => sum + item)
-    })
+      return (
+        b.split("/").reduce((sum, item) => sum + item) -
+        a.split("/").reduce((sum, item) => sum + item)
+      );
+    });
 
     dates.length
       ? res.status(200).json(dates)
-      : res.status(404).json({message: "There's been an error"})
-      
-
+      : res.status(404).json({ message: "There's been an error" });
   } catch (error) {
     return res.status(404).json({ error: "there's an error", message: error });
   }
-})
-
+});
 
 router.get("/cards/search", [verifyToken], async (req, res) => {
   try {
@@ -133,7 +134,6 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
           const year = parseInt(arraySplit[2]);
           const titleDate = `${day}/${month}/${year}`;
           const date = year + month + day;
-          
 
           if (cardsOrdered.length === 1) {
             title = date.toString();
@@ -170,7 +170,6 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
   }
 });
 
-
 router.post("/cards", [verifyToken], async (req, res) => {
   try {
     const { company, role, status, date, description } = req.body;
@@ -200,7 +199,6 @@ router.post("/cards", [verifyToken], async (req, res) => {
   }
 });
 
-
 router.put("/cards", [verifyToken], async (req, res) => {
   try {
     const { card_id } = req.query;
@@ -229,7 +227,6 @@ router.put("/cards", [verifyToken], async (req, res) => {
   }
 });
 
-
 router.delete("/cards", [verifyToken], async (req, res) => {
   try {
     const { card_id } = req.query;
@@ -242,9 +239,8 @@ router.delete("/cards", [verifyToken], async (req, res) => {
     return res
       .status(404)
       .json({ error: "there's been an error", message: error.message });
-    }
+  }
 });
-
 
 router.delete("/delete_rejected", [verifyToken], async (req, res) => {
   try {
@@ -253,20 +249,21 @@ router.delete("/delete_rejected", [verifyToken], async (req, res) => {
       include: [card],
     });
 
-    cards.forEach( async (card) => {
+    cards.forEach(async (card) => {
       if (card.status === "rejected") {
-        await card.destroy({where: {id: card.id}});
+        await card.destroy({ where: { id: card.id } });
       }
-    })
+    });
 
-    return res.status(200).json({message: "Rejected cards deleted successfully"})
+    return res
+      .status(200)
+      .json({ message: "Rejected cards deleted successfully" });
   } catch (error) {
     return res
-    .status(404)
-    .json({ error: "there's been an error", message: error.message });
+      .status(404)
+      .json({ error: "there's been an error", message: error.message });
   }
-})
-
+});
 
 router.delete("/delete_by_date", [verifyToken], async (req, res) => {
   try {
@@ -277,19 +274,18 @@ router.delete("/delete_by_date", [verifyToken], async (req, res) => {
       include: [card],
     });
 
-    cards.forEach( async (card) => {
+    cards.forEach(async (card) => {
       if (card.date === date) {
-        await card.destroy({where: {id: card.id}});
+        await card.destroy({ where: { id: card.id } });
       }
-    })
-    
-    return res.status(200).json({message: "Cards deleted successfully"})
+    });
+
+    return res.status(200).json({ message: "Cards deleted successfully" });
   } catch (error) {
     return res
       .status(404)
       .json({ error: "there's been an error", message: error.message });
   }
-})
-
+});
 
 module.exports = router;
