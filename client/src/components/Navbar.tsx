@@ -7,11 +7,11 @@ import {
 } from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
 import { logOutUser } from "../store/userSlice";
+import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import searchOptions from "../assets/search-options.svg";
-import dayIcon from "../assets/day-icon.svg";
-import nightIcon from "../assets/night-icon.svg";
 import searchIcon from "../assets/search-icon.svg";
+import searchEngineIcon from "../assets/search-engine-icon.svg";
 import "../styles/Navbar.scss";
 
 export interface InputSearchEngine {
@@ -45,14 +45,6 @@ const Navbar = () => {
   const HandleClickLogout = () => {
     dispatch(logOutUser());
     dispatch(clearStorage());
-  };
-
-  const HandleOpenForm = (): void => {
-    dispatch(activateForm());
-    setTimeout(() => {
-      const createCardForm = document.querySelector(".create-card-form");
-      createCardForm?.classList.add("create-form-activated");
-    }, 10);
   };
 
   const HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -124,7 +116,7 @@ const Navbar = () => {
     <div className="container-navbar">
       <div className="page-icon">
         <Link className="home-link-navbar" to="/">
-          <p>JH</p>
+          <img src={JobHunter_Icon} />
         </Link>
       </div>
       <div className="search-icon-open-searchvar">
@@ -136,11 +128,14 @@ const Navbar = () => {
           value={inputSearch.search}
           type="text"
           className="search-input"
+          placeholder={
+            searchOption === "company"
+              ? "Search by company name"
+              : "Search by job title"
+          }
         />
         <button onClick={() => HandleSubmit()} className="search-button">
-          <span>Search</span>
-          <span>By</span>
-          <span>{searchOption}</span>
+          <img className="search-engine-icon" src={searchEngineIcon} />
         </button>
         <div className="container-search-input">
           <img
@@ -171,24 +166,9 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {theme ? (
-        <img
-          onClick={() => setThemeNight()}
-          area-text="day"
-          className="theme-icon"
-          src={dayIcon}
-        />
-      ) : (
-        <img
-          onClick={() => setThemeDay()}
-          area-text="night"
-          className="theme-icon"
-          src={nightIcon}
-        />
-      )}
-      <div className="create-new-card">
+      {/* <div className="create-new-card">
         <button onClick={() => HandleOpenForm()}>New Card</button>
-      </div>
+      </div> */}
       <button onClick={() => HandleClickLogout()} className="logout-button">
         Log out
       </button>

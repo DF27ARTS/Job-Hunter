@@ -10,7 +10,7 @@
   gap: 3vh;
   grid-template-columns: repeat(var(--columns-amount, 1), 50vh);
   grid-template-rows: 90vh;
-  overflow-y: none;
+  overflow-y: hidden !important;
   overflow-x: scroll;
 
   padding: 0 0 3vh 0;
@@ -28,11 +28,12 @@
 }
 
 .container-columns::-webkit-scrollbar-thumb {
-  background: #ccc;
+  background: var(--card-background-color);
   border-radius: 2vh;
 }
 
 .column {
+  position: relative;
   padding: 2vh;
 
   display: flex;
@@ -50,6 +51,33 @@
   opacity 400ms ease,
   visibility 400ms ease,
     transform 300ms var(--transition-animated);
+}
+
+.create-new-card-button {
+  position: absolute;
+  left: 10px;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  height: 50%;
+  aspect-ratio: 1 / 1;
+  background: var(--card-background-color);
+  border: 2px solid var(--body-text-color);
+  color: var(--body-text-color);
+  border-radius: 5px;
+
+  font-size: 3.2vh;
+  cursor: pointer;
+  transition: 
+    color var(--transition-animated) 400ms,
+    border var(--transition-animated) 200ms;
+}
+
+.create-new-card-button:hover,
+.create-new-card-button:focus {
+  border: 2px solid var(--color-one);
+  color: var(--color-two);
 }
 
 .column-animation {

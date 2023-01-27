@@ -27,7 +27,7 @@ const MainPage = () => {
     <div className="container-main-page">
       <div className="container-main-page-backdrop">
         <Navbar />
-        <div className="container-filters-navbar">
+        {/* <div className="container-filters-navbar">
           <button className="show-cards">
             <div
               onClick={() => HandleShowCards(false)}
@@ -44,7 +44,7 @@ const MainPage = () => {
               Show by Status
             </div>
           </button>
-        </div>
+        </div> */}
         <CardsContainer />
       </div>
       {create_form_active ? <FormCreateCard /> : null}

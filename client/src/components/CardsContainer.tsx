@@ -1,11 +1,13 @@
 import React from "react";
-import { Card } from "../store/cardSlice";
-import { useAppSelector } from "../store/store";
+import { activateForm, Card } from "../store/cardSlice";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
 import CardLoading from "./CardLoading";
 
 const CardsContainer = () => {
+  const dispatch = useAppDispatch();
+
   const { cards, grid_columns, showCardsByStatus } = useAppSelector(
     (state) => state.card
   );
@@ -21,6 +23,31 @@ const CardsContainer = () => {
     columns.forEach((column) => {
       observer.observe(column);
     });
+  }, 10);
+
+  const HandleOpenForm = (): void => {
+    dispatch(activateForm());
+    setTimeout(() => {
+      const createCardForm = document.querySelector(".create-card-form");
+      createCardForm?.classList.add("create-form-activated");
+    }, 10);
+  };
+
+  setTimeout(() => {
+    const createNewCardButton = document.querySelector(
+      ".create-new-card-button"
+    );
+
+    if (!createNewCardButton) {
+      const columnTitleContainer = document.querySelector(
+        ".column-title-container"
+      );
+      const button = document.createElement("button");
+      button.classList.add("create-new-card-button");
+      button.textContent = "+";
+      button.addEventListener("click", HandleOpenForm);
+      columnTitleContainer?.appendChild(button);
+    }
   }, 10);
 
   var style = { "--columns-amount": grid_columns } as React.CSSProperties;

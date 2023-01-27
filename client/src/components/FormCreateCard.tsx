@@ -8,12 +8,24 @@ import {
 } from "../store/cardSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import closeForm from "../assets/close-create-form.svg";
+import stageOneBackground from "../assets/stage-one-background.jpg";
+import stageTowBackground from "../assets/stage-two-background.jpg";
+import stageThreeBackground from "../assets/stage-three-background.jpg";
+import stageFourBackground from "../assets/stage-four-background.jpg";
+
+import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import "../styles/FormCreateCard.scss";
 
 const FormCreateCard = () => {
   const dispatch = useAppDispatch();
-  const { cardToUpdate } = useAppSelector((state) => state.card);
+  const { cardToUpdate, cardCreatedLoading } = useAppSelector(
+    (state) => state.card
+  );
+
+  const currentTranslateValue = getComputedStyle(document.documentElement)
+    .getPropertyValue("--height-form")
+    .replace("vh", "");
 
   const [input, setInput] = useState<Card>({
     company: cardToUpdate.company,
@@ -34,23 +46,26 @@ const FormCreateCard = () => {
     });
   };
 
-  const HandleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+  const HandleSubmit = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): void => {
     e.preventDefault();
     if (cardToUpdate.id) {
       const value = {
-        company: input.company.toLocaleLowerCase(),
+        company: input.company,
         description: input.description && input.description.toLocaleLowerCase(),
-        role: input.role.toLocaleLowerCase(),
-        status: input.status.toLocaleLowerCase(),
+        role: input.role,
+        status: input.status,
       };
       dispatch(updateCard({ id: cardToUpdate.id, ...value }));
       dispatch(cleanCardToUpdate());
     } else {
       const value = {
-        company: input.company.toLocaleLowerCase(),
+        company: input.company,
         description: input.description && input.description.toLocaleLowerCase(),
-        role: input.role.toLocaleLowerCase(),
-        status: input.status.toLocaleLowerCase(),
+        role: input.role,
+        status: input.status,
+        date: new Date().toLocaleDateString(),
       };
       dispatch(createCard(value));
       setInput({
@@ -60,6 +75,7 @@ const FormCreateCard = () => {
         description: "",
       });
     }
+    SetTranslateVariable(`0vh`);
   };
 
   const SelectOption = (value: string): void => {
@@ -74,68 +90,184 @@ const FormCreateCard = () => {
     createCardForm?.classList.remove("create-form-activated");
     setTimeout(() => {
       dispatch(deactivateForm());
+      SetTranslateVariable(`0vh`);
     }, 300);
   };
 
-  return (
-    <form onSubmit={(e) => HandleSubmit(e)} className="create-card-form">
-      <h2 className="create-card-form-title">New Job</h2>
-      <input
-        name="company"
-        value={input.company}
-        onChange={(e) => HandleFormChange(e)}
-        placeholder="Company"
-        type="text"
-        className="company"
-        required={true}
-      />
-      <input
-        name="role"
-        value={input.role}
-        onChange={(e) => HandleFormChange(e)}
-        placeholder="Job Title"
-        type="text"
-        className="role"
-        required={true}
-      />
-      <div tabIndex={-1} className="status">
-        {!input.status ? <span>Status</span> : <p>{input.status}</p>}
-        <input
-          autoComplete="off"
-          name="status"
-          value={input.status}
-          onChange={(e) => HandleFormChange(e)}
-          type="text"
-          required={true}
-        />
-        <div className="container-single-option">
-          <span area-text="applyed" onClick={() => SelectOption("applyed")}>
-            <span>Applyed</span>
-          </span>
-          <span area-text="interview" onClick={() => SelectOption("interview")}>
-            <span>Interview</span>
-          </span>
-          <span area-text="rejected" onClick={() => SelectOption("rejected")}>
-            <span>Rejected</span>
-          </span>
-        </div>
-      </div>
+  const SetTranslateVariable = (value: string) => {
+    document.documentElement.style.setProperty("--slider-translate", value);
+  };
 
-      <textarea
-        name="description"
-        value={input.description}
-        onChange={(e) => HandleFormChange(e)}
-        placeholder="Description"
-        className="description"
-      ></textarea>
-      <button className="create-card-form-button">Save Card</button>
-      <img
-        tabIndex={0}
-        onClick={() => HandleCloseForm()}
-        src={closeForm}
-        className="close-create-form"
-      />
-    </form>
+  const currentValue = (): number => {
+    return parseInt(currentTranslateValue);
+  };
+
+  const HandleSubmitForm = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+  };
+
+  return (
+    <div className="create-card-form">
+      <div
+        className={
+          cardCreatedLoading
+            ? "close-create-form close-form-loading-active"
+            : "close-create-form"
+        }
+      >
+        <img
+          className="close-form-icon"
+          tabIndex={0}
+          onClick={() => HandleCloseForm()}
+          src={closeForm}
+        />
+        <img src={JobHunter_Icon} className="form-jobhunter-icon" />
+      </div>
+      <form
+        onSubmit={HandleSubmitForm}
+        className={
+          cardCreatedLoading
+            ? "form-container form-loading-active"
+            : "form-container"
+        }
+      >
+        <div className="slider-container">
+          <div className="stage-one">
+            <img src={stageOneBackground} className="stage-one-img" />
+            <h2 className="create-card-form-title">Create New Card</h2>
+            <div area-text="" className="inputs">
+              <input
+                name="company"
+                value={input.company}
+                onChange={(e) => HandleFormChange(e)}
+                placeholder="Company Name *"
+                type="text"
+              />
+              {!input.company ? (
+                <button className="not-allowed">Next</button>
+              ) : (
+                <button
+                  onClick={() =>
+                    SetTranslateVariable(`${currentValue() * -1}vh`)
+                  }
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="stage-two">
+            <img src={stageTowBackground} className="stage-two-img" />
+            <span>Write the job title in here!!!</span>
+            <div area-text="" className="inputs">
+              <button onClick={() => SetTranslateVariable(`${0}vh`)}>
+                Prev
+              </button>
+              <input
+                name="role"
+                value={input.role}
+                onChange={(e) => HandleFormChange(e)}
+                placeholder="Job Title *"
+                type="text"
+                className="role"
+              />
+              {!input.role ? (
+                <button className="not-allowed">Next</button>
+              ) : (
+                <button
+                  onClick={() =>
+                    SetTranslateVariable(`${currentValue() * -2}vh`)
+                  }
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="stage-three">
+            <img src={stageThreeBackground} className="stage-three-img" />
+            <span>Select the status of your application</span>
+            <div area-text="" className="inputs">
+              <button
+                className="before-and-after-buttons"
+                onClick={() => SetTranslateVariable(`${currentValue() * -1}vh`)}
+              >
+                Prev
+              </button>
+              <div
+                area-button={input.status === "applyed" ? "applyed" : ""}
+                className="status-option"
+                area-text="applyed"
+                onClick={() => SelectOption("applyed")}
+              >
+                Applyed
+              </div>
+              <div
+                area-button={input.status === "interview" ? "interview" : ""}
+                className="status-option"
+                area-text="interview"
+                onClick={() => SelectOption("interview")}
+              >
+                Interview
+              </div>
+              <div
+                area-button={input.status === "rejected" ? "rejected" : ""}
+                className="status-option"
+                area-text="rejected"
+                onClick={() => SelectOption("rejected")}
+              >
+                Rejected
+              </div>
+              {!input.status ? (
+                <button className="before-and-after-buttons not-allowed">
+                  Next
+                </button>
+              ) : (
+                <button
+                  className="before-and-after-buttons"
+                  onClick={() =>
+                    SetTranslateVariable(`${currentValue() * -3}vh`)
+                  }
+                >
+                  Next
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="stage-four">
+            <img src={stageFourBackground} className="stage-four-img" />
+            <span>
+              Write any type of information about the position <br />
+            </span>
+            <div area-text="" className="inputs">
+              <button
+                className="description-prev-button"
+                onClick={() => SetTranslateVariable(`${currentValue() * -2}vh`)}
+              >
+                Prev
+              </button>
+              <textarea
+                name="description"
+                value={input.description}
+                onChange={(e) => HandleFormChange(e)}
+                placeholder="Description of the role"
+                className="description"
+              />
+            </div>
+
+            <button
+              onClick={(e) => HandleSubmit(e)}
+              className="create-card-form-button"
+            >
+              Save Card
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
   );
 };
 

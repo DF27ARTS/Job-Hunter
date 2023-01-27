@@ -11,6 +11,7 @@ export interface Card {
   role: string;
   status: string;
   description: string;
+  date?: string;
 }
 
 interface cardState {
@@ -18,11 +19,12 @@ interface cardState {
   cardToUpdate: Card | any;
   loading_cards: boolean;
   loading_single_card: boolean;
-  grid_columns: boolean;
+  grid_columns: number;
   card_error: boolean;
   create_form_active: boolean; 
   searchError: boolean; 
   showCardsByStatus: boolean;
+  cardCreatedLoading: boolean;
 }
 
 const initialState:cardState = {
@@ -35,11 +37,12 @@ const initialState:cardState = {
   },
   loading_cards: false,
   loading_single_card: false,
-  grid_columns: false,
+  grid_columns: 1,
   card_error: false,
   create_form_active: false,
   searchError: false,
   showCardsByStatus: false,
+  cardCreatedLoading: false,
 }
 
 export const getCards = createAsyncThunk<Card[][] | any>(
@@ -203,16 +206,20 @@ export const CardSlice = createSlice({
       })
 
     builder
-      .addCase(createCard.pending, (state) => { state.loading_single_card = true})
+      .addCase(createCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(createCard.fulfilled, (state, action) => {
-        
-        if (!state.cards[0].length) {
-          const arraySplit = action.payload.createdAt.toString().split("T")[0].split("-");
-          const day = parseInt(arraySplit[2]);
-          const newMonth:number = parseInt(arraySplit[1]);
-          const year = parseInt(arraySplit[0]);
-          const titleDate = `${day}/${newMonth}/${year}`;
-          state.cards[0] = [{ title: titleDate }, action.payload];
+        if (state.cards[0][1].date !== action.payload.date) {
+          state.cards = [
+            [
+              { title: action.payload.date },
+              action.payload
+            ],
+            ...state.cards
+          ]
+          state.grid_columns = state.grid_columns + 1
+        }
+        else if (!state.cards[0].length) {
+          state.cards[0] = [{ title: action.payload.date }, action.payload];
         } else {
           const newArray = [
             state.cards[0][0],
@@ -225,20 +232,25 @@ export const CardSlice = createSlice({
           })
           state.cards[0] = newArray;
         }
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.loading_cards = false
         state.create_form_active = false
       })
       .addCase(createCard.rejected, (state) => {
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.card_error = true
       })
 
     builder
       .addCase(deleteCard.pending, (state) => { state.loading_single_card = true})
       .addCase(deleteCard.fulfilled, (state, action) => {
-        if (state.cards[0].length <= 2) {
+        if (state.cards[0].length <= 2 && state.cards[1]) {
+          state.cards = state.cards.filter(cardsArray => cardsArray !== state.cards[0])
+          state.grid_columns = state.cards.length
+        }
+        else if (state.cards[0].length <= 2) {
           state.cards[0] = []
+          getCards()
         } else {
           state.cards.map((_, index) => {
             state.cards[index] = state.cards[index].filter(card => card.id !== action.payload)
@@ -252,7 +264,7 @@ export const CardSlice = createSlice({
       })
 
     builder
-      .addCase(updateCard.pending, (state) => { state.loading_single_card = true})
+      .addCase(updateCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(updateCard.fulfilled, (state, action) => {
         state.cards.map((cardArray, index) => {
           cardArray.map((card, ind) => {
@@ -265,11 +277,11 @@ export const CardSlice = createSlice({
           state.cards = orderByStatus(state.cards)
           state.grid_columns = orderByStatus(state.cards).length
         } 
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.create_form_active = false
       })
       .addCase(updateCard.rejected, (state) => {
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.card_error = true
       })
   }

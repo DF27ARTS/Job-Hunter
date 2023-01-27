@@ -6,11 +6,6 @@
   --size: 500px;
   --searchbar-translate: -500%;
 
-
-  // --card-column-background: rgb(238, 235, 235);
-  // --card-background-color: rgb(214, 213, 213);
-  // --body-background: #fff;
-  // --body-text-color: rgb(20, 20, 20);
   --card-column-background: rgb(31, 30, 30);
   --card-background-color: rgb(56, 56, 56);
   --body-background: #000;
@@ -18,6 +13,13 @@
 
   --transition-animated: cubic-bezier(0.43, 0.18, 0.51, 1.66);
   --fantacy-font: 'Kaushan Script', cursive;
+
+  // create form varables
+  --height-form: 60vh;
+  --slider-translate: 0;
+  --width-form: 110vh;
+  --loading-form-animation: cubic-bezier(0.54, 0.46, 0.68, 2.56);
+  --form-slider-animation: cubic-bezier(0.13, 0.57, 0.58, 1);
 }
 
 *, *::after, *::before {
@@ -34,6 +36,9 @@ body {
   font-family: 'Roboto Condensed', sans-serif;
   background: var(--body-background);
   color: var(--body-text-color);
+
+  overflow-x: hidden;
+  overflow-Y: auto;
 }
 
 body::-webkit-scrollbar {

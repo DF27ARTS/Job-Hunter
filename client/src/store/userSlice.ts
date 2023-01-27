@@ -1,10 +1,9 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-import axios, { AxiosResponse } from "axios"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 import { getCards } from "./cardSlice"
 
-// export const API_URL = "https://jub-hunter-production.up.railway.app"
-export const API_URL = "https://jub-hunter-api.onrender.com"
-// export const API_URL = import.meta.env.API_URL || "http://localhost:3001"
+// export const API_URL = "https://jub-hunter-api.onrender.com"
+export const API_URL = import.meta.env.API_URL || "http://localhost:3001"
 
 export const saveToken = (token: string): void => {
   const response = localStorage.setItem("token", token)
@@ -28,6 +27,8 @@ export interface User {
   email?: string;
   password?: string;
 }
+
+export const FormatNumber = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2, });
 
 interface userState {
   user?: User;

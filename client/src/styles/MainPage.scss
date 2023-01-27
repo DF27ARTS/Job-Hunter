@@ -5,6 +5,9 @@
   display: flex;
   flex-direction: column;
   gap: 3vh;
+
+  overflow-x: hidden;
+  overflow-Y: auto;
 }
 
 
