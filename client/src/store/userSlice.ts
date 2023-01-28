@@ -28,7 +28,18 @@ export interface User {
   password?: string;
 }
 
-export const FormatNumber = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2, });
+export const FormatNumber = (string: string | undefined): string | undefined => {
+  if (string) {
+    const [day, month, year] = string.split("/");
+    const Format = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2, });
+    const monthFormat = Format.format(parseInt(month));
+    const dayFormat = Format.format(parseInt(day));
+
+    return `${dayFormat}/${monthFormat}/${year}`
+  } else {
+    return undefined;
+  }
+}
 
 interface userState {
   user?: User;

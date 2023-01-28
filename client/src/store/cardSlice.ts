@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-import axios, { AxiosRequestConfig } from "axios"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 import { InputSearchEngine } from "../components/Navbar";
 import { API_URL, getToken } from "./userSlice";
 
@@ -17,6 +17,7 @@ export interface Card {
 interface cardState {
   cards: Card[][];
   cardToUpdate: Card | any;
+  arrayDates: string[] | any;
   loading_cards: boolean;
   loading_single_card: boolean;
   grid_columns: number;
@@ -35,6 +36,7 @@ const initialState:cardState = {
     status: "",
     description: "",
   },
+  arrayDates: [],
   loading_cards: false,
   loading_single_card: false,
   grid_columns: 1,
@@ -91,6 +93,7 @@ export const createCard = createAsyncThunk<Object | any, Card | any> (
         card,
         config
       )
+      ThunkAPI.dispatch(getDates())
       return data.card
     } catch (error) {
       return ThunkAPI.rejectWithValue(error)
@@ -126,6 +129,49 @@ export const deleteCard = createAsyncThunk<any, number | undefined>(
         },
       })
       return id
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+export const getDates = createAsyncThunk<any | string[]>(
+  "cards/getDates",
+  async (_, ThunkAPI) => {
+    try {
+      
+      const { data } = await axios.get(`${API_URL}/get_dates`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      });
+      return data
+
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+  
+export const deleteCardByDate = createAsyncThunk<any, any>(
+  "cards/deleteCardByDate",
+  async (date, ThunkAPI) => {
+    try {
+      
+      console.log(date)
+      const {status} = await axios.delete(`${API_URL}/delete_by_date?date=${date}`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+      console.log(status)
+      if (status === 200) {
+        ThunkAPI.dispatch(getCards())
+        return date;
+      } else {
+        return "Error"
+      }
+
     } catch (error) {
       return ThunkAPI.rejectWithValue(error)
     }
@@ -283,6 +329,16 @@ export const CardSlice = createSlice({
       .addCase(updateCard.rejected, (state) => {
         state.cardCreatedLoading = false
         state.card_error = true
+      })
+    
+    builder
+      .addCase(getDates.fulfilled, (state, action) => {
+        state.arrayDates = action.payload;
+      })
+    builder
+      .addCase(deleteCardByDate.fulfilled, (state, action) => {
+        state.cards = state.cards.filter(cardsArray => cardsArray[0].title !== action.payload );
+        state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
       })
   }
 })

@@ -13,6 +13,7 @@ import searchOptions from "../assets/search-options.svg";
 import searchIcon from "../assets/search-icon.svg";
 import searchEngineIcon from "../assets/search-engine-icon.svg";
 import "../styles/Navbar.scss";
+import SidebarMenu from "./SidebarMenu";
 
 export interface InputSearchEngine {
   input: string;
@@ -40,11 +41,6 @@ const Navbar = () => {
       input: inputSearch.input,
       search: "",
     });
-  };
-
-  const HandleClickLogout = () => {
-    dispatch(logOutUser());
-    dispatch(clearStorage());
   };
 
   const HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,37 +71,6 @@ const Navbar = () => {
         search: "",
       });
     }
-  };
-
-  const setThemeDay = (): void => {
-    document.documentElement.style.setProperty(
-      "--card-column-background",
-      "rgb(238, 235, 235)"
-    );
-    document.documentElement.style.setProperty(
-      "--card-background-color",
-      "rgb(214, 213, 213)"
-    );
-    document.documentElement.style.setProperty("--body-background", "#fff");
-    document.documentElement.style.setProperty(
-      "--body-text-color",
-      "rgb(20, 20, 20)"
-    );
-    setTheme(true);
-  };
-
-  const setThemeNight = (): void => {
-    document.documentElement.style.setProperty(
-      "--card-column-background",
-      "rgb(31, 30, 30)"
-    );
-    document.documentElement.style.setProperty(
-      "--card-background-color",
-      "rgb(56, 56, 56)"
-    );
-    document.documentElement.style.setProperty("--body-background", "#000");
-    document.documentElement.style.setProperty("--body-text-color", "#ccc");
-    setTheme(false);
   };
 
   const setSearbarStatus = (value: string): void => {
@@ -166,12 +131,10 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {/* <div className="create-new-card">
-        <button onClick={() => HandleOpenForm()}>New Card</button>
-      </div> */}
-      <button onClick={() => HandleClickLogout()} className="logout-button">
+      {/* <button onClick={() => HandleClickLogout()} className="logout-button">
         Log out
-      </button>
+      </button> */}
+      <SidebarMenu />
     </div>
   );
 };

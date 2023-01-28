@@ -9,26 +9,3 @@
   overflow-x: hidden;
   overflow-Y: auto;
 }
-
-
-.container-filters-navbar {
-  width: 100%;
-  padding: 0;
-
-  display: flex;
-  gap: 7vh;
-  justify-content:center;
-}
-
-.container-filters-navbar .show-cards {
-  padding: 1vh 3vh;
-  font-weight: bold;
-  color: inherit;
-  cursor: pointer;
-}
-
-.show-card-active {
-  background: linear-gradient(90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}

@@ -17,34 +17,10 @@ const MainPage = () => {
   } = useAppSelector((state) => state.card);
   const dispatch = useAppDispatch();
 
-  const HandleShowCards = (value: boolean): void => {
-    dispatch(clearStorage());
-    dispatch(setShowByStatus(value));
-    dispatch(getCards());
-  };
-
   return (
     <div className="container-main-page">
       <div className="container-main-page-backdrop">
         <Navbar />
-        {/* <div className="container-filters-navbar">
-          <button className="show-cards">
-            <div
-              onClick={() => HandleShowCards(false)}
-              className={!showCardsByStatus ? "show-card-active" : ""}
-            >
-              Show by Date
-            </div>
-          </button>
-          <button className="show-cards">
-            <div
-              onClick={() => HandleShowCards(true)}
-              className={showCardsByStatus ? "show-card-active" : ""}
-            >
-              Show by Status
-            </div>
-          </button>
-        </div> */}
         <CardsContainer />
       </div>
       {create_form_active ? <FormCreateCard /> : null}

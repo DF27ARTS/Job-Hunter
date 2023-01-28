@@ -18,6 +18,10 @@
   transition: transform 400ms ease-in-out;
 }
 
+.create-card-form-display-none {
+  display: none;
+}
+
 .create-form-activated {
   transform: 
     translateY(0)
@@ -37,7 +41,7 @@
   transform: perspective(500px);
 
   height: var(--height-form);
-  width: 110vh;
+  width: 55vw;
   max-width: 90vw;
   box-shadow: 
     0 0 0 5px var(--body-text-color),
@@ -77,7 +81,7 @@
 
 
 .slider-container {
-  --slider-height: 60vh;
+  --slider-height: 30vw;
   position: relative;
   transform: translateY(var(--slider-translate));
   transition: transform var(--form-slider-animation) 500ms;
@@ -557,62 +561,207 @@
 }
 
 
-// @media screen and (max-width: 600px) {
-//   .create-card-form {
-//     min-height: 90vh;
-//     width: 95vw;
-//     grid-template-areas: 
-//       " title "
-//       "company"
-//       "role"
-//       "status"
-//       "description"
-//       "button";
-//     grid-template-columns: 1fr;
-//     grid-template-rows: 50px 50px 50px 50px 200px 50px;
-//     grid-row-gap: 25px;
+@media screen and (max-width: 600px) {
+  .form-container {
+    width: 80vw;
+    box-shadow: 
+      0 0 0 5px var(--body-text-color),
+      0 0 0 5vh var(--card-background-color);
+    border-radius: 0.5vh;
+  }
 
-//     padding: 40px 15px 25px 15px;
-//   }
+  .slider-container {
+    --slider-height: 500px;
 
-//   .create-card-form > input, textarea, button {
-//     font-size: 15px;
-//   }
+    grid-template-columns: 100%;
+    grid-template-rows: repeat(4, var(--slider-height));
+    padding: 0 2vh;
+  }  
 
-//   .status > span {
-//     font-family: var(--fantacy-font);
-//     font-size: 15px;
-//     color: inherit;
-//   }
+  .stage-one-img,
+  .stage-two-img,
+  .stage-three-img,
+  .stage-four-img {
+    height: 70%;
+  }
 
-//   .create-card-form-title {
-//     font-size: 30px;
-//   }
+  .inputs {
+    width: 90%;
+    display: grid;
 
-//   .close-create-form {
-//     height: 35px;
-//     width: 35px;
+    grid-template-areas: 
+      "input input input input"
+      "btn-left ... ... btn-right"
+    ;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 5vh 4vh;
+    grid-row-gap: 2vh;
 
-//     user-select: none;
-//   }
+    button:hover {
+      border: 2px solid var(--color-one) !important;
+    }
+  }
 
-//   .create-card-form input::placeholder, textarea::placeholder {
-//     font-family: var(--fantacy-font);
-//     font-size: 15px;
-//     color: inherit;
-//   }
+  .stage-one {
+
+    .stage-one-img {
+      left: -15%;
+      top: 20%;
+    }
+
+    .create-card-form-title {
+      font-size: 5vh;
+    }
+
+    input {
+      grid-area: input;
+      height: 5vh;
+      flex-grow: 0;
+      border-radius: 4vh;
+      padding: 0 1.5rem;
+    }
+
+    button {
+      padding: 0 1vh;
+      font-size: 1.5vh;
+      border-radius: 4vh;
+      border: 2px solid var(--body-text-color);
+    }
+  }  
+
+  .stage-one button {
+    grid-area: btn-right;
+  }
+
+  .stage-two {
+
+    .stage-two-img {
+      left: -10%;
+      top: 0;
+    }
+
+    input {
+      grid-area: input;
+      height: 5vh;
+      border-radius: 4vh;
+      padding: 0 1.5rem;
+    }
+
+    button {
+      padding: 0 1vh;
+      font-size: 1.5vh;
+      border-radius: 4vh;
+      border: 2px solid var(--body-text-color);
+    }
+  }
   
+  .stage-two .stage-two-buttons:nth-child(1) {
+    grid-area: btn-left;
+    border-radius: 4vh;
+    border: 2px solid var(--body-text-color);
+  }
   
-//   .status > p {
-//     font-size: 15px;
-//   }
-  
-//   .create-card-form-button {
-//     font-size: 20px;
-//   }
+  .stage-two .stage-two-buttons:nth-child(3) {
+    grid-area: btn-right;
+  }
 
-//   .create-card-form-button:hover {
-//     transform: scale(1);
-//     font-size: 20px;
-//   }
-// }
+  .stage-three {
+
+    .inputs {
+  
+      grid-template-areas: 
+        "option-one option-two option-three"
+        "btn-left .............. btn-right"
+      ;
+      grid-template-columns: repeat(3, 31%);
+      grid-template-rows: 5vh 4vh;
+      grid-column-gap: 1vh;
+      width: 90%;
+    }
+    
+    .stage-three-img {
+      left: -15%;
+    }
+
+    .status-option {
+      width: 100%;
+      
+      flex-grow: 0;
+      margin: 0 ;
+      font-size: 1.4vh;
+    }
+
+    .status-one{
+      grid-area: option-one;
+    }
+
+    .status-two{
+      grid-area: option-two;
+    }
+
+    .status-three{
+      grid-area: option-three;
+    }
+
+    button {
+      padding: 0 1vh;
+      font-size: 1.5vh;
+      border-radius: 4vh;
+      border: 2px solid var(--body-text-color);
+    }
+
+    .before-and-after-buttons {
+      margin: 0 ;
+    }
+
+    .stage-three-btn-one {
+      grid-area: btn-left;
+      border-radius: 4vh !important;
+      border: 2px solid var(--body-text-color) !important;
+    }
+
+    .stage-three-btn-two {
+      grid-area: btn-right;
+    }
+  }
+
+  .stage-four {
+
+    .inputs {
+  
+      grid-template-areas: 
+        "description description description description"
+        "btn-left ............ .............. btn-right"
+      ;
+      grid-template-columns: repeat(4, 1fr);
+      grid-template-rows: 20vh 4vh;
+    }
+    
+    .stage-four-img {
+      top: 15%;
+      left: -10%;
+    }
+
+    .description {
+      grid-area: description;
+    }
+
+    .description-prev-button {
+      grid-area: btn-left;
+      
+    }
+
+    .description-prev-button {
+      padding: 1vh 5vh;
+      font-size: 1.5vh;
+    }
+  }
+
+  .create-card-form-button {
+    width: 90% !important;
+  }
+
+  .close-form-loading-active .form-jobhunter-icon {
+    height: calc(var(--height-form) / 3);
+  }
+}

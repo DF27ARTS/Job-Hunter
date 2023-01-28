@@ -236,26 +236,7 @@
 
 
 
-// logout button
-.logout-button {
-  padding: 1vh 2vh;
-  border: none;
-  background: var(--card-background-color);
-  color: inherit;
 
-  font-family: var(--fantacy-font);
-  font-size: 2.5vh;
-  border-radius: 1vh;
-
-  cursor: pointer;
-}
-
-.logout-button:hover,
-.logout-button:focus {
-  background: linear-gradient(90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
 
 
 .search-icon-open-searchvar {

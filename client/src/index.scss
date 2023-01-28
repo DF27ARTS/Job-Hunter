@@ -15,11 +15,17 @@
   --fantacy-font: 'Kaushan Script', cursive;
 
   // create form varables
-  --height-form: 60vh;
+  --display-form-status: none;
+  --height-form: 30vw;
   --slider-translate: 0;
-  --width-form: 110vh;
+  --width-form: 55vw;
   --loading-form-animation: cubic-bezier(0.54, 0.46, 0.68, 2.56);
   --form-slider-animation: cubic-bezier(0.13, 0.57, 0.58, 1);
+
+  // sidebar varibles
+  --display-status: none;
+  --sidebar-clip-path: 0px;
+  --single-card-font: 'Kaushan Script', cursive;
 }
 
 *, *::after, *::before {
@@ -46,3 +52,9 @@ body::-webkit-scrollbar {
 }
 
 
+@media screen and (max-width: 600px) {
+  :root {
+    --height-form: 500px;
+    --width-form: 80vw;
+  }
+}

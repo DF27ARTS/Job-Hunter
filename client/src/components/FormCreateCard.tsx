@@ -27,6 +27,10 @@ const FormCreateCard = () => {
     .getPropertyValue("--height-form")
     .replace("vh", "");
 
+  const viewportValue = getComputedStyle(document.documentElement)
+    .getPropertyValue("--height-form")
+    .replace(/\d.*\d/, "");
+
   const [input, setInput] = useState<Card>({
     company: cardToUpdate.company,
     description: cardToUpdate.description,
@@ -95,7 +99,11 @@ const FormCreateCard = () => {
   };
 
   const SetTranslateVariable = (value: string) => {
-    document.documentElement.style.setProperty("--slider-translate", value);
+    const newValue = (value + viewportValue).replace(" ", "");
+    document.documentElement.style.setProperty(
+      "--slider-translate",
+      `${newValue}`
+    );
   };
 
   const currentValue = (): number => {
@@ -127,7 +135,7 @@ const FormCreateCard = () => {
         onSubmit={HandleSubmitForm}
         className={
           cardCreatedLoading
-            ? "form-container form-loading-active"
+            ? "form-container form-loading-active create-card-form-display-none"
             : "form-container"
         }
       >
@@ -147,9 +155,7 @@ const FormCreateCard = () => {
                 <button className="not-allowed">Next</button>
               ) : (
                 <button
-                  onClick={() =>
-                    SetTranslateVariable(`${currentValue() * -1}vh`)
-                  }
+                  onClick={() => SetTranslateVariable(`${currentValue() * -1}`)}
                 >
                   Next
                 </button>
@@ -161,7 +167,10 @@ const FormCreateCard = () => {
             <img src={stageTowBackground} className="stage-two-img" />
             <span>Write the job title in here!!!</span>
             <div area-text="" className="inputs">
-              <button onClick={() => SetTranslateVariable(`${0}vh`)}>
+              <button
+                className="stage-two-buttons"
+                onClick={() => SetTranslateVariable(`${0}`)}
+              >
                 Prev
               </button>
               <input
@@ -173,12 +182,11 @@ const FormCreateCard = () => {
                 className="role"
               />
               {!input.role ? (
-                <button className="not-allowed">Next</button>
+                <button className="not-allowed stage-two-buttons">Next</button>
               ) : (
                 <button
-                  onClick={() =>
-                    SetTranslateVariable(`${currentValue() * -2}vh`)
-                  }
+                  className="stage-two-buttons"
+                  onClick={() => SetTranslateVariable(`${currentValue() * -2}`)}
                 >
                   Next
                 </button>
@@ -191,14 +199,14 @@ const FormCreateCard = () => {
             <span>Select the status of your application</span>
             <div area-text="" className="inputs">
               <button
-                className="before-and-after-buttons"
-                onClick={() => SetTranslateVariable(`${currentValue() * -1}vh`)}
+                className="before-and-after-buttons stage-three-btn-one"
+                onClick={() => SetTranslateVariable(`${currentValue() * -1}`)}
               >
                 Prev
               </button>
               <div
                 area-button={input.status === "applyed" ? "applyed" : ""}
-                className="status-option"
+                className="status-option status-one"
                 area-text="applyed"
                 onClick={() => SelectOption("applyed")}
               >
@@ -206,7 +214,7 @@ const FormCreateCard = () => {
               </div>
               <div
                 area-button={input.status === "interview" ? "interview" : ""}
-                className="status-option"
+                className="status-option status-two"
                 area-text="interview"
                 onClick={() => SelectOption("interview")}
               >
@@ -214,22 +222,20 @@ const FormCreateCard = () => {
               </div>
               <div
                 area-button={input.status === "rejected" ? "rejected" : ""}
-                className="status-option"
+                className="status-option status-three"
                 area-text="rejected"
                 onClick={() => SelectOption("rejected")}
               >
                 Rejected
               </div>
               {!input.status ? (
-                <button className="before-and-after-buttons not-allowed">
+                <button className="before-and-after-buttons not-allowed stage-three-btn-two">
                   Next
                 </button>
               ) : (
                 <button
-                  className="before-and-after-buttons"
-                  onClick={() =>
-                    SetTranslateVariable(`${currentValue() * -3}vh`)
-                  }
+                  className="before-and-after-buttons stage-three-btn-two"
+                  onClick={() => SetTranslateVariable(`${currentValue() * -3}`)}
                 >
                   Next
                 </button>
@@ -245,7 +251,7 @@ const FormCreateCard = () => {
             <div area-text="" className="inputs">
               <button
                 className="description-prev-button"
-                onClick={() => SetTranslateVariable(`${currentValue() * -2}vh`)}
+                onClick={() => SetTranslateVariable(`${currentValue() * -2}`)}
               >
                 Prev
               </button>
