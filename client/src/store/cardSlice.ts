@@ -164,7 +164,6 @@ export const deleteCardByDate = createAsyncThunk<any, any>(
           Authorization: getToken(),
         },
       })
-      console.log(status)
       if (status === 200) {
         ThunkAPI.dispatch(getCards())
         return date;
@@ -172,6 +171,28 @@ export const deleteCardByDate = createAsyncThunk<any, any>(
         return "Error"
       }
 
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+export const deleteAllRejectedCards = createAsyncThunk(
+  "cards/deleteAllRejectedCards",
+  async (_, ThunkAPI) => {
+    try {
+      
+      const { status } = await axios.delete(`${API_URL}/delete_rejected`, {
+        headers: {
+          Authorization: getToken()
+        }
+      })
+
+      if (status === 200) {
+        ThunkAPI.dispatch(getCards())
+      } else {
+        return "Error"
+      }
     } catch (error) {
       return ThunkAPI.rejectWithValue(error)
     }
@@ -339,6 +360,16 @@ export const CardSlice = createSlice({
       .addCase(deleteCardByDate.fulfilled, (state, action) => {
         state.cards = state.cards.filter(cardsArray => cardsArray[0].title !== action.payload );
         state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
+      })
+    builder
+      .addCase(deleteAllRejectedCards.pending, (state) => {
+        state.loading_single_card = true
+      })
+      .addCase(deleteAllRejectedCards.fulfilled, (state, action) => {
+        state.loading_single_card = true
+      })
+      .addCase(deleteAllRejectedCards.rejected, (state, action) => {
+        state.loading_single_card = true
       })
   }
 })

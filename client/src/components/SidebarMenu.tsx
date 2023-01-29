@@ -16,6 +16,7 @@ import { FormatNumber, logOutUser } from "../store/userSlice";
 import {
   activateForm,
   clearStorage,
+  deleteAllRejectedCards,
   deleteCardByDate,
   getCards,
   getDates,
@@ -31,6 +32,7 @@ const SidebarMenu = () => {
   const [sidebarState, setSidebarState] = useState<boolean>(false);
   const [deleteCardAlert, setDeleteCardAlert] = useState<boolean>(false);
   const [currentDateToDelete, setCurrentDateToDelete] = useState<string>("");
+  const [currentMessage, setCurrentMessage] = useState<string>("");
 
   const OpenAndcloseSidebar = (value: boolean): void => {
     const sidebarMenuIcon = document.querySelector(".sidebar-menu-icon");
@@ -77,15 +79,32 @@ const SidebarMenu = () => {
     dispatch(getCards());
   };
 
-  const OpenMessageAlert = (date: string | undefined): void => {
+  const OpenMessageAlert = (
+    date: string | undefined,
+    message: string
+  ): void => {
     if (date) {
       setCurrentDateToDelete(date);
+      setCurrentMessage(message);
+      setDeleteCardAlert(true);
+    } else {
+      setCurrentMessage(message);
       setDeleteCardAlert(true);
     }
   };
 
   const CloseMessageAlert = (): void => {
     setCurrentDateToDelete("");
+    setCurrentMessage("");
+    setDeleteCardAlert(false);
+  };
+
+  const HandleDelete = (): void => {
+    if (currentDateToDelete) {
+      // dispatch(deleteCardByDate(currentDateToDelete));
+    } else {
+      dispatch(deleteAllRejectedCards());
+    }
     setDeleteCardAlert(false);
   };
 
@@ -124,7 +143,12 @@ const SidebarMenu = () => {
                 ? arrayDates.map((date: string | undefined, index: number) => (
                     <div
                       key={index}
-                      onClick={() => OpenMessageAlert(date)}
+                      onClick={() =>
+                        OpenMessageAlert(
+                          date,
+                          "This will delete all the cards of this day"
+                        )
+                      }
                       className="single-option-date"
                     >
                       {FormatNumber(date)}{" "}
@@ -161,6 +185,20 @@ const SidebarMenu = () => {
             </button>
           </div>
 
+          <div className="container-delete-rejected-cards">
+            <button
+              onClick={() =>
+                OpenMessageAlert(
+                  undefined,
+                  "This action will delete all cards with the rejected status"
+                )
+              }
+              className="delete-rejected-cards"
+            >
+              Delete all rejected cards
+            </button>
+          </div>
+
           <div className="container-logout-button">
             <button
               onClick={() => HandleClickLogout()}
@@ -179,14 +217,12 @@ const SidebarMenu = () => {
               src={closeForm}
               className="close-alert"
             />
-            <span className="alert-delete-message">
-              This will delete all the cards of this day
-            </span>
+            <span className="alert-delete-message">{currentMessage}</span>
             <span className="alert-delete-message">
               Are you sure to continue?
             </span>
             <button
-              onClick={() => dispatch(deleteCardByDate(currentDateToDelete))}
+              onClick={() => HandleDelete()}
               className="alert-delete-button"
             >
               I'm sure

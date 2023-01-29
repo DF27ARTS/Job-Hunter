@@ -348,6 +348,38 @@
 }
 
 
+// Delete rejected cards container
+.container-delete-rejected-cards {
+  height: 11vh;
+  width: 65%;
+
+  border: 2px solid var(--body-text-color);
+  border-right: none;
+  border-left: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-right: 3vh;
+}
+
+.delete-rejected-cards {
+  padding: 2vh 4vh;
+  border: 2px solid var(--body-text-color);
+  border-radius: 2vh;
+  background: var(--card-column-background);
+  font-size: 2vh;
+
+  color: inherit;
+  cursor: pointer;
+}
+
+.delete-rejected-cards:hover,
+.delete-rejected-cards:focus {
+  border: 2px solid var(--color-one);
+}
+
+
 // Alert delete message
 .alert-delete-card-message {
   position: absolute;
@@ -356,9 +388,10 @@
   right: 0;
   bottom: 0;
   margin: auto;
+  padding: 5vh;
 
   height: 40vh;
-  aspect-ratio: 1.7 / 1;
+  aspect-ratio: 1.9 / 1;
 
   background: var(  --card-background-color);
   border-radius: 2vh;
@@ -380,6 +413,7 @@
   background: var(--card-background-color);
   color: inherit;
   font-size: 2.5vh;
+  font-family: var(--fantacy-font);
 
   cursor: pointer;
   user-select: none;
@@ -459,6 +493,16 @@
     padding: 1.5vh 2vh;
     border-radius: 1vh;
     font-size: 1.3vh;
+  }
+
+  .container-delete-rejected-cards {
+    padding-right: 0vh;
+  }
+
+  .delete-rejected-cards {
+    padding: 2vh 3vh;
+    border-radius: 1vh;
+    font-size: 1.5vh;
   }
 
   .container-logout-button {
