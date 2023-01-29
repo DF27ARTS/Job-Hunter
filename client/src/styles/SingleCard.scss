@@ -22,7 +22,9 @@
   transform: scale(.97);
 }
 
-.card-information {
+.card-information-role,
+.card-information-company,
+.card-information-status {
   padding: 0;
   margin: 0;
   display: flex;
@@ -32,26 +34,117 @@
   z-index: 11;
 }
 
-.single-card > p:first-letter {
-  text-transform: capitalize;
-}
-
-.card-information:first-child {
+.card-information-role {
   text-transform: capitalize;
   width: fit-content;
-  font-family: var(--fantacy-font);
+  font-family: var(--single-card-font );
+  font-size: 2.7vh !important;
   padding: 0 .5vh;
-  font-size: 3vh !important;
   background: linear-gradient(45deg, var(--card-background-one, inherit), var(--card-background-two, inherit));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent ;
 }
 
-.card-information:nth-child(1) {
-  font-size: 2.7vh;
-  font-weight: bold;       
-  color: rgb(17, 17, 17);
+
+.card-information-status {
+  position: relative;
 }
+
+.open-status-selector {
+  height: 2.2vh;
+  aspect-ratio: 1 / 1;
+  transform: rotate(90deg);
+  transition: transform 300ms var(--form-slider-animation);
+
+  transform-origin: 70% 70%;
+  box-shadow: 
+    0 0 0 1px var(--body-text-color) inset,
+    0 0 0 3px var(--card-background-color) inset,
+    0 0 0 4px var(--body-text-color) inset;
+  clip-path: polygon(100% 0, 100% 100%, 0 100%);
+  transform: 
+    rotate(45deg);
+  
+
+  display: flex;
+  margin-left: 3vh;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-information-status:focus-within .open-status-selector {
+  transform: rotate(-45deg);
+}
+
+.card-information-status:focus-within .container-select-status {
+  height: 10vh ;
+  padding: 2vh 0;
+  border: 2px solid var(--body-text-color);
+  border-right: none;
+  border-left: none;
+}
+
+.card-information-status:focus-within .container-select-status:before {
+  z-index: -1;
+  transition: 
+    z-index 200ms ease-in-out 200ms;
+}
+
+
+// Select status on the card
+.container-select-status {
+  position: absolute;
+  bottom: 110%;
+  left: 0;
+  
+  width: 100%;
+
+  display: flex;
+  gap: 1vh;
+  background: var(--card-background-color);
+  
+  height: 0px;
+  border: 2px solid transparent;
+  border-right: none;
+  border-left: none;
+  overflow: hidden;
+
+  transition: 
+    height 200ms ease-in-out,
+    border 200ms ease-in-out;
+
+}
+
+.container-select-status:before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+
+  background: var(--card-background-color);
+  z-index: 100;
+}
+
+.single-card-option-singlecard {
+  padding: 1vh ;
+  flex-grow: 1;
+  border: 1px solid var(--body-text-color);
+  border-radius: 1vh;
+  background: var(--card-background-color);
+  color: inherit;
+
+
+  font-family: var(--single-card-font );
+  cursor: pointer;
+}
+
+.singlecard-applyed { border-color: var(--color-one) ;}
+.singlecard-interview { border-color: rgb(28, 163, 28);}
+.singlecard-rejected { border-color: rgb(204, 38, 38);}
+
 
 .container-card-menu {
   position: absolute;
@@ -73,6 +166,8 @@
   cursor: pointer;
 }
 
+
+// Delete message
 .delete-message {
   height: 100%;
   width: 100%;
@@ -96,25 +191,55 @@
   transform: translateY(0%) translateX(0%);
 }
 
-.delete-message p {
+.singlecard-delete-message-title {
   font-size: 2.5vh;
-  font-weight: bold;
 }
 
-.delete-message > button {
+.singlecard-delete-button {
   padding: 1vh 3vh;
   border: none;
   border-radius: .5vh;
+  background: var(--card-background-color);
+  border: 2px solid var(--body-text-color);
+  transition: 
+    color 200ms ease-in-out
+    border 200ms ease-in-out;
+  font-family: var(--single-card-font);
 
   font-weight: bold;
   color: inherit;
   cursor: pointer;
 }
 
-.delete-message button:last-child {
+.singlecard-delete-button:hover,
+.singlecard-delete-button:focus {
+  border-color: var(--color-one);
+  color: var(--color-two);
+}
+
+.singlecard-close-button {
   position: absolute;
+  border: none;
   top: 2vh;
   right: 2vh;
+  background: var(--card-background-color);
 
-  padding: .5vh 2vh;
+  height: 4vh;
+  aspect-ratio: 1 / 1;
+
+  padding: 0;
+}
+
+.singlecard-close-button:focus-within {
+  animation: single_card_close_button 300ms ease-in-out;
+}
+
+.singlecard-close-button-icon {
+  height: 100%;
+  cursor: pointer;
+}
+
+
+@keyframes single_card_close_button {
+  to { transform: rotate(360deg)}
 }

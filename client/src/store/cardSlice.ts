@@ -275,7 +275,8 @@ export const CardSlice = createSlice({
     builder
       .addCase(createCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(createCard.fulfilled, (state, action) => {
-        if (state.cards[0][1].date !== action.payload.date) {
+          
+        if (state.cards[0].length && state.cards[0][1].date !== action.payload.date) {
           state.cards = [
             [
               { title: action.payload.date },
@@ -287,6 +288,7 @@ export const CardSlice = createSlice({
         }
         else if (!state.cards[0].length) {
           state.cards[0] = [{ title: action.payload.date }, action.payload];
+          state.grid_columns = 1
         } else {
           const newArray = [
             state.cards[0][0],
@@ -358,8 +360,13 @@ export const CardSlice = createSlice({
       })
     builder
       .addCase(deleteCardByDate.fulfilled, (state, action) => {
-        state.cards = state.cards.filter(cardsArray => cardsArray[0].title !== action.payload );
-        state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
+        if (state.cards.length === 1) {
+          state.cards = [[]]
+          state.arrayDates = []
+        } else {
+          state.cards = state.cards.filter(cardsArray => cardsArray[0].title !== action.payload );
+          state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
+        }
       })
     builder
       .addCase(deleteAllRejectedCards.pending, (state) => {

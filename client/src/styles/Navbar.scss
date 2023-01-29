@@ -81,6 +81,10 @@
   background-color: var(--card-column-background);
 }
 
+.search-input::placeholder {
+  font-family: var(--single-card-font);
+}
+
 .search-button {
   height: 5vh;
   padding: 0 1.5rem;

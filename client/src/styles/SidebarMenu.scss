@@ -1,11 +1,58 @@
 
 
-.sidebar-menu-icon {
+.container-sidebar-menu-icon {
   position: fixed;
   right: 2vw;
   height: 5.5vh;
   aspect-ratio: 1 / 1;
+
   z-index: 500;
+}
+
+// Create first card message
+.create-first-card-message-icon {
+  position: absolute;
+  top: 0;
+  right: 150% ;
+
+  height: max-content;
+  width: max-content;
+  padding: 2vh 3vh;
+
+  font-size: 3vh;
+  font-family: var(--single-card-font);
+
+  border-radius: 1vh;
+  background: linear-gradient(45deg,var(--color-one), var(--color-two));
+  z-index: 500;
+
+  animation: message_animation ease 1s infinite;
+}
+
+.create-first-card-message-icon::before {
+  position: absolute;
+  content: "";
+  top: 1vh;
+  right: -2.7vh;
+
+  background: var(--color-two);
+  height: 3vh;
+  aspect-ratio: 1 / 1;
+  clip-path: polygon(0% 0%, 50% 50%, 0% 100%);
+
+}
+
+@keyframes message_animation {
+  0% { transform: translateX(0%)}
+  50% { transform: translateX(-5%)}
+  100% { transform: translateX(0%)}
+}
+
+
+// sidebar open and close icon
+
+.sidebar-menu-icon {
+  height: 100%;
 
   user-select: none;
   cursor: pointer;
@@ -112,6 +159,8 @@
   color: inherit;
   cursor: pointer;
   user-select: none;
+
+  position: relative;
 }
 
 .create-new-card-sidebar:hover,
@@ -131,6 +180,19 @@
 
   position: relative;
   cursor: pointer;
+}
+
+.no-cards-created-sidebar {
+  height: 100%;
+  width: 100%;
+  min-width: fit-content;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-size: 3vh;
+  font-family: var(--fantacy-font);
 }
 
 .container-sidebar-options::after,
@@ -413,7 +475,7 @@
   background: var(--card-background-color);
   color: inherit;
   font-size: 2.5vh;
-  font-family: var(--fantacy-font);
+  font-family: var(--single-card-font);
 
   cursor: pointer;
   user-select: none;
@@ -449,7 +511,7 @@
 // Movile desine
 @media screen and (max-width: 600px) {
 
-  .sidebar-menu-icon {
+  .container-sidebar-menu-icon {
     height: 4.5vh;
   }
 

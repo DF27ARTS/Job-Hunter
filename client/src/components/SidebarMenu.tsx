@@ -24,15 +24,19 @@ import {
 } from "../store/cardSlice";
 
 const SidebarMenu = () => {
-  const { arrayDates, showCardsByStatus } = useAppSelector(
-    (state) => state.card
-  );
+  const { cards, create_form_active, arrayDates, showCardsByStatus } =
+    useAppSelector((state) => state.card);
+
   const dispatch = useAppDispatch();
 
   const [sidebarState, setSidebarState] = useState<boolean>(false);
   const [deleteCardAlert, setDeleteCardAlert] = useState<boolean>(false);
   const [currentDateToDelete, setCurrentDateToDelete] = useState<string>("");
   const [currentMessage, setCurrentMessage] = useState<string>("");
+
+  useEffect(() => {
+    dispatch(getDates());
+  }, [dispatch, getDates]);
 
   const OpenAndcloseSidebar = (value: boolean): void => {
     const sidebarMenuIcon = document.querySelector(".sidebar-menu-icon");
@@ -60,8 +64,9 @@ const SidebarMenu = () => {
   };
 
   const HandleClickLogout = () => {
-    dispatch(logOutUser());
     dispatch(clearStorage());
+    dispatch(logOutUser());
+    OpenAndcloseSidebar(false);
   };
 
   const createNewCardSidebar = (): void => {
@@ -101,25 +106,26 @@ const SidebarMenu = () => {
 
   const HandleDelete = (): void => {
     if (currentDateToDelete) {
-      // dispatch(deleteCardByDate(currentDateToDelete));
+      dispatch(deleteCardByDate(currentDateToDelete));
     } else {
       dispatch(deleteAllRejectedCards());
     }
     setDeleteCardAlert(false);
   };
 
-  useEffect(() => {
-    dispatch(getDates());
-  }, [dispatch, getDates]);
-
   return (
     <>
-      <img
-        tabIndex={0}
-        onClick={() => OpenAndcloseSidebar(!sidebarState)}
-        className="sidebar-menu-icon"
-        src={sidebarMenu}
-      />
+      <div className="container-sidebar-menu-icon">
+        <img
+          tabIndex={0}
+          onClick={() => OpenAndcloseSidebar(!sidebarState)}
+          className="sidebar-menu-icon"
+          src={sidebarMenu}
+        />
+        {!cards[0].length && !sidebarState && !create_form_active ? (
+          <div className="create-first-card-message-icon"> ¡Click here!</div>
+        ) : null}
+      </div>
 
       <div className="sidebar-menu-container">
         <div className="sidebar-menu">
@@ -130,6 +136,12 @@ const SidebarMenu = () => {
               className="create-new-card-sidebar"
             >
               New Card
+              {!cards[0].length && sidebarState && !create_form_active ? (
+                <div className="create-first-card-message-icon">
+                  {" "}
+                  ¡Crate a new card!
+                </div>
+              ) : null}
             </button>
           </div>
 
@@ -139,22 +151,26 @@ const SidebarMenu = () => {
             </span>
 
             <div className="single-dates-slider">
-              {arrayDates.length
-                ? arrayDates.map((date: string | undefined, index: number) => (
-                    <div
-                      key={index}
-                      onClick={() =>
-                        OpenMessageAlert(
-                          date,
-                          "This will delete all the cards of this day"
-                        )
-                      }
-                      className="single-option-date"
-                    >
-                      {FormatNumber(date)}{" "}
-                    </div>
-                  ))
-                : null}
+              {arrayDates.length ? (
+                arrayDates.map((date: string | undefined, index: number) => (
+                  <div
+                    key={index}
+                    onClick={() =>
+                      OpenMessageAlert(
+                        date,
+                        "This will delete all the cards of this day"
+                      )
+                    }
+                    className="single-option-date"
+                  >
+                    {FormatNumber(date)}{" "}
+                  </div>
+                ))
+              ) : (
+                <span className="no-cards-created-sidebar">
+                  You have no cards created
+                </span>
+              )}
             </div>
           </div>
 

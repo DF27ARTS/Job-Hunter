@@ -16,6 +16,15 @@
   padding: 0 0 3vh 0;
 }
 
+.without-cards-conainer {
+  grid-template-areas: 
+  "message      message       message"
+  "column-one column-two column-three"
+  ;
+  grid-template-columns: repeat(3, 45vh);
+  grid-template-rows: 17vh 80vh;
+}
+
 .container-columns::-webkit-scrollbar-track {
   margin-inline-start: 3px;
   margin-inline-end: 3px;
@@ -176,100 +185,90 @@
 
 
 
+// Muck cards
 
+.conteiner-message-without-cards {
+  grid-area: message;
 
-
-.message-create-card {
-  height: fit-content;
   display: flex;
   flex-direction: column;
-  gap: 2vh;
-  padding: 0 2vh;
-
-  grid-template-columns: repeat(3, 20vh);
-  grid-template-rows: 5vh 10vh 20vh;
-}
-
-.message-title {
-  margin: 0;
-  display: flex;
+  gap: 0vh;
+  align-items: center;
   justify-content: center;
 
+  font-size: 3vh;
 }
 
-.message-description {
-  margin: 0;
+.user-message:first-child {
+  font-size: 8vh;
+  font-family: var(--fantacy-font);
+
+  background: linear-gradient(90deg, var(--color-one), var(--color-two));
+  padding: 0 1vh;
+
+  -webkit-background-clip: text;
+  color: transparent;
 }
 
-.conteiner-muck-cards {
+.user-message:last-child {
+  font-size: 4vh;
+  font-family: var(--fantacy-font);
+
+  padding: 0 1vh;
+}
+
+.single-muck-column-one { grid-area: column-one }
+.single-muck-column-two { grid-area: column-two }
+.single-muck-column-three { grid-area: column-three }
+
+.single-muck-column-one,
+.single-muck-column-two,
+.single-muck-column-three {
   background: var(--card-column-background);
-  height: 70vh;
-  width: 40vh;
-  margin: auto;
   border-radius: 2vh;
 
-  display: flex;
-  flex-direction: column;
   padding: 2vh;
-  gap: 2vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 10vh 20vh 20vh 20vh;
+  grid-row-gap: 1.5vh;
 }
 
-.muck-title {
-  background:  var(--card-background-color);
-  height: 10vh;
-  width: 100%;
+.muck-column-title {
+  background: var(--card-background-color);
   border-radius: 2vh 2vh 0 0;
+  position: relative;
   overflow: hidden;
-
-  position: relative;
 }
 
-.muck-title::before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-  height: 100%;
-  width: 150%;
-
-  background: linear-gradient(45deg, var(--card-background-color), 50%, rgb(134, 134, 134), 75%, var(--card-background-color));
-  animation: card-animated 5000ms linear infinite;
-
-}
-
-.muck-card {
-  height: 17vh;
-  width: 100%;
+.single-muck-card {
+  background: var(--card-background-color);
   border-radius: 2vh;
-  background:  var(--card-background-color);
-
   position: relative;
-  overflow:  hidden;
+  overflow: hidden;
 }
 
-.muck-card::before {
+.muck-column-title::before,
+.single-muck-card::before {
   position: absolute;
-  content: "";
+  content: " ";
   top: 0;
   left: 0;
-  right: 0;
-  margin: auto;
-  height: 100%;
+  
+  height: 150%;
   width: 150%;
-  background: linear-gradient(45deg, var(--card-background-color), 50%, rgb(134, 134, 134), 75%, var(--card-background-color));
+  background: linear-gradient(45deg, var(--card-background-color), 40%, rgb(92, 92, 92), 60%, var(--card-background-color));
 
   animation: card-animated 5000ms linear infinite;
-
 }
+
 
 @keyframes card-animated {
   0% {
-    transform: translateX(-100%)
+    transform: translateX(-100%) 
   }
   20% {
-    transform: translateX(200%)
+    transform: translateX(100%)
   }
   100% {
     transform: translateX(200%)

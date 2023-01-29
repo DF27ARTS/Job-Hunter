@@ -18,7 +18,6 @@ export interface InputSearchEngine {
 const Navbar = () => {
   const dispatch = useAppDispatch();
 
-  const [theme, setTheme] = useState<boolean>(false);
   const [searchOption, setSearchOption] = useState<string>("job title");
   const [inputSearch, setInputSearch] = useState<InputSearchEngine>({
     input: "role",
@@ -78,9 +77,6 @@ const Navbar = () => {
         <Link className="home-link-navbar" to="/">
           <img src={JobHunter_Icon} />
         </Link>
-      </div>
-      <div className="search-icon-open-searchvar">
-        {/* <img onClick={() => setSearbarStatus("0")} src={searchIcon} /> */}
       </div>
       <div className="container-search">
         <input

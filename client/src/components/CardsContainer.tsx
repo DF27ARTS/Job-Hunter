@@ -12,6 +12,8 @@ const CardsContainer = () => {
     (state) => state.card
   );
 
+  const { user } = useAppSelector((state) => state.user);
+
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       entry.target.classList.toggle("column-animation", entry.isIntersecting);
@@ -50,9 +52,17 @@ const CardsContainer = () => {
     }
   }, 10);
 
-  var style = { "--columns-amount": grid_columns } as React.CSSProperties;
+  const styles = { "--columns-amount": grid_columns } as React.CSSProperties;
+  const withoutCarsStyles = { "----columns-amount": 3 } as React.CSSProperties;
   return (
-    <div style={style} className="container-columns">
+    <div
+      style={cards[0].length ? styles : withoutCarsStyles}
+      className={
+        cards[0].length
+          ? "container-columns"
+          : "container-columns without-cards-conainer"
+      }
+    >
       {cards[0].length ? (
         cards.map<Card[] | any>((cardArray, index) =>
           cardArray.length > 1 ? (
@@ -81,22 +91,33 @@ const CardsContainer = () => {
           ) : null
         )
       ) : (
-        <div className="message-create-card">
-          <h2 className="message-title">¡Create a new card!</h2>
-          <p className="message-description">
-            To create a new card click the button <br /> "New card" on the
-            navigation panel
-          </p>
-          <p className="message-description">
-            The cards will be shown like in the example below
-          </p>
-          <div className="conteiner-muck-cards">
-            <div className="muck-title"></div>
-            <div className="muck-card"></div>
-            <div className="muck-card"></div>
-            <div className="muck-card"></div>
+        <>
+          <div className="conteiner-message-without-cards">
+            <span className="user-message">Wellcome</span>
+            <span className="user-message">
+              {`${user?.name} ${user?.lastName}`}
+            </span>
           </div>
-        </div>
+
+          <div className="single-muck-column-one">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+          <div className="single-muck-column-two">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+          <div className="single-muck-column-three">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+        </>
       )}
     </div>
   );
