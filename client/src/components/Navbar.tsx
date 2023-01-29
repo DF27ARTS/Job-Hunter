@@ -1,12 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  activateForm,
-  clearStorage,
-  getCardsBySearchInput,
-} from "../store/cardSlice";
+import { clearStorage, getCardsBySearchInput } from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
-import { logOutUser } from "../store/userSlice";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import searchOptions from "../assets/search-options.svg";
@@ -85,7 +80,7 @@ const Navbar = () => {
         </Link>
       </div>
       <div className="search-icon-open-searchvar">
-        <img onClick={() => setSearbarStatus("0")} src={searchIcon} />
+        {/* <img onClick={() => setSearbarStatus("0")} src={searchIcon} /> */}
       </div>
       <div className="container-search">
         <input

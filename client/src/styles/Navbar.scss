@@ -252,107 +252,44 @@ div[area-text=close-searchbar] {
 @media screen and (max-width: 600px) {
 
   .container-navbar {
-    gap: 2vh;
-    padding: 0 2vh;
+    height: 10vh;
+    gap: 2vw;
   }
+
 
   .page-icon {
-    width: 4vh;
-    font-size: 3vh;
+    display: none;
   }
 
-  .home-link-navbar {
-    text-decoration: none;
+  .page-icon img {
+    height: 70px;
+    user-select: none;
   }
+
 
   .container-search {
-    display: flex;
-
-    background: var(--card-column-background);
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 100%;
-    z-index: 100;
-
-    padding: 0 2vh;
-    transform: translateY(var(--searchbar-translate));
-    transition: transform 500ms var(--transition-animated);
+    padding-right: 13vw !important;
+    padding-left: 3vw !important;
   }
 
   .search-input {
-    min-width: 5vh;
-    flex-grow: 1;
-    padding: 0 2vh;
-  }
-
-  .container-search-input {
-    height: 10vh;
-    width: 10vh;
-  }
-
-  .search-option-icon {
-    height: 5vh !important;
-    width: 5vh !important;
-    bottom: 0;
-    margin: auto;
+    height: 4.5vh;
   }
 
 
   .search-button {
-    padding: 0 1.5vh;
-    font-size: 2vh;
+    height: 4.5vh;
+    padding: 0 0.7rem;
   }
 
 
-  .theme-icon {
-    height: 3vh;
-    width: 3vh;
+  .search-engine-icon {
+    height: 60%;
   }
 
-  .create-new-card {
-    height: fit-content;
-    width: fit-content;
-    background: var(--card-column-background);
-    padding: 0 0;
-    margin: 0;
-  }
-
-  .create-new-card button {
-    font-size: 2.5vh;
-    height: fit-content;
-    width: fit-content;
-    padding: 0 0;
-  }
-
-  div[area-text=close-searchbar] {
-    display: block;
-    padding: .7vh 3vh;
-    border: 1px solid var(--body-text-color);
-    border-radius: .5vh;
-  }
-
-  .logout-button {
-    padding: 0 0;
-    background: var(--card-column-background);
-  }
-
-  .search-icon-open-searchvar {
-    flex-grow: 1;
+  .container-search-input {
     height: 4vh;
-    display: flex;
-    justify-content: flex-end;
-    padding: 0;
+    margin-left: 1vw;
   }
-
-  .search-icon-open-searchvar>img {
-    height: 4vh;
-    aspect-ratio: 1 / 1;
-  }
-
-
-  .current-options {
-    transform: translateX(0%);
-  }
+  
 }
