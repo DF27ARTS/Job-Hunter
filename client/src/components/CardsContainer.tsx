@@ -3,7 +3,6 @@ import { activateForm, Card } from "../store/cardSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
-import CardLoading from "./CardLoading";
 
 const CardsContainer = () => {
   const dispatch = useAppDispatch();
