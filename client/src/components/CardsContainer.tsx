@@ -7,11 +7,10 @@ import "../styles/CardsContainer.scss";
 const CardsContainer = () => {
   const dispatch = useAppDispatch();
 
+  const { user } = useAppSelector((state) => state.user);
   const { cards, grid_columns, showCardsByStatus } = useAppSelector(
     (state) => state.card
   );
-
-  const { user } = useAppSelector((state) => state.user);
 
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
