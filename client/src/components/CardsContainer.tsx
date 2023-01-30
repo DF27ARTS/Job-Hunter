@@ -1,11 +1,13 @@
 import React from "react";
-import { Card } from "../store/cardSlice";
-import { useAppSelector } from "../store/store";
+import { activateForm, Card } from "../store/cardSlice";
+import { useAppDispatch, useAppSelector } from "../store/store";
 import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
-import CardLoading from "./CardLoading";
 
 const CardsContainer = () => {
+  const dispatch = useAppDispatch();
+
+  const { user } = useAppSelector((state) => state.user);
   const { cards, grid_columns, showCardsByStatus } = useAppSelector(
     (state) => state.card
   );
@@ -23,9 +25,42 @@ const CardsContainer = () => {
     });
   }, 10);
 
-  var style = { "--columns-amount": grid_columns } as React.CSSProperties;
+  const HandleOpenForm = (): void => {
+    dispatch(activateForm());
+    setTimeout(() => {
+      const createCardForm = document.querySelector(".create-card-form");
+      createCardForm?.classList.add("create-form-activated");
+    }, 10);
+  };
+
+  setTimeout(() => {
+    const createNewCardButton = document.querySelector(
+      ".create-new-card-button"
+    );
+
+    if (!createNewCardButton) {
+      const columnTitleContainer = document.querySelector(
+        ".column-title-container"
+      );
+      const button = document.createElement("button");
+      button.classList.add("create-new-card-button");
+      button.textContent = "+";
+      button.addEventListener("click", HandleOpenForm);
+      columnTitleContainer?.appendChild(button);
+    }
+  }, 10);
+
+  const styles = { "--columns-amount": grid_columns } as React.CSSProperties;
+  const withoutCarsStyles = { "----columns-amount": 3 } as React.CSSProperties;
   return (
-    <div style={style} className="container-columns">
+    <div
+      style={cards[0].length ? styles : withoutCarsStyles}
+      className={
+        cards[0].length
+          ? "container-columns"
+          : "container-columns without-cards-conainer"
+      }
+    >
       {cards[0].length ? (
         cards.map<Card[] | any>((cardArray, index) =>
           cardArray.length > 1 ? (
@@ -54,22 +89,33 @@ const CardsContainer = () => {
           ) : null
         )
       ) : (
-        <div className="message-create-card">
-          <h2 className="message-title">¡Create a new card!</h2>
-          <p className="message-description">
-            To create a new card click the button <br /> "New card" on the
-            navigation panel
-          </p>
-          <p className="message-description">
-            The cards will be shown like in the example below
-          </p>
-          <div className="conteiner-muck-cards">
-            <div className="muck-title"></div>
-            <div className="muck-card"></div>
-            <div className="muck-card"></div>
-            <div className="muck-card"></div>
+        <>
+          <div className="conteiner-message-without-cards">
+            <span className="user-message">Wellcome</span>
+            <span className="user-message">
+              {`${user?.name} ${user?.lastName}`}
+            </span>
           </div>
-        </div>
+
+          <div className="single-muck-column-one">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+          <div className="single-muck-column-two">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+          <div className="single-muck-column-three">
+            <div className="muck-column-title"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+            <div className="single-muck-card"></div>
+          </div>
+        </>
       )}
     </div>
   );

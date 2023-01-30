@@ -1,5 +1,5 @@
-import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit"
-import axios, { AxiosRequestConfig } from "axios"
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
+import axios from "axios"
 import { InputSearchEngine } from "../components/Navbar";
 import { API_URL, getToken } from "./userSlice";
 
@@ -11,18 +11,21 @@ export interface Card {
   role: string;
   status: string;
   description: string;
+  date?: string;
 }
 
 interface cardState {
   cards: Card[][];
   cardToUpdate: Card | any;
+  arrayDates: string[] | any;
   loading_cards: boolean;
   loading_single_card: boolean;
-  grid_columns: boolean;
+  grid_columns: number;
   card_error: boolean;
   create_form_active: boolean; 
   searchError: boolean; 
   showCardsByStatus: boolean;
+  cardCreatedLoading: boolean;
 }
 
 const initialState:cardState = {
@@ -33,13 +36,15 @@ const initialState:cardState = {
     status: "",
     description: "",
   },
+  arrayDates: [],
   loading_cards: false,
   loading_single_card: false,
-  grid_columns: false,
+  grid_columns: 1,
   card_error: false,
   create_form_active: false,
   searchError: false,
   showCardsByStatus: false,
+  cardCreatedLoading: false,
 }
 
 export const getCards = createAsyncThunk<Card[][] | any>(
@@ -88,6 +93,7 @@ export const createCard = createAsyncThunk<Object | any, Card | any> (
         card,
         config
       )
+      ThunkAPI.dispatch(getDates())
       return data.card
     } catch (error) {
       return ThunkAPI.rejectWithValue(error)
@@ -129,6 +135,69 @@ export const deleteCard = createAsyncThunk<any, number | undefined>(
   }
 )
 
+export const getDates = createAsyncThunk<any | string[]>(
+  "cards/getDates",
+  async (_, ThunkAPI) => {
+    try {
+      
+      const { data } = await axios.get(`${API_URL}/get_dates`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      });
+      return data
+
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+  
+export const deleteCardByDate = createAsyncThunk<any, any>(
+  "cards/deleteCardByDate",
+  async (date, ThunkAPI) => {
+    try {
+      
+      const {status} = await axios.delete(`${API_URL}/delete_by_date?date=${date}`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+      if (status === 200) {
+        ThunkAPI.dispatch(getCards())
+        return date;
+      } else {
+        return "Error"
+      }
+
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+export const deleteAllRejectedCards = createAsyncThunk(
+  "cards/deleteAllRejectedCards",
+  async (_, ThunkAPI) => {
+    try {
+      
+      const { status } = await axios.delete(`${API_URL}/delete_rejected`, {
+        headers: {
+          Authorization: getToken()
+        }
+      })
+
+      if (status === 200) {
+        ThunkAPI.dispatch(getCards())
+      } else {
+        return "Error"
+      }
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
 export const CardSlice = createSlice({
   name: "card",
   initialState: initialState,
@@ -161,6 +230,9 @@ export const CardSlice = createSlice({
     setShowByStatus: (state, {payload}) => {
       state.showCardsByStatus = payload
     },
+    closeLoading: (state) => {
+      state.loading_single_card = false
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -203,16 +275,22 @@ export const CardSlice = createSlice({
       })
 
     builder
-      .addCase(createCard.pending, (state) => { state.loading_single_card = true})
+      .addCase(createCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(createCard.fulfilled, (state, action) => {
-        
-        if (!state.cards[0].length) {
-          const arraySplit = action.payload.createdAt.toString().split("T")[0].split("-");
-          const day = parseInt(arraySplit[2]);
-          const newMonth:number = parseInt(arraySplit[1]);
-          const year = parseInt(arraySplit[0]);
-          const titleDate = `${day}/${newMonth}/${year}`;
-          state.cards[0] = [{ title: titleDate }, action.payload];
+          
+        if (state.cards[0].length && state.cards[0][1].date !== action.payload.date) {
+          state.cards = [
+            [
+              { title: action.payload.date },
+              action.payload
+            ],
+            ...state.cards
+          ]
+          state.grid_columns = state.grid_columns + 1
+        }
+        else if (!state.cards[0].length) {
+          state.cards[0] = [{ title: action.payload.date }, action.payload];
+          state.grid_columns = 1
         } else {
           const newArray = [
             state.cards[0][0],
@@ -225,20 +303,25 @@ export const CardSlice = createSlice({
           })
           state.cards[0] = newArray;
         }
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.loading_cards = false
         state.create_form_active = false
       })
       .addCase(createCard.rejected, (state) => {
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.card_error = true
       })
 
     builder
       .addCase(deleteCard.pending, (state) => { state.loading_single_card = true})
       .addCase(deleteCard.fulfilled, (state, action) => {
-        if (state.cards[0].length <= 2) {
+        if (state.cards[0].length <= 2 && state.cards[1]) {
+          state.cards = state.cards.filter(cardsArray => cardsArray !== state.cards[0])
+          state.grid_columns = state.cards.length
+        }
+        else if (state.cards[0].length <= 2) {
           state.cards[0] = []
+          getCards()
         } else {
           state.cards.map((_, index) => {
             state.cards[index] = state.cards[index].filter(card => card.id !== action.payload)
@@ -252,7 +335,7 @@ export const CardSlice = createSlice({
       })
 
     builder
-      .addCase(updateCard.pending, (state) => { state.loading_single_card = true})
+      .addCase(updateCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(updateCard.fulfilled, (state, action) => {
         state.cards.map((cardArray, index) => {
           cardArray.map((card, ind) => {
@@ -265,12 +348,37 @@ export const CardSlice = createSlice({
           state.cards = orderByStatus(state.cards)
           state.grid_columns = orderByStatus(state.cards).length
         } 
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.create_form_active = false
       })
       .addCase(updateCard.rejected, (state) => {
-        state.loading_single_card = false
+        state.cardCreatedLoading = false
         state.card_error = true
+      })
+    
+    builder
+      .addCase(getDates.fulfilled, (state, action) => {
+        state.arrayDates = action.payload;
+      })
+    builder
+      .addCase(deleteCardByDate.fulfilled, (state, action) => {
+        if (state.cards.length === 1) {
+          state.cards = [[]]
+          state.arrayDates = []
+        } else {
+          state.cards = state.cards.filter(cardsArray => cardsArray[0].title !== action.payload );
+          state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
+        }
+      })
+    builder
+      .addCase(deleteAllRejectedCards.pending, (state) => {
+        state.loading_single_card = true
+      })
+      .addCase(deleteAllRejectedCards.fulfilled, (state, action) => {
+        state.loading_single_card = true
+      })
+      .addCase(deleteAllRejectedCards.rejected, (state, action) => {
+        state.loading_single_card = true
       })
   }
 })
@@ -325,5 +433,6 @@ export const {
   cleanCardToUpdate,
   closeInputError,
   setShowByStatus,
+  closeLoading,
 } = CardSlice.actions
 

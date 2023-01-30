@@ -7,8 +7,9 @@
 
   height: 100vh;
   width: 100vw;
+  z-index: 1000;
 
-  background: #fff3;
+  background: #0005;
   backdrop-filter: blur(3px);
   display: flex;
   align-items: center;
@@ -20,7 +21,7 @@
   width: 20vh;
 
   border-radius: 50%;
-  border: 5px solid #0001;
+  border: 5px solid #ccc3;
   border-top: 5px solid rgb(35, 191, 243);
 
   display: flex;
@@ -32,17 +33,11 @@
 }
 
 .job-hunter-icon {
-  height: min-content;
+  height: 120%;
   width: min-content;
 
   border-radius: 50%;
   padding: 10px;
-
-  font-size: 9vh;
-  font-family: var(--fantacy-font);
-  background: linear-gradient(90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
 
   animation:  loader-form 1000ms linear infinite reverse;
 }

@@ -1,18 +1,14 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import {
-  activateForm,
-  clearStorage,
-  getCardsBySearchInput,
-} from "../store/cardSlice";
+import { clearStorage, getCardsBySearchInput } from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
-import { logOutUser } from "../store/userSlice";
+import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import searchOptions from "../assets/search-options.svg";
-import dayIcon from "../assets/day-icon.svg";
-import nightIcon from "../assets/night-icon.svg";
 import searchIcon from "../assets/search-icon.svg";
+import searchEngineIcon from "../assets/search-engine-icon.svg";
 import "../styles/Navbar.scss";
+import SidebarMenu from "./SidebarMenu";
 
 export interface InputSearchEngine {
   input: string;
@@ -22,7 +18,6 @@ export interface InputSearchEngine {
 const Navbar = () => {
   const dispatch = useAppDispatch();
 
-  const [theme, setTheme] = useState<boolean>(false);
   const [searchOption, setSearchOption] = useState<string>("job title");
   const [inputSearch, setInputSearch] = useState<InputSearchEngine>({
     input: "role",
@@ -40,19 +35,6 @@ const Navbar = () => {
       input: inputSearch.input,
       search: "",
     });
-  };
-
-  const HandleClickLogout = () => {
-    dispatch(logOutUser());
-    dispatch(clearStorage());
-  };
-
-  const HandleOpenForm = (): void => {
-    dispatch(activateForm());
-    setTimeout(() => {
-      const createCardForm = document.querySelector(".create-card-form");
-      createCardForm?.classList.add("create-form-activated");
-    }, 10);
   };
 
   const HandleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -85,37 +67,6 @@ const Navbar = () => {
     }
   };
 
-  const setThemeDay = (): void => {
-    document.documentElement.style.setProperty(
-      "--card-column-background",
-      "rgb(238, 235, 235)"
-    );
-    document.documentElement.style.setProperty(
-      "--card-background-color",
-      "rgb(214, 213, 213)"
-    );
-    document.documentElement.style.setProperty("--body-background", "#fff");
-    document.documentElement.style.setProperty(
-      "--body-text-color",
-      "rgb(20, 20, 20)"
-    );
-    setTheme(true);
-  };
-
-  const setThemeNight = (): void => {
-    document.documentElement.style.setProperty(
-      "--card-column-background",
-      "rgb(31, 30, 30)"
-    );
-    document.documentElement.style.setProperty(
-      "--card-background-color",
-      "rgb(56, 56, 56)"
-    );
-    document.documentElement.style.setProperty("--body-background", "#000");
-    document.documentElement.style.setProperty("--body-text-color", "#ccc");
-    setTheme(false);
-  };
-
   const setSearbarStatus = (value: string): void => {
     document.documentElement.style.setProperty("--searchbar-translate", value);
   };
@@ -124,11 +75,8 @@ const Navbar = () => {
     <div className="container-navbar">
       <div className="page-icon">
         <Link className="home-link-navbar" to="/">
-          <p>JH</p>
+          <img src={JobHunter_Icon} />
         </Link>
-      </div>
-      <div className="search-icon-open-searchvar">
-        <img onClick={() => setSearbarStatus("0")} src={searchIcon} />
       </div>
       <div className="container-search">
         <input
@@ -136,11 +84,14 @@ const Navbar = () => {
           value={inputSearch.search}
           type="text"
           className="search-input"
+          placeholder={
+            searchOption === "company"
+              ? "Search by company name"
+              : "Search by job title"
+          }
         />
         <button onClick={() => HandleSubmit()} className="search-button">
-          <span>Search</span>
-          <span>By</span>
-          <span>{searchOption}</span>
+          <img className="search-engine-icon" src={searchEngineIcon} />
         </button>
         <div className="container-search-input">
           <img
@@ -171,27 +122,10 @@ const Navbar = () => {
           </div>
         </div>
       </div>
-      {theme ? (
-        <img
-          onClick={() => setThemeNight()}
-          area-text="day"
-          className="theme-icon"
-          src={dayIcon}
-        />
-      ) : (
-        <img
-          onClick={() => setThemeDay()}
-          area-text="night"
-          className="theme-icon"
-          src={nightIcon}
-        />
-      )}
-      <div className="create-new-card">
-        <button onClick={() => HandleOpenForm()}>New Card</button>
-      </div>
-      <button onClick={() => HandleClickLogout()} className="logout-button">
+      {/* <button onClick={() => HandleClickLogout()} className="logout-button">
         Log out
-      </button>
+      </button> */}
+      <SidebarMenu />
     </div>
   );
 };
