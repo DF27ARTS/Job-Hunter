@@ -158,7 +158,6 @@ export const deleteCardByDate = createAsyncThunk<any, any>(
   async (date, ThunkAPI) => {
     try {
       
-      console.log(date)
       const {status} = await axios.delete(`${API_URL}/delete_by_date?date=${date}`, {
         headers: {
           Authorization: getToken(),
@@ -231,6 +230,9 @@ export const CardSlice = createSlice({
     setShowByStatus: (state, {payload}) => {
       state.showCardsByStatus = payload
     },
+    closeLoading: (state) => {
+      state.loading_single_card = false
+    }
   },
   extraReducers: (builder) => {
     builder
@@ -431,5 +433,6 @@ export const {
   cleanCardToUpdate,
   closeInputError,
   setShowByStatus,
+  closeLoading,
 } = CardSlice.actions
 

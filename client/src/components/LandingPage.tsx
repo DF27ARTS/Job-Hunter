@@ -1,34 +1,42 @@
 import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/store";
+import jubHunterTitle from "../assets/jubHunter-title.png";
+import stageThreeBackground from "../assets/stage-three-background.jpg";
 
 import "../styles/LandingPage.scss";
 
 const LandingPage = () => {
-  // const dispatch = useAppDispatch();
-
-  // <a href="https://www.freepik.com/free-vector/magic-collage-line-art-flowers-clipart-with-butterfly-shapes_24575245.htm#query=shape%20svg&position=3&from_view=keyword">Image by LesenFox</a> on Freepik
+  const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
 
   return (
-    <div className="container-landingPage">
-      <div className="landing-background-img">
-        <section className="button-container">
-          <h1 className="landing-title">Job Hunter</h1>
-          <Link className="landing-button" to="/home">
-            <span>Let's get stated</span>
-            <div></div>
-            <div></div>
-          </Link>
-        </section>
+    <div
+      className={
+        !isLoggedIn
+          ? "container-landingPage"
+          : "container-landingPage display-flex-start"
+      }
+    >
+      <img src={stageThreeBackground} className="landing-background-image" />
+      <section className="button-container">
+        <img src={jubHunterTitle} className="jubhunter-landing-title" />
+      </section>
 
-        <div className="container-landing-links">
-          <Link className="landing-login" to="/login">
-            Sign up
+      <section className="container-landing-links">
+        {!isLoggedIn ? (
+          <>
+            <Link className="landing-login" to="/login">
+              Sign up
+            </Link>
+            <Link className="landing-signup" to="/registration">
+              Log in
+            </Link>
+          </>
+        ) : (
+          <Link className="landing-homepage" to="/login">
+            Home page
           </Link>
-          <Link className="landing-signup" to="/registration">
-            Log in
-          </Link>
-        </div>
-      </div>
+        )}
+      </section>
     </div>
   );
 };

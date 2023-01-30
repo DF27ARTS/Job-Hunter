@@ -21,6 +21,7 @@ const ErrorMessage = ({ message }: ErrorMessageProps) => {
 
   return (
     <div className="container-error shown">
+      <h3 className="error-message-title">There's an error</h3>
       <p>{message}</p>
     </div>
   );

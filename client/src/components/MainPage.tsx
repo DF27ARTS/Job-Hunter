@@ -1,21 +1,15 @@
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppSelector } from "../store/store";
 import Navbar from "./Navbar";
 import "../styles/MainPage.scss";
 import CardsContainer from "./CardsContainer";
-import CardLoading from "./CardLoading";
 import FormCreateCard from "./FormCreateCard";
 import ErrorMessage from "./ErrorMessage";
-import { clearStorage, getCards, setShowByStatus } from "../store/cardSlice";
+import UserLoader from "./UserLoader";
 
 const MainPage = () => {
-  const {
-    loading_single_card,
-    card_error,
-    searchError,
-    create_form_active,
-    showCardsByStatus,
-  } = useAppSelector((state) => state.card);
-  const dispatch = useAppDispatch();
+  const { card_error, searchError, create_form_active } = useAppSelector(
+    (state) => state.card
+  );
 
   return (
     <div className="container-main-page">
@@ -24,9 +18,9 @@ const MainPage = () => {
         <CardsContainer />
       </div>
       {create_form_active ? <FormCreateCard /> : null}
-      {loading_single_card ? <CardLoading /> : null}
+      {/* {loading_single_card ? <UserLoader /> : null} */}
       {card_error ? (
-        <ErrorMessage message="Required information is missing" />
+        <ErrorMessage message="There's been an error please verify the information" />
       ) : null}
       {searchError ? (
         <ErrorMessage message="There are no matches with the input" />

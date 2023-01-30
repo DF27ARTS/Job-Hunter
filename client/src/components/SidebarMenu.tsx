@@ -1,11 +1,4 @@
-import {
-  JSXElementConstructor,
-  ReactElement,
-  ReactFragment,
-  ReactPortal,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
 import "../styles/SidebarMenu.scss";
 
 import sidebarMenu from "../assets/sidebar-menu.svg";
@@ -16,6 +9,7 @@ import { FormatNumber, logOutUser } from "../store/userSlice";
 import {
   activateForm,
   clearStorage,
+  closeLoading,
   deleteAllRejectedCards,
   deleteCardByDate,
   getCards,
@@ -66,6 +60,7 @@ const SidebarMenu = () => {
   const HandleClickLogout = () => {
     dispatch(clearStorage());
     dispatch(logOutUser());
+    dispatch(closeLoading());
     OpenAndcloseSidebar(false);
   };
 

@@ -309,4 +309,18 @@
     visibility: visible;
     scroll-snap-align: start;
   }
+
+
+  //  Muck card movile styles
+  .without-cards-conainer {
+    grid-template-areas: 
+    "message"
+    "column-one"
+    ;
+    grid-template-columns: 85vw;
+    grid-template-rows: 17vh 80vh;
+  }
+
+  .single-muck-column-two { display: none }
+  .single-muck-column-three { display: none }
 }

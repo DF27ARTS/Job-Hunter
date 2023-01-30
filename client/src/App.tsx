@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import MainPage from "./components/MainPage";
 import { getCards } from "./store/cardSlice";
 import { DotenvConfigOutput } from "dotenv";
+import UserLoader from "./components/UserLoader";
 // dotenv.configure()
 /// <reference types="vite/client" />
 
@@ -31,6 +32,8 @@ function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
   const dispatch = useAppDispatch();
 
+  const { loading_single_card } = useAppSelector((state) => state.card);
+
   useEffect(() => {
     dispatch(verifyToken());
     dispatch(getCards());
@@ -43,18 +46,16 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route
             path="/registration"
-            element={!isLoggedIn ? <Registration /> : <Navigate to="/home" />}
+            element={!isLoggedIn ? <Registration /> : <MainPage />}
           />
           <Route
             path={"/login"}
-            element={!isLoggedIn ? <Login /> : <Navigate to="/home" />}
+            element={!isLoggedIn ? <Login /> : <MainPage />}
           />
-          <Route
-            path="/home"
-            element={isLoggedIn ? <MainPage /> : <Navigate to="/login" />}
-          />
+          <Route path="/home" element={isLoggedIn ? <MainPage /> : <Login />} />
         </Routes>
       </BrowserRouter>
+      {loading_single_card ? <UserLoader /> : null}
     </div>
   );
 }
