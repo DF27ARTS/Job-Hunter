@@ -156,10 +156,10 @@
 
   height: 100%;
   aspect-ratio: 1 / 1;
-  border: 2px solid #ccc;
+  border: 2px solid ;
   object-fit: cover;
 
-  -webkit-mask-image: url("../assets/stage-one-svg.svg");
+  -webkit-mask-image: url("../assets/create-form-svg.svg");
   -webkit-mask-size: contain;
   -webkit-mask-repeat: no-repeat;
   -webkit-mask-position: start;
@@ -433,6 +433,8 @@
     font-family: var(--fantacy-font);
     font-size: 3vh;
     user-select: none;
+    margin: 0;
+    position: static;
 
     transition: 
       border 300ms var(--transition-animated);
@@ -565,7 +567,7 @@
     width: 80vw;
     box-shadow: 
       0 0 0 5px var(--body-text-color),
-      0 0 0 5vh var(--card-background-color);
+      0 0 0 30px var(--card-background-color);
     border-radius: 0.5vh;
   }
 
@@ -593,8 +595,8 @@
       "btn-left ... ... btn-right"
     ;
     grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: 5vh 4vh;
-    grid-row-gap: 2vh;
+    grid-template-rows: 35px 25px;
+    grid-row-gap: 10px;
 
     button:hover {
       border: 2px solid var(--color-one) !important;
@@ -609,21 +611,22 @@
     }
 
     .create-card-form-title {
-      font-size: 5vh;
+      font-size: 30px;
     }
 
     input {
       grid-area: input;
-      height: 5vh;
+      height: 35px;
       flex-grow: 0;
-      border-radius: 4vh;
+      font-size: 15px;
+      border-radius: 30px;
       padding: 0 1.5rem;
     }
 
     button {
       padding: 0 1vh;
-      font-size: 1.5vh;
-      border-radius: 4vh;
+      font-size: 10px;
+      border-radius: 20px;
       border: 2px solid var(--body-text-color);
     }
   }  
@@ -639,17 +642,22 @@
       top: 0;
     }
 
+    span {
+      font-size: 30px;
+    }
+
     input {
       grid-area: input;
-      height: 5vh;
-      border-radius: 4vh;
+      height: 35px;
+      border-radius: 30px;
       padding: 0 1.5rem;
+      font-size: 15px;
     }
 
     button {
       padding: 0 1vh;
-      font-size: 1.5vh;
-      border-radius: 4vh;
+      font-size: 10px;
+      border-radius: 30px;
       border: 2px solid var(--body-text-color);
     }
   }
@@ -673,8 +681,8 @@
         "btn-left .............. btn-right"
       ;
       grid-template-columns: repeat(3, 31%);
-      grid-template-rows: 5vh 4vh;
-      grid-column-gap: 1vh;
+      grid-template-rows: 30px 25px;
+      grid-column-gap: 10px;
       width: 90%;
     }
     
@@ -682,12 +690,16 @@
       left: -15%;
     }
 
+    span {
+      font-size: 30px;
+    }
+
     .status-option {
       width: 100%;
       
       flex-grow: 0;
       margin: 0 ;
-      font-size: 1.4vh;
+      font-size: 10px;
     }
 
     .status-one{
@@ -726,14 +738,21 @@
 
   .stage-four {
 
+    display: grid;
+    margin: auto;
+    grid-template-columns: 100%;
+    grid-template-rows: 150px 200px 100px;
+    grid-row-gap: 0;
+
     .inputs {
-  
+      margin: auto;
+
       grid-template-areas: 
         "description description description description"
         "btn-left ............ .............. btn-right"
       ;
       grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: 20vh 4vh;
+      grid-template-rows: 120px 25px;
     }
     
     .stage-four-img {
@@ -741,23 +760,29 @@
       left: -10%;
     }
 
+    span {
+      font-size: 25px;
+    }
+
     .description {
       grid-area: description;
+      height: 120px;
+      font-size: 15px;
     }
 
     .description-prev-button {
       grid-area: btn-left;
-      
-    }
+      height: 100%;
+      padding: 0 !important; ;
 
-    .description-prev-button {
-      padding: 1vh 5vh;
-      font-size: 1.5vh;
+      width: 70px;
+      font-size: 10px;
     }
   }
 
   .create-card-form-button {
     width: 90% !important;
+    margin: auto !important;
   }
 
   .close-form-loading-active .form-jobhunter-icon {
