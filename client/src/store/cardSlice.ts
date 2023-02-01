@@ -254,7 +254,10 @@ export const CardSlice = createSlice({
       })
 
     builder
-      .addCase(getCardsBySearchInput.pending, (state) => { state.loading_cards = true})
+      .addCase(getCardsBySearchInput.pending, (state) => {
+        state.loading_cards = true
+        state.loading_single_card = true
+      })
       .addCase(getCardsBySearchInput.fulfilled, (state, action) => {
         state.loading_cards = true
         if (state.showCardsByStatus) {
@@ -266,11 +269,12 @@ export const CardSlice = createSlice({
           }
         state.loading_cards = false
         state.loading_single_card = false
-
+        
       })
       .addCase(getCardsBySearchInput.rejected, (state) => {
         state.loading_cards = false;
         state.searchError = true;
+        state.loading_single_card = false
       })
 
     builder
