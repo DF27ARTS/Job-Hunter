@@ -2,8 +2,9 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { getCards } from "./cardSlice"
 
-export const API_URL = import.meta.env.VITE_API_URL;
-// export const API_URL = "https://jub-hunter-api.onrender.com"
+// export const API_URL = import.meta.env.VITE_API_URL;
+export const API_URL = "https://jub-hunter-api.onrender.com"
+
 
 export const saveToken = (token: string): void => {
   const response = localStorage.setItem("token", token)
