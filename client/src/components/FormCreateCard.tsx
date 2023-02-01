@@ -133,6 +133,7 @@ const FormCreateCard = () => {
       </div>
       <form
         onSubmit={HandleSubmitForm}
+        autoComplete="off"
         className={
           cardCreatedLoading
             ? "form-container form-loading-active create-card-form-display-none"
