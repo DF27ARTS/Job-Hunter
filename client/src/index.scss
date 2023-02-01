@@ -37,14 +37,14 @@ body {
   padding: 0;
 
   margin: 0;
-  display: fblogout-buttonlex;
+  display: flex;
   flex-direction: column;
   font-family: 'Roboto Condensed', sans-serif;
   background: var(--body-background);
   color: var(--body-text-color);
 
   overflow-x: hidden;
-  overflow-Y: auto;
+  overflow-y: auto;
 }
 
 body::-webkit-scrollbar {
