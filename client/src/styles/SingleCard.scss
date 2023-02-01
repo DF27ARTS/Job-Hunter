@@ -244,3 +244,49 @@
 @keyframes single_card_close_button {
   to { transform: rotate(360deg)}
 }
+
+@media screen and (max-width: 600px) {
+  .single-card {
+    gap: 10px;
+    padding: 15px 35px 15px 15px;
+  }
+
+  .card-information-role,
+  .card-information-company,
+  .card-information-status {
+    padding: 0 15px;
+    font-size: 17px;
+  }
+
+  .card-information-role {
+    font-size: 18px !important;
+    padding: 0 15px;
+  }
+
+  .container-card-menu {
+    right: 10px;
+    width: 25px;
+    padding: 15px 0 5px 0;
+    gap: 10px;
+  }
+
+
+  .container-card-menu > img {
+    height: 20px;
+    width: 20px;
+  }
+
+  .open-status-selector {
+    height: 15px;
+    margin-left: 20px;
+  }
+
+  .container-select-status {
+    gap: 5px;
+  }
+
+  .card-information-status:focus-within .container-select-status {
+    height: 70px ;
+    padding: 10px 0;
+  }
+}

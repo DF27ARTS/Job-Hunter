@@ -53,6 +53,7 @@ function App() {
             element={!isLoggedIn ? <Login /> : <MainPage />}
           />
           <Route path="/home" element={isLoggedIn ? <MainPage /> : <Login />} />
+          <Route path="/*" element={<LandingPage />} />
         </Routes>
       </BrowserRouter>
       {loading_single_card ? <UserLoader /> : null}

@@ -1,11 +1,10 @@
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
-import { clearStorage, getCardsBySearchInput } from "../store/cardSlice";
+import { getCardsBySearchInput } from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import searchOptions from "../assets/search-options.svg";
-import searchIcon from "../assets/search-icon.svg";
 import searchEngineIcon from "../assets/search-engine-icon.svg";
 import "../styles/Navbar.scss";
 import SidebarMenu from "./SidebarMenu";
@@ -29,7 +28,6 @@ const Navbar = () => {
       input: inputSearch.input,
       search: inputSearch.search?.toLocaleLowerCase(),
     };
-    dispatch(clearStorage());
     dispatch(getCardsBySearchInput(value));
     setInputSearch({
       input: inputSearch.input,
@@ -67,10 +65,6 @@ const Navbar = () => {
     }
   };
 
-  const setSearbarStatus = (value: string): void => {
-    document.documentElement.style.setProperty("--searchbar-translate", value);
-  };
-
   return (
     <div className="container-navbar">
       <div className="page-icon">
@@ -105,26 +99,17 @@ const Navbar = () => {
               className="option-selected"
               onClick={() => SelectSearchOption("job-title")}
             >
-              Job Title
+              Search by Job Title
             </div>
             <div
               area-text="company"
               onClick={() => SelectSearchOption("company")}
             >
-              Company
-            </div>
-            <div
-              area-text="close-searchbar"
-              onClick={() => setSearbarStatus("-500%")}
-            >
-              Close
+              Search by Company
             </div>
           </div>
         </div>
       </div>
-      {/* <button onClick={() => HandleClickLogout()} className="logout-button">
-        Log out
-      </button> */}
       <SidebarMenu />
     </div>
   );

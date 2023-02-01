@@ -50,7 +50,7 @@
   align-items: center;
   gap: 2vh;
   min-height: 80vh ;
-
+  
   background: var(--card-column-background);
   border-radius: 2vh;
 
@@ -113,7 +113,7 @@
   width: 100%;
   height: 70vh;
   padding: 0 .7vh 0 0;
-
+  
   background: var(--card-column-background);
   overflow-y: auto;
   overflow-x: hidden;
@@ -153,6 +153,10 @@
   padding: 0 .7vh;
   font-size: 3.5vh;
   user-select: none;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .column-title-container :nth-child(2) {
@@ -167,10 +171,8 @@
 
 .cards-amount {
   position: absolute;
-  // inset: 0  0;
   right: 1vh;
   top: 1vh;
-  // background: red;
   height: 4.5vh;
   width: 4.5vh;
   margin: auto ;
@@ -286,6 +288,7 @@
     padding: 0 0 1vh 0;
   }
 
+
   
   .container-columns::-webkit-scrollbar {
     height: .5vh;
@@ -304,10 +307,45 @@
 
   .column {
     scroll-snap-align: start;
+    height: 580px !important ;
+    border-radius: 13px;
+    padding: 13px;
   
     opacity: 1;
+    gap: 10px;
     visibility: visible;
     scroll-snap-align: start;
+  }
+
+  .create-new-card-button {
+    font-size: 20px;
+  }
+
+  .column-title-container {
+    height: 70px !important;
+    flex: none;
+  
+    border-radius: 13px 13px 0 0;
+  }
+
+  .column-title-container :nth-child(1) {
+    padding: 0 10px;
+    font-size: 22px;
+  }
+  
+  .column-title-container :nth-child(2) {
+    font-size: 20px;
+  }
+
+  .cards-amount {
+    height: 30px;
+    width: 30px;
+    font-size: 15px;
+  }
+
+  .scroll-container {
+    height: 470px;
+    flex: none;
   }
 
 

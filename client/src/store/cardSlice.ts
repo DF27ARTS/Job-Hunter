@@ -230,9 +230,8 @@ export const CardSlice = createSlice({
     setShowByStatus: (state, {payload}) => {
       state.showCardsByStatus = payload
     },
-    closeLoading: (state) => {
-      state.loading_single_card = false
-    }
+    closeLoading: (state) => { state.loading_single_card = false; },
+    openLoading: (state) => { state.loading_single_card = true ;}
   },
   extraReducers: (builder) => {
     builder
@@ -350,10 +349,12 @@ export const CardSlice = createSlice({
         } 
         state.cardCreatedLoading = false
         state.create_form_active = false
+        state.loading_single_card = false
       })
       .addCase(updateCard.rejected, (state) => {
         state.cardCreatedLoading = false
         state.card_error = true
+        state.loading_single_card = false
       })
     
     builder
@@ -361,6 +362,7 @@ export const CardSlice = createSlice({
         state.arrayDates = action.payload;
       })
     builder
+      .addCase(deleteCardByDate.pending, (state) => { state.loading_single_card = true; })
       .addCase(deleteCardByDate.fulfilled, (state, action) => {
         if (state.cards.length === 1) {
           state.cards = [[]]
@@ -370,16 +372,11 @@ export const CardSlice = createSlice({
           state.arrayDates = state.arrayDates.filter((date: string) => date !== action.payload)
         }
       })
+      .addCase(deleteCardByDate.rejected, (state) => { state.loading_single_card = false; })
     builder
-      .addCase(deleteAllRejectedCards.pending, (state) => {
-        state.loading_single_card = true
-      })
-      .addCase(deleteAllRejectedCards.fulfilled, (state, action) => {
-        state.loading_single_card = true
-      })
-      .addCase(deleteAllRejectedCards.rejected, (state, action) => {
-        state.loading_single_card = true
-      })
+      .addCase(deleteAllRejectedCards.pending, (state) => { state.loading_single_card = true })
+      .addCase(deleteAllRejectedCards.fulfilled, (state) => { state.loading_single_card = false })
+      .addCase(deleteAllRejectedCards.rejected, (state) => { state.loading_single_card = false })
   }
 })
 
@@ -434,5 +431,6 @@ export const {
   closeInputError,
   setShowByStatus,
   closeLoading,
+  openLoading,
 } = CardSlice.actions
 

@@ -1,6 +1,7 @@
 import {
   Card,
   deleteCard,
+  openLoading,
   setCardToUpdate,
   updateCard,
 } from "../store/cardSlice";
@@ -52,6 +53,7 @@ const SingleCard = ({ id, company, role, status, description }: Card) => {
   };
 
   const HandleSelectStatus = (value: string): void => {
+    dispatch(openLoading());
     setCurrentSelectedStatus(value);
     dispatch(updateCard({ id: id, company, role, status: value }));
   };
