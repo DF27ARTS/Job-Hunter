@@ -3,6 +3,7 @@ import { activateForm, Card } from "../store/cardSlice";
 import { useAppDispatch, useAppSelector } from "../store/store";
 import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
+import { FormatNumber } from "../store/userSlice";
 
 const CardsContainer = () => {
   const dispatch = useAppDispatch();
@@ -67,7 +68,11 @@ const CardsContainer = () => {
             <div key={index} className="column ">
               <div className="column-title-container">
                 {showCardsByStatus ? <h2>Status</h2> : <h2>Date</h2>}
-                <h2>{cardArray[0].title}</h2>
+                {showCardsByStatus ? (
+                  <h2>{cardArray[0].title}</h2>
+                ) : (
+                  <h2>{FormatNumber(cardArray[0].title)}</h2>
+                )}
                 <span className="cards-amount">{cardArray.length - 1}</span>
               </div>
               <div className="scroll-container">
