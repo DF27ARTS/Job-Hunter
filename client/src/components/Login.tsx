@@ -50,7 +50,7 @@ const Login = () => {
           onSubmit={(e) => HandleSubmit(e)}
           className="form-logIn"
         >
-          <h2 className="form-title">Sing up Form</h2>
+          <h2 className="form-title">Log in Form</h2>
           <div className="container-logIn-link">
             <p>Don't have an acount</p>
             <Link className="link-login" to="/registration">
