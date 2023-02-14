@@ -180,7 +180,7 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
 
     const cardsSliced =
       !start && !end
-        ? cardsFiltered.slice(0, 5)
+        ? cardsFiltered.slice(0, 10)
         : cardsFiltered.slice(start, end);
 
     if (cardsSliced.length && cardsSliced.length === cardsFiltered.length) {

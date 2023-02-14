@@ -286,18 +286,32 @@ export const CardSlice = createSlice({
   extraReducers: (builder) => {
     builder
       .addCase(getCards.pending, (state) => { state.loading_cards = true})
-      .addCase(getCards.fulfilled, (state, action) => {
+      .addCase(getCards.fulfilled, (state, {payload}) => {
         state.loading_cards = true
-        if (state.showCardsByStatus) {
-            state.columnSliceAvailable = false
-            const showByStatusCards = orderByStatus(action.payload)
-            state.cards = showByStatusCards
-            state.grid_columns = showByStatusCards.length
-          } else {
-            state.columnSliceAvailable = true
-            state.cards = action.payload
-            state.grid_columns = action.payload.length
-          }
+        if (payload.lastSlice) {
+          if (state.showCardsByStatus) {
+              state.columnSliceAvailable = false
+              const showByStatusCards = orderByStatus(payload.cards)
+              state.cards = showByStatusCards
+              state.grid_columns = showByStatusCards.length
+            } else {
+              state.columnSliceAvailable = false
+              state.cards = payload.cards
+              state.grid_columns = payload.cards.length
+            }
+
+        } else {
+          if (state.showCardsByStatus) {
+              state.columnSliceAvailable = false
+              const showByStatusCards = orderByStatus(payload)
+              state.cards = showByStatusCards
+              state.grid_columns = showByStatusCards.length
+            } else {
+              state.columnSliceAvailable = true
+              state.cards = payload
+              state.grid_columns = payload.length
+            }
+        }
         state.loading_cards = false
         state.loading_single_card = false
       })
@@ -410,24 +424,34 @@ export const CardSlice = createSlice({
         if (state.showCardsByStatus) {
           let cardSaved = false;
 
+          if (!state.cards[0].length) {
+            state.columnSliceAvailable = false
+          }
+
           // Map the cards to put the new card on its column
-          state.cards.map((cardsArray, index) => {
-            if (cardsArray[1].status === action.payload.status) {
-              state.cards[index] = [state.cards[index][0], action.payload, ...state.cards[index].filter(card => !card.title)]
-              cardSaved = true;
-            }
-          })
+          if (state.cards[0].length) {
+            state.cards.map((cardsArray, index) => {
+              if (cardsArray[1].status === action.payload.status) {
+                state.cards[index] = [state.cards[index][0], action.payload, ...state.cards[index].filter(card => !card.title)]
+                cardSaved = true;
+              }
+            })
+          }
 
 
           // Create and order the new column in case it doesn't exist already
           if (!cardSaved) {
-            const newArray = [...state.cards, [{title: action.payload.status }, action.payload] ]
+            const Array = [...state.cards, [{title: action.payload.status }, action.payload] ]
+            const newArray = Array.filter(array => array.length)
             state.cards = newArray;
             state.grid_columns = newArray.length;
+            console.log(newArray)
             state.cards = state.cards.sort((a: any, b: any): any => {
-              const arrayA = a[0].title[0].charCodeAt()
-              const arrayB = b[0].title[0].charCodeAt()
-              return arrayA - arrayB
+              if (a.length && b.length) {
+                const arrayA = a[0].title[0].charCodeAt()
+                const arrayB = b[0].title[0].charCodeAt()
+                return arrayA - arrayB
+              }
             })
           }
 
