@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { getCardsBySearchInput } from "../store/cardSlice";
+import {
+  getCardsBySearchInput,
+  setColumnSliceAvailable,
+  setCurrentInputValue,
+} from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
@@ -23,12 +27,15 @@ const Navbar = () => {
     search: "",
   });
 
-  const HandleSubmit = (): void => {
+  const HandleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
+    e.preventDefault();
+    dispatch(setColumnSliceAvailable());
     const value = {
       input: inputSearch.input,
       search: inputSearch.search?.toLocaleLowerCase(),
     };
     dispatch(getCardsBySearchInput(value));
+    dispatch(setCurrentInputValue(value));
     setInputSearch({
       input: inputSearch.input,
       search: "",
@@ -72,7 +79,7 @@ const Navbar = () => {
           <img src={JobHunter_Icon} />
         </Link>
       </div>
-      <div className="container-search">
+      <form onSubmit={(e) => HandleSubmit(e)} className="container-search">
         <input
           onChange={(e) => HandleChange(e)}
           value={inputSearch.search}
@@ -84,7 +91,7 @@ const Navbar = () => {
               : "Search by job title"
           }
         />
-        <button onClick={() => HandleSubmit()} className="search-button">
+        <button className="search-button">
           <img className="search-engine-icon" src={searchEngineIcon} />
         </button>
         <div className="container-search-input">
@@ -109,7 +116,7 @@ const Navbar = () => {
             </div>
           </div>
         </div>
-      </div>
+      </form>
       <SidebarMenu />
     </div>
   );

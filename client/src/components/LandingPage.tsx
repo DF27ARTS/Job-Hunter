@@ -4,9 +4,10 @@ import jubHunterTitle from "../assets/jubHunter-title.png";
 import stageThreeBackground from "../assets/stage-three-background.jpg";
 
 import "../styles/LandingPage.scss";
+import UserLoader from "./UserLoader";
 
 const LandingPage = () => {
-  const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
+  const { isLoggedIn, loading } = useAppSelector((state) => state.user);
 
   return (
     <div
@@ -37,6 +38,15 @@ const LandingPage = () => {
           </Link>
         )}
       </section>
+      {loading ? (
+        <div className="container-check-user-acount">
+          <div className="check-user-loading">
+            <span className="loading-landing-page-message">Checking</span>
+            <span className="loading-landing-page-message">user</span>
+            <span className="loading-landing-page-message">profile</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

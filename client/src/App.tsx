@@ -1,11 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
@@ -13,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "./store/store";
 import { verifyToken } from "./store/userSlice";
 import { useEffect } from "react";
 import MainPage from "./components/MainPage";
-import { getCards } from "./store/cardSlice";
+import { getCards, getCardsSliced } from "./store/cardSlice";
 import UserLoader from "./components/UserLoader";
 
 function App() {
@@ -28,7 +21,7 @@ function App() {
   }, [dispatch, verifyToken, getCards]);
 
   return (
-    <div onLoad={() => <Navigate to="/login" />}>
+    <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -52,7 +45,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       {loading_single_card ? <UserLoader /> : null}
-    </div>
+    </>
   );
 }
 

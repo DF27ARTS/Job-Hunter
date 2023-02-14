@@ -54,6 +54,7 @@ const FormCreateCard = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     e.preventDefault();
+
     if (cardToUpdate.id) {
       const value = {
         company: input.company,

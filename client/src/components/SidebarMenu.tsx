@@ -8,6 +8,7 @@ import { useAppDispatch, useAppSelector } from "../store/store";
 import { FormatNumber, logOutUser } from "../store/userSlice";
 import {
   activateForm,
+  cleanCurrentInputValue,
   clearStorage,
   closeLoading,
   deleteAllRejectedCards,
@@ -74,9 +75,11 @@ const SidebarMenu = () => {
   };
 
   const HandleShowCards = (value: boolean): void => {
+    dispatch(cleanCurrentInputValue());
     dispatch(clearStorage());
     dispatch(setShowByStatus(value));
     dispatch(getCards());
+    OpenAndcloseSidebar(false);
   };
 
   const OpenMessageAlert = (

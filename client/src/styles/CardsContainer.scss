@@ -57,9 +57,17 @@
   opacity: 0;
   visibility: hidden;
   transition: 
-  opacity 400ms ease,
-  visibility 400ms ease,
+    opacity 400ms ease,
+    visibility 400ms ease,
     transform 300ms var(--transition-animated);
+}
+
+.loading-slice-column {
+  padding: 2vh;
+  display: grid;
+  grid-template-columns: 100%;
+  grid-template-rows: 10vh 20vh 20vh 20vh;
+  grid-row-gap: 2vh;
 }
 
 .create-new-card-button {
@@ -93,8 +101,13 @@
   transform: translateY(0) !important;
   opacity: 1 !important;
   visibility: visible !important;
+  animation: card_shown ease 400ms;
 }
 
+@keyframes card_shown {
+  from { opacity: 0; }
+  to { opacity: 1 !important; }
+}
 .column:nth-child(2n - 1) {
   transform: translateY(-30%);
 }
@@ -242,6 +255,9 @@
   border-radius: 2vh 2vh 0 0;
   position: relative;
   overflow: hidden;
+
+  height: 100%;
+  width: 100%;
 }
 
 .single-muck-card {
@@ -249,6 +265,9 @@
   border-radius: 2vh;
   position: relative;
   overflow: hidden;
+
+  height: 100%;
+  width: 100%;
 }
 
 .muck-column-title::before,
@@ -260,6 +279,7 @@
   
   height: 150%;
   width: 150%;
+  filter: blur(5px);
   background: linear-gradient(45deg, var(--card-background-color), 40%, rgb(92, 92, 92), 60%, var(--card-background-color));
 
   animation: card-animated 5000ms linear infinite;

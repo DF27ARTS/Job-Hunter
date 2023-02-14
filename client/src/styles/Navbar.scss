@@ -16,6 +16,7 @@
 .container-navbar::after {
   height: 2px;
   width: 100%;
+  opacity: 0.5;
 
   position: absolute;
   content: "";
