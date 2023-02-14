@@ -6,6 +6,7 @@ const { verifyToken } = require("./authorization");
 
 router.get("/cards", [verifyToken], async (req, res) => {
   try {
+    const { start, end } = req.query;
     const { cards } = await userProfile.findOne({
       where: { email: req.email },
       include: [card],
@@ -54,8 +55,17 @@ router.get("/cards", [verifyToken], async (req, res) => {
         }
       });
 
-    return cards.length
-      ? res.status(200).send(cardsFiltered)
+    const cardsSliced =
+      !start && !end
+        ? cardsFiltered.slice(0, 10)
+        : cardsFiltered.slice(start, end);
+
+    if (cardsSliced.length && cardsSliced.length === cardsFiltered.length) {
+      return res.status(200).json({ cards: cardsSliced, lastSlice: true });
+    }
+
+    return cardsSliced.length
+      ? res.status(200).json(cardsSliced)
       : res.status(404).json({ error: "there are no cards available" });
   } catch (error) {
     return res
@@ -83,10 +93,15 @@ router.get("/get_dates", [verifyToken], async (req, res) => {
     });
 
     dates.sort((a, b) => {
-      return (
-        b.split("/").reduce((sum, item) => sum + item) -
-        a.split("/").reduce((sum, item) => sum + item)
-      );
+      const [day_b, month_b, year_b] = b.split("/");
+      const [day_a, month_a, year_a] = a.split("/");
+      if (year_b !== year_a) {
+        return year_b - year_a;
+      } else if (month_b !== month_a) {
+        return month_b - month_a;
+      } else {
+        return day_b - day_a;
+      }
     });
 
     dates.length
@@ -99,10 +114,11 @@ router.get("/get_dates", [verifyToken], async (req, res) => {
 
 router.get("/cards/search", [verifyToken], async (req, res) => {
   try {
-    const { input, search } = req.query;
+    const { input, search, start, end } = req.query;
+
     const { email } = req;
 
-    if (!search)
+    if (!search || !input)
       return res.status(404).json({ error: "Required information is missing" });
 
     const { cards } = await userProfile.findOne({
@@ -162,8 +178,17 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
         });
     }
 
-    return cardsFiltered.length
-      ? res.status(200).json(cardsFiltered)
+    const cardsSliced =
+      !start && !end
+        ? cardsFiltered.slice(0, 5)
+        : cardsFiltered.slice(start, end);
+
+    if (cardsSliced.length && cardsSliced.length === cardsFiltered.length) {
+      return res.status(200).json({ cards: cardsSliced, lastSlice: true });
+    }
+
+    return cardsSliced.length
+      ? res.status(200).json(cardsSliced)
       : res.status(404).json({ error: "there are no matches in your search" });
   } catch (error) {
     return res.status(404).json({ error: "there's an error", message: error });
@@ -173,10 +198,11 @@ router.get("/cards/search", [verifyToken], async (req, res) => {
 router.post("/cards", [verifyToken], async (req, res) => {
   try {
     const { company, role, status, date, description } = req.body;
+    const { email } = req;
     if (!company || !role || !status || !date)
       return res.status(400).json({ error: "Missing required information" });
 
-    const user = await userProfile.findOne({ where: { email: req.email } });
+    const user = await userProfile.findOne({ where: { email: email } });
 
     const newCard = await card.create({
       company,

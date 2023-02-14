@@ -27,7 +27,7 @@ const sequelize = process.env.DATABASE_URL
   : new Sequelize(process.env.LOCAL_URL, {
       logging: false,
       native: false,
-    }); 
+    });
 
 Card(sequelize);
 UserProfile(sequelize);
