@@ -1,9 +1,9 @@
-const { log } = console
-const [day, month, year] = new Date().toLocaleDateString().split(("/"))
+let x = 1;
+const y = 2;
 
-const FormatNumber = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2, });
-
-const newMonth = FormatNumber.format(month)
-const date = `${day}/${newMonth}/${year} / ${new Date().toTimeString()}`
-
-log(date)
+if (true) {
+  let x = 3;
+  const y = 4;
+  console.log(x, y);
+}
+console.log(x, y);

@@ -5,12 +5,13 @@ import {
   setCardToUpdate,
   updateCard,
 } from "../store/cardSlice";
-import { useAppDispatch, useAppSelector } from "../store/store";
+import { useAppDispatch } from "../store/store";
 import deleteIcon from "../assets/delete-card.svg";
 import updateIcon from "../assets/update-card.svg";
 import closeForm from "../assets/close-create-form.svg";
 import "../styles/SingleCard.scss";
 import { useState } from "react";
+import { openFormCreateCard } from "./FormCreateCard";
 
 const SingleCard = ({ id, company, role, status, description }: Card) => {
   const dispatch = useAppDispatch();
@@ -46,10 +47,7 @@ const SingleCard = ({ id, company, role, status, description }: Card) => {
         description,
       })
     );
-    setTimeout(() => {
-      const createCardForm = document.querySelector(".create-card-form");
-      createCardForm?.classList.add("create-form-activated");
-    }, 10);
+    openFormCreateCard();
   };
 
   const HandleSelectStatus = (value: string): void => {

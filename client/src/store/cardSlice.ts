@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
+import { openFormCreateCard } from "../components/FormCreateCard";
 import { API_URL, getToken } from "./userSlice";
 
 
@@ -445,7 +446,6 @@ export const CardSlice = createSlice({
             const newArray = Array.filter(array => array.length)
             state.cards = newArray;
             state.grid_columns = newArray.length;
-            console.log(newArray)
             state.cards = state.cards.sort((a: any, b: any): any => {
               if (a.length && b.length) {
                 const arrayA = a[0].title[0].charCodeAt()
@@ -493,6 +493,7 @@ export const CardSlice = createSlice({
       .addCase(createCard.rejected, (state) => {
         state.cardCreatedLoading = false
         state.card_error = true
+        openFormCreateCard()
       })
 
     builder

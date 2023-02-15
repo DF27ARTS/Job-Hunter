@@ -17,6 +17,7 @@ import {
   getDates,
   setShowByStatus,
 } from "../store/cardSlice";
+import { openFormCreateCard } from "./FormCreateCard";
 
 const SidebarMenu = () => {
   const { cards, create_form_active, arrayDates, showCardsByStatus } =
@@ -68,10 +69,7 @@ const SidebarMenu = () => {
   const createNewCardSidebar = (): void => {
     OpenAndcloseSidebar(!sidebarState);
     dispatch(activateForm());
-    setTimeout(() => {
-      const createCardForm = document.querySelector(".create-card-form");
-      createCardForm?.classList.add("create-form-activated");
-    }, 10);
+    openFormCreateCard();
   };
 
   const HandleShowCards = (value: boolean): void => {
@@ -136,7 +134,6 @@ const SidebarMenu = () => {
               New Card
               {!cards[0].length && sidebarState && !create_form_active ? (
                 <div className="create-first-card-message-icon">
-                  {" "}
                   ¡Crate a new card!
                 </div>
               ) : null}

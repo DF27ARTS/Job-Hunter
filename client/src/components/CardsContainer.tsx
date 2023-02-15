@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   activateForm,
   Card,
@@ -9,11 +9,9 @@ import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
 import { FormatNumber } from "../store/userSlice";
 import { getCardsSliced } from "../store/cardSlice";
+import { openFormCreateCard } from "./FormCreateCard";
 
 const CardsContainer = () => {
-  const [FirstColumnSliceNum, serFirstColumnSliceNum] = useState<number>(15);
-  const [SecondColumnSliceNum, serSecondColumnSliceNum] = useState<number>(15);
-  const [ThirdColumnSliceNum, serThirdColumnSliceNum] = useState<number>(15);
   const dispatch = useAppDispatch();
 
   const { user } = useAppSelector((state) => state.user);
@@ -64,11 +62,8 @@ const CardsContainer = () => {
   }, 10);
 
   const HandleOpenForm = (): void => {
+    openFormCreateCard();
     dispatch(activateForm());
-    setTimeout(() => {
-      const createCardForm = document.querySelector(".create-card-form");
-      createCardForm?.classList.add("create-form-activated");
-    }, 10);
   };
 
   setTimeout(() => {
@@ -86,7 +81,7 @@ const CardsContainer = () => {
       button.addEventListener("click", HandleOpenForm);
       columnTitleContainer?.appendChild(button);
     }
-  }, 10);
+  }, 50);
 
   const styles = {
     "--columns-amount": grid_columns,
@@ -128,7 +123,22 @@ const CardsContainer = () => {
                   ) : (
                     <h2>{FormatNumber(cardArray[0].title)}</h2>
                   )}
-                  <span className="cards-amount">{cardArray.length - 1}</span>
+
+                  {/* Show the amount of cards - 1 because of the one that has the title */}
+                  <span
+                    area-text={
+                      cardArray.length - 1 >= 99 ? "container-total-amount" : ""
+                    }
+                    className="cards-amount"
+                  >
+                    {cardArray.length - 1 <= 99 ? cardArray.length - 1 : "99+"}
+                    <div
+                      area-text="total-amount"
+                      className="cards_total_amount"
+                    >
+                      {cardArray.length - 1}
+                    </div>
+                  </span>
                 </div>
                 <div className="scroll-container">
                   {cardArray.map((card) => {

@@ -17,6 +17,28 @@ import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import "../styles/FormCreateCard.scss";
 
+export const openFormCreateCard = (): void => {
+  setTimeout(() => {
+    const createCardForm = document.querySelector(".create-card-form");
+    const formContainer = document.querySelector(".form-container");
+    const closeCreateForm = document.querySelector(".close-create-form");
+
+    createCardForm?.classList.add("create-form-activated");
+    formContainer?.classList.add("form-container-activated");
+    closeCreateForm?.classList.add("close-create-form-active");
+  }, 50);
+};
+
+const closeFormCreateCard = (): void => {
+  const createCardForm = document.querySelector(".create-card-form");
+  const formContainer = document.querySelector(".form-container");
+  const closeCreateForm = document.querySelector(".close-create-form");
+
+  createCardForm?.classList.remove("create-form-activated");
+  formContainer?.classList.remove("form-container-activated");
+  closeCreateForm?.classList.remove("close-create-form-active");
+};
+
 const FormCreateCard = () => {
   const dispatch = useAppDispatch();
   const { cardToUpdate, cardCreatedLoading } = useAppSelector(
@@ -91,8 +113,7 @@ const FormCreateCard = () => {
   };
 
   const HandleCloseForm = (): void => {
-    const createCardForm = document.querySelector(".create-card-form");
-    createCardForm?.classList.remove("create-form-activated");
+    closeFormCreateCard();
     setTimeout(() => {
       dispatch(deactivateForm());
       SetTranslateVariable(`0vh`);

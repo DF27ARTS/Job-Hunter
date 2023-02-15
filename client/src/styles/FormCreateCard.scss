@@ -10,12 +10,13 @@
 
   height: 100vh;
   width: 100vw !important;
-  background: #0004;
-  backdrop-filter: blur(5px);
-  transform: 
-    translateY(-200%)
-    translateX(200%);
-  transition: transform 400ms ease-in-out;
+  background: #0007;
+
+  opacity: 0;
+  visibility: hidden;
+  transition: 
+    visibility 300ms ease-in-out,
+    opacity 300ms ease-in-out;
 }
 
 .create-card-form-display-none {
@@ -23,14 +24,12 @@
 }
 
 .create-form-activated {
-  transform: 
-    translateY(0)
-    translateX(0);
+  opacity: 1;
+  visibility: visible;
 }
 
 
 .form-container {
-
   position: absolute;
   top: 0;
   left: 0;
@@ -40,17 +39,31 @@
   z-index: 200;
   transform: perspective(500px);
 
-  height: var(--height-form);
   width: 55vw;
   max-width: 90vw;
+  background: var(--card-background-color);
+
+  overflow: hidden;
+  padding: 0; 
+  
+  height: 50px; 
+  box-shadow: 
+    0 0 0 0px var(--body-text-color),
+    0 0 0 0vh var(--card-background-color);
+  border-radius: 50px;
+
+  transition:
+    border-radius 300ms ease 300ms,
+    box-shadow 300ms ease 300ms,
+    height 300ms ease 300ms;
+}
+
+.form-container-activated {
+  height: var(--height-form); 
   box-shadow: 
     0 0 0 5px var(--body-text-color),
     0 0 0 10vh var(--card-background-color);
   border-radius: 1vh;
-  background: var(--card-background-color);
-
-  overflow: hidden;
-  padding: 0;
 }
 
 .form-loading-active {
@@ -63,16 +76,16 @@
     width: 110vh;
     transform: rotate(0deg);
     box-shadow: 
-    0 0 0 5px var(--body-text-color),
-    0 0 0 10vh var(--card-background-color);
+      0 0 0 5px var(--body-text-color),
+      0 0 0 10vh var(--card-background-color);
   }
   100% {
     height: 0;
     width: 0;
     transform: rotate(-360deg);
     box-shadow: 
-    0 0 0 0px var(--body-text-color),
-    0 0 0 0vh var(--card-background-color);
+      0 0 0 0px var(--body-text-color),
+      0 0 0 0vh var(--card-background-color);
   }
 }
 
@@ -455,10 +468,20 @@
   bottom: 0;
   margin: auto;
 
-  height: var(--height-form);
+  height: 50px;
   width: var(--width-form);
-
+  border-radius: 50px;
+  
   background: var(--card-background-color);
+
+  transition: 
+    border-radius 300ms ease 300ms,
+    height 300ms ease 300ms;
+}
+
+.close-create-form-active {
+  border-radius: 0px;
+  height: var(--height-form)
 }
 
 .close-form-loading-active .close-form-icon {
@@ -496,13 +519,50 @@
   width: 100%;
   background: var(--card-background-color);
   animation: 
+    close_form_loading_animation 2000ms cubic-bezier(1, 0.69, 0.36, 0.9) 500ms infinite,
     close_form_loading 1000ms cubic-bezier(1, 0.69, 0.36, 0.9) 500ms infinite;
 }
 
 .close-form-loading-active {
   animation: 
-    close_form_animation 500ms var(--loading-form-animation) forwards;
+    close_form_animation 500ms ease forwards;
 }
+
+.close-create-form .close-form-icon {
+  height: 5vh;
+  width: 5vh;
+  z-index: 300;
+
+  position: absolute;
+  top: 3vh;
+  right: 3vh;
+
+  cursor: pointer;
+}
+
+.close-create-form .close-form-icon:focus {
+  animation: close-icon 500ms var(--transition-animated);
+}
+
+
+// Not allowed Button
+.not-allowed {
+  cursor: not-allowed !important;
+  color: #333 !important;
+}
+
+.not-allowed:hover,
+.not-allowed:focus {
+  border: 2px solid var(--body-text-color) !important;
+  border-left: none !important;
+}
+
+
+
+//------------ Keyframes animations--------------
+
+// form active and loading form animations
+
 
 @keyframes close_form_animation {
   0% {
@@ -527,38 +587,32 @@
   }
 }
 
-.close-create-form .close-form-icon {
-  height: 5vh;
-  width: 5vh;
-  z-index: 300;
-
-  position: absolute;
-  top: 3vh;
-  right: 3vh;
-
-  cursor: pointer;
+@keyframes close_form_loading_animation {
+  0% {
+    border-radius: 0;
+  }
+  25% {
+    border-radius: 0 50% 0 50%;
+  }
+  50% {
+    border-radius: 0;
+  }
+  75% {
+    border-radius: 50% 0 50% 0;
+  }
+  100% {
+    border-radius: 0;
+  }
 }
 
-.close-create-form .close-form-icon:focus {
-  animation: close-icon 500ms var(--transition-animated);
-}
+
+
+// Close form button animation
 
 @keyframes close-icon {
   to {
     transform: rotate(360deg);
   }
-}
-
-// Not allowed Button
-.not-allowed {
-  cursor: not-allowed !important;
-  color: #333 !important;
-}
-
-.not-allowed:hover,
-.not-allowed:focus {
-  border: 2px solid var(--body-text-color) !important;
-  border-left: none !important;
 }
 
 

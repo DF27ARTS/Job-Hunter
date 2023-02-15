@@ -185,20 +185,55 @@
 
 .cards-amount {
   position: absolute;
-  right: 1vh;
-  top: 1vh;
-  height: 4.5vh;
-  width: 4.5vh;
+  right: -1.2vh;
+  top: -1.2vh;
+  height: 5.8vh;
+  width: 5.8vh;
   margin: auto ;
-  font-size: 2.2vh;
+  font-size: 2.3vh;
 
   display: flex;
   align-items: center;
   justify-content: center;
+  font-family: var(--single-card-font);
   border-radius: 50%;
+  background: var(--card-background-color);
+
   border: 2px solid var(--body-text-color);
 }
 
+.cards-amount[area-text=container-total-amount] {
+  cursor: pointer;
+  transition: border 300ms var(--transition-animated);
+}
+
+.cards-amount[area-text=container-total-amount]:hover {
+  border: 2px solid var(--color-one);
+}
+
+.cards_total_amount[area-text=total-amount] {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+  font-family: serif;
+  right: 120%;
+  z-index: 100;
+  font-size: 3.2vh !important;
+  font-weight: bold;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 
+    opacity 200ms ease,
+    visibility 200ms ease;
+}
+
+.cards-amount[area-text=container-total-amount]:hover .cards_total_amount {
+  opacity: 1;
+  visibility: visible;
+}
 
 
 // Muck cards

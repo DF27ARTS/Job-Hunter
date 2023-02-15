@@ -51,6 +51,7 @@
 }
 
 .open-status-selector {
+  // color: ;
   height: 2.2vh;
   aspect-ratio: 1 / 1;
   transform: rotate(90deg);
@@ -58,9 +59,9 @@
 
   transform-origin: 70% 70%;
   box-shadow: 
-    0 0 0 1px var(--body-text-color) inset,
+    0 0 0 1px var(--card-background-one) inset,
     0 0 0 3px var(--card-background-color) inset,
-    0 0 0 4px var(--body-text-color) inset;
+    0 0 0 3.5px var(--card-background-one) inset;
   clip-path: polygon(100% 0, 100% 100%, 0 100%);
   transform: 
     rotate(45deg);

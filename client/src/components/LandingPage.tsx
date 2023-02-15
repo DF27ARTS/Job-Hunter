@@ -41,7 +41,7 @@ const LandingPage = () => {
       {loading ? (
         <div className="container-check-user-acount">
           <div className="check-user-loading">
-            <span className="loading-landing-page-message">Checking</span>
+            <span className="loading-landing-page-message">Loading</span>
             <span className="loading-landing-page-message">user</span>
             <span className="loading-landing-page-message">profile</span>
           </div>
