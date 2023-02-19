@@ -6,67 +6,125 @@ const { verifyToken } = require("./authorization");
 
 router.get("/cards", [verifyToken], async (req, res) => {
   try {
-    const { start, end } = req.query;
+    const { property, input, initialDate } = req.query;
+
+    const { format } = new Intl.NumberFormat(undefined, {
+      minimumIntegerDigits: 2,
+    });
+
     const { cards } = await userProfile.findOne({
       where: { email: req.email },
       include: [card],
     });
 
-    const cardsOrdered = cards.sort((a, b) => b.id - a.id);
+    const cardsOrdered = cards.sort((a, b) => {
+      const [dayA, monthA, yearA] = a.date.split("/");
+      const [dayB, monthB, yearB] = b.date.split("/");
+      const dateA = yearA + format(monthA) + format(dayA);
+      const dateB = yearB + format(monthB) + format(dayB);
+      return parseInt(dateB) - parseInt(dateA);
+    });
+
+    const [InisialDay, InisialMonth, InisialYear] = initialDate
+      ? initialDate.split("/")
+      : [null, null, null];
+
+    // Initial date send in the query
+    const InitialDate =
+      InisialDay && InisialMonth && InisialYear
+        ? parseInt(InisialYear + format(InisialMonth) + format(InisialDay))
+        : null;
+
+    // First date of the array cardsOrdered
+    const [day, month, year] = cardsOrdered[0].date.split("/");
+    let firtsDate = parseInt(year + format(month) + format(day));
+    let counter = 1;
+
+    const allCards = [];
+
+    // Push to the allCards array all the cards fron the ten fist days
+    // starting fron the InitialDate is it's send in the quey or firtsDate otherwise
+    cardsOrdered.forEach((card) => {
+      const [day, month, year] = card.date.split("/");
+      let currentDate = parseInt(year + format(month) + format(day));
+
+      if (currentDate >= InitialDate && InitialDate) {
+        firtsDate = currentDate;
+        return;
+      }
+
+      // Change this number to change the amount of cards per request
+      if (counter <= 10) allCards.push(card);
+
+      if (firtsDate !== currentDate) {
+        counter += 1;
+        firtsDate = currentDate;
+      }
+    });
 
     const cardsFiltered = [];
     let singleArray = [];
     let title = "";
 
-    cardsOrdered.length &&
-      cardsOrdered.map((card) => {
+    // Filter all the cards in the allCards array and create an array of overy single day
+    // creating an array of arrays with the cards
+    allCards.length &&
+      allCards.map((card) => {
         if (card.date) {
-          const arraySplit = card.date.split("/");
-          const day = parseInt(arraySplit[0]);
-          const month = parseInt(arraySplit[1]);
-          const year = parseInt(arraySplit[2]);
+          const [day, month, year] = card.date.split("/");
           const titleDate = `${day}/${month}/${year}`;
-          const date = year + month + day;
+          const date = parseInt(year) + parseInt(month) + parseInt(day);
 
-          if (cardsOrdered.length === 1) {
+          if (allCards.length === 1) {
             title = date.toString();
             singleArray = [{ title: titleDate }, card];
             cardsFiltered.push(singleArray);
-          } else if (card.id === cardsOrdered[0].id) {
+            return;
+          }
+          if (card.id === allCards[0].id) {
             title = date.toString();
             singleArray = [{ title: titleDate }, card];
-          } else if (card.id === cardsOrdered[cardsOrdered.length - 1].id) {
+            return;
+          }
+          if (card.id === allCards[allCards.length - 1].id) {
             if (date.toString() === title) {
               singleArray.push(card);
               cardsFiltered.push(singleArray);
             } else {
               cardsFiltered.push(singleArray);
               title = date.toString();
-              singleArray = [card];
+              singleArray = [{ title: titleDate }, card];
               cardsFiltered.push(singleArray);
             }
-          } else if (date.toString() === title) {
+            return;
+          }
+          if (date.toString() === title) {
             singleArray.push(card);
-          } else if (date.toString() !== title) {
+            return;
+          }
+          if (date.toString() !== title) {
             cardsFiltered.push(singleArray);
             title = date.toString();
             singleArray = [{ title: titleDate }, card];
+            return;
           }
         }
       });
 
-    const cardsSliced =
-      !start && !end
-        ? cardsFiltered.slice(0, 10)
-        : cardsFiltered.slice(start, end);
+    const LAST_USER_CARD =
+      cardsFiltered[cardsFiltered.length - 1][
+        cardsFiltered[cardsFiltered.length - 1].length - 1
+      ];
 
-    if (cardsSliced.length && cardsSliced.length === cardsFiltered.length) {
-      return res.status(200).json({ cards: cardsSliced, lastSlice: true });
-    }
+    if (
+      cardsFiltered.length &&
+      LAST_USER_CARD === cardsOrdered[cardsOrdered.length - 1]
+    )
+      return res.status(200).json({ lastSlice: true, cards: cardsFiltered });
 
-    return cardsSliced.length
-      ? res.status(200).json(cardsSliced)
-      : res.status(404).json({ error: "there are no cards available" });
+    return cardsFiltered.length
+      ? res.status(200).json({ lastSlice: false, cards: cardsFiltered })
+      : res.status(404).json({ error: "There are no cards available" });
   } catch (error) {
     return res
       .status(404)
@@ -81,16 +139,8 @@ router.get("/get_dates", [verifyToken], async (req, res) => {
       include: [card],
     });
 
-    const setOfDates = new Set();
-    const dates = [];
-
-    cards.forEach(async (card) => {
-      setOfDates.add(card.date);
-    });
-
-    setOfDates.forEach((setDate) => {
-      dates.push(setDate);
-    });
+    // const setOfDates = new Set();
+    const dates = [...new Set([...cards.map((card) => card.date)])];
 
     dates.sort((a, b) => {
       const [day_b, month_b, year_b] = b.split("/");
@@ -114,83 +164,142 @@ router.get("/get_dates", [verifyToken], async (req, res) => {
 
 router.get("/cards/search", [verifyToken], async (req, res) => {
   try {
-    const { input, search, start, end } = req.query;
+    const { property, input, initialDate } = req.query;
 
     const { email } = req;
 
-    if (!search || !input)
+    if (!property || !input)
       return res.status(404).json({ error: "Required information is missing" });
+
+    const { format } = new Intl.NumberFormat(undefined, {
+      minimumIntegerDigits: 2,
+    });
 
     const { cards } = await userProfile.findOne({
       where: { email: email },
       include: [card],
     });
 
-    const cardsFilter = [];
+    const cardsThatMatchTheInput = [];
     cards.map((card) => {
-      if (card[input].toLowerCase().includes(search.toLowerCase())) {
-        cardsFilter.push(card);
+      const newCard = card.dataValues || card;
+      if (newCard[property].toLowerCase().includes(input.toLowerCase())) {
+        cardsThatMatchTheInput.push(newCard);
       }
     });
 
-    const cardsOrdered = cardsFilter.length
-      ? cardsFilter.sort((a, b) => b.id - a.id)
+    const cardsOrdered = cardsThatMatchTheInput.length
+      ? cardsThatMatchTheInput.sort((a, b) => {
+          const [dayA, monthA, yearA] = a.date.split("/");
+          const [dayB, monthB, yearB] = b.date.split("/");
+          const dateA = yearA + format(monthA) + format(dayA);
+          const dateB = yearB + format(monthB) + format(dayB);
+          return parseInt(dateB) - parseInt(dateA);
+        })
       : null;
+
+    const [InisialDay, InisialMonth, InisialYear] = initialDate
+      ? initialDate.split("/")
+      : [null, null, null];
+
+    // Initial date send in the query
+    const InitialDate =
+      InisialDay && InisialMonth && InisialYear
+        ? parseInt(InisialYear + format(InisialMonth) + format(InisialDay))
+        : null;
+
+    // First date of the array cardsOrdered
+    const [day, month, year] = cardsOrdered[0].date.split("/");
+    let firtsDate = parseInt(year + format(month) + format(day));
+    let counter = 1;
+
+    const allCards = [];
+
+    // Push to the allCards array all the cards fron the ten fist days
+    // starting fron the InitialDate is it's send in the quey or firtsDate otherwise
+    cardsOrdered.forEach((card) => {
+      const [day, month, year] = card.date.split("/");
+      let currentDate = parseInt(year + format(month) + format(day));
+
+      if (currentDate >= InitialDate && InitialDate) {
+        firtsDate = currentDate;
+        return;
+      }
+
+      // Change the 10 number to change the amount of cards per request
+      if (counter <= 10) allCards.push(card);
+
+      if (firtsDate !== currentDate) {
+        counter += 1;
+        firtsDate = currentDate;
+      }
+    });
 
     const cardsFiltered = [];
     let singleArray = [];
     let title = "";
 
     if (cardsOrdered) {
-      cardsOrdered.length &&
-        cardsOrdered.map((card) => {
-          const arraySplit = card.date.split("/");
-          const day = parseInt(arraySplit[0]);
-          const month = parseInt(arraySplit[1]);
-          const year = parseInt(arraySplit[2]);
-          const titleDate = `${day}/${month}/${year}`;
-          const date = year + month + day;
+      allCards.length &&
+        allCards.map((card) => {
+          if (card.date) {
+            const [day, month, year] = card.date.split("/");
+            const titleDate = `${day}/${month}/${year}`;
+            const date = parseInt(year) + parseInt(month) + parseInt(day);
 
-          if (cardsOrdered.length === 1) {
-            title = date.toString();
-            singleArray = [{ title: titleDate }, card];
-            cardsFiltered.push(singleArray);
-          } else if (card.id === cardsOrdered[0].id) {
-            title = date.toString();
-            singleArray = [{ title: titleDate }, card];
-          } else if (card.id === cardsOrdered[cardsOrdered.length - 1].id) {
-            if (date.toString() === title) {
-              singleArray.push(card);
-              cardsFiltered.push(singleArray);
-            } else {
-              cardsFiltered.push(singleArray);
+            if (allCards.length === 1) {
               title = date.toString();
               singleArray = [{ title: titleDate }, card];
               cardsFiltered.push(singleArray);
+              return;
             }
-          } else if (date.toString() === title) {
-            singleArray.push(card);
-          } else if (date.toString() !== title) {
-            cardsFiltered.push(singleArray);
-            title = date.toString();
-            singleArray = [{ title: titleDate }, card];
+            if (card.id === allCards[0].id) {
+              title = date.toString();
+              singleArray = [{ title: titleDate }, card];
+              return;
+            }
+            if (card.id === allCards[allCards.length - 1].id) {
+              if (date.toString() === title) {
+                singleArray.push(card);
+                cardsFiltered.push(singleArray);
+              } else {
+                cardsFiltered.push(singleArray);
+                title = date.toString();
+                singleArray = [{ title: titleDate }, card];
+                cardsFiltered.push(singleArray);
+              }
+              return;
+            }
+            if (date.toString() === title) {
+              singleArray.push(card);
+              return;
+            }
+            if (date.toString() !== title) {
+              cardsFiltered.push(singleArray);
+              title = date.toString();
+              singleArray = [{ title: titleDate }, card];
+              return;
+            }
           }
         });
     }
 
-    const cardsSliced =
-      !start && !end
-        ? cardsFiltered.slice(0, 10)
-        : cardsFiltered.slice(start, end);
+    const LAST_USER_CARD =
+      cardsFiltered[cardsFiltered.length - 1][
+        cardsFiltered[cardsFiltered.length - 1].length - 1
+      ];
 
-    if (cardsSliced.length && cardsSliced.length === cardsFiltered.length) {
-      return res.status(200).json({ cards: cardsSliced, lastSlice: true });
-    }
+    if (
+      cardsFiltered.length &&
+      LAST_USER_CARD === cardsOrdered[cardsOrdered.length - 1]
+    )
+      return res.status(200).json({ lastSlice: true, cards: cardsFiltered });
 
-    return cardsSliced.length
-      ? res.status(200).json(cardsSliced)
-      : res.status(404).json({ error: "there are no matches in your search" });
+    return cardsFiltered.length
+      ? res.status(200).json({ lastSlice: false, cards: cardsFiltered })
+      : res.status(404).json({ error: "There are no matches in your search" });
   } catch (error) {
+    console.log(error);
     return res.status(404).json({ error: "there's an error", message: error });
   }
 });
@@ -204,6 +313,8 @@ router.post("/cards", [verifyToken], async (req, res) => {
 
     const user = await userProfile.findOne({ where: { email: email } });
 
+    if (!user) return res.status(404).json({ error: "User unauthorize" });
+
     const newCard = await card.create({
       company,
       role,
@@ -212,8 +323,11 @@ router.post("/cards", [verifyToken], async (req, res) => {
       description: description && description,
     });
 
-    if (user) user.addCard(newCard);
-    else return res.status(404).json({ error: "there's been an error" });
+    if (newCard) user.addCard(newCard);
+    else
+      return res
+        .status(404)
+        .json({ error: "There's been an error creating the card" });
 
     return res
       .status(200)
