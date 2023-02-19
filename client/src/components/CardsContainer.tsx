@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useRef, useState } from "react";
 import {
   activateForm,
   Card,
@@ -7,9 +7,9 @@ import {
 import { useAppDispatch, useAppSelector } from "../store/store";
 import SingleCard from "./SingleCard";
 import "../styles/CardsContainer.scss";
-import { FormatNumber } from "../store/userSlice";
 import { getCardsSliced } from "../store/cardSlice";
 import { openFormCreateCard } from "./FormCreateCard";
+import { FormatNumber, getSearchInput } from "../store/__Functions";
 
 const CardsContainer = () => {
   const dispatch = useAppDispatch();
@@ -21,36 +21,47 @@ const CardsContainer = () => {
     loadingSlice,
     grid_columns,
     columnSliceAvailable,
-    currentInputValue,
-    currentSearchValue,
+    currentPropertyValue,
   } = useAppSelector((state) => state.card);
 
+  // Infinite scroll Intersection Observer
+  const lastColumnObserver = useRef<any>();
+  const lastColumnElementRef = useCallback((node: any) => {
+    if (lastColumnObserver.current) lastColumnObserver.current.disconnect();
+    lastColumnObserver.current = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        if (getSearchInput()) {
+          // Infinite scroll for the searching bar
+          if (cards.length) {
+            const LAST_COLUMN_DATE =
+              cards[cards.length - 1].length &&
+              cards[cards.length - 1][0].title;
+            dispatch(
+              getSlicedCardsBySearchInput({
+                property: currentPropertyValue,
+                input: getSearchInput(),
+                initialDate: LAST_COLUMN_DATE,
+              })
+            );
+          }
+        } else {
+          // Infinite scroll for the main page
+          if (cards.length) {
+            const LAST_COLUMN_DATE =
+              cards[cards.length - 1].length &&
+              cards[cards.length - 1][0].title;
+            if (LAST_COLUMN_DATE) dispatch(getCardsSliced(LAST_COLUMN_DATE));
+          }
+        }
+      }
+    });
+    if (node) lastColumnObserver.current.observe(node);
+  }, []);
+
+  // Column animation Intersection Observer
   const observer = new IntersectionObserver((entries) => {
     entries.forEach((entry) => {
       entry.target.classList.toggle("column-animation", entry.isIntersecting);
-    });
-  });
-
-  const SlicerObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      dispatch(getCardsSliced({ start: 0, end: cards.length + 10 }));
-      SlicerObserver.unobserve(entry.target);
-    });
-  });
-
-  const SlicerSearcherObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      if (!entry.isIntersecting) return;
-      SlicerSearcherObserver.unobserve(entry.target);
-      dispatch(
-        getSlicedCardsBySearchInput({
-          input: currentInputValue,
-          search: currentSearchValue,
-          start: 0,
-          end: cards.length + 10,
-        })
-      );
     });
   });
 
@@ -65,23 +76,6 @@ const CardsContainer = () => {
     openFormCreateCard();
     dispatch(activateForm());
   };
-
-  setTimeout(() => {
-    const createNewCardButton = document.querySelector(
-      ".create-new-card-button"
-    );
-
-    if (!createNewCardButton) {
-      const columnTitleContainer = document.querySelector(
-        ".column-title-container"
-      );
-      const button = document.createElement("button");
-      button.classList.add("create-new-card-button");
-      button.textContent = "+";
-      button.addEventListener("click", HandleOpenForm);
-      columnTitleContainer?.appendChild(button);
-    }
-  }, 50);
 
   const styles = {
     "--columns-amount": grid_columns,
@@ -100,28 +94,37 @@ const CardsContainer = () => {
       >
         {cards[0].length ? (
           cards.map<Card[] | any>((cardArray, index) => {
-            if (columnSliceAvailable && index === cards.length - 1) {
-              setTimeout(() => {
-                if (!currentSearchValue) {
-                  const LastColumn =
-                    document.querySelector(".column:last-child");
-                  LastColumn && SlicerObserver.observe(LastColumn);
-                } else {
-                  const LastColumn =
-                    document.querySelector(".column:last-child");
-                  LastColumn && SlicerSearcherObserver.observe(LastColumn);
-                }
-              }, 50);
-            }
+            const LAST_COLUMN_AVAILABLE =
+              !showCardsByStatus &&
+              columnSliceAvailable &&
+              index === cards.length - 1;
 
             return cardArray.length > 1 ? (
-              <div key={index} className="column">
+              <div
+                ref={LAST_COLUMN_AVAILABLE ? lastColumnElementRef : null}
+                key={index}
+                className="column"
+              >
                 <div className="column-title-container">
-                  {showCardsByStatus ? <h2>Status</h2> : <h2>Date</h2>}
+                  {index === 0 ? (
+                    <button
+                      onClick={() => HandleOpenForm()}
+                      className="create-new-card-button"
+                    >
+                      +
+                    </button>
+                  ) : null}
                   {showCardsByStatus ? (
-                    <h2>{cardArray[0].title}</h2>
+                    <h2 className="column-title">Status</h2>
                   ) : (
-                    <h2>{FormatNumber(cardArray[0].title)}</h2>
+                    <h2 className="column-title">Date</h2>
+                  )}
+                  {showCardsByStatus ? (
+                    <h2 className="colum-title-value">{cardArray[0].title}</h2>
+                  ) : (
+                    <h2 className="colum-title-value">
+                      {FormatNumber(cardArray[0].title)}
+                    </h2>
                   )}
 
                   {/* Show the amount of cards - 1 because of the one that has the title */}

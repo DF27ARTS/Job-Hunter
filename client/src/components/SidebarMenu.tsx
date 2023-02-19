@@ -5,10 +5,10 @@ import sidebarMenu from "../assets/sidebar-menu.svg";
 import closeForm from "../assets/close-create-form.svg";
 import jubHunterTitle from "../assets/jubHunter-title.png";
 import { useAppDispatch, useAppSelector } from "../store/store";
-import { FormatNumber, logOutUser } from "../store/userSlice";
+import { logOutUser } from "../store/userSlice";
 import {
   activateForm,
-  cleanCurrentInputValue,
+  cleanCurrentPropertyValue,
   clearStorage,
   closeLoading,
   deleteAllRejectedCards,
@@ -18,6 +18,7 @@ import {
   setShowByStatus,
 } from "../store/cardSlice";
 import { openFormCreateCard } from "./FormCreateCard";
+import { deleteSearchInput, FormatNumber } from "../store/__Functions";
 
 const SidebarMenu = () => {
   const { cards, create_form_active, arrayDates, showCardsByStatus } =
@@ -73,7 +74,8 @@ const SidebarMenu = () => {
   };
 
   const HandleShowCards = (value: boolean): void => {
-    dispatch(cleanCurrentInputValue());
+    deleteSearchInput();
+    dispatch(cleanCurrentPropertyValue());
     dispatch(clearStorage());
     dispatch(setShowByStatus(value));
     dispatch(getCards());

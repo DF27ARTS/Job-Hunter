@@ -1,9 +1,6 @@
-let x = 1;
-const y = 2;
+let x = [1, 2, 3, 4, 5];
 
-if (true) {
-  let x = 3;
-  const y = 4;
-  console.log(x, y);
-}
-console.log(x, y);
+const z = x.splice(2, 2);
+
+console.log(z);
+console.log(x);

@@ -8,6 +8,7 @@ import { useEffect } from "react";
 import MainPage from "./components/MainPage";
 import { getCards, getCardsSliced } from "./store/cardSlice";
 import UserLoader from "./components/UserLoader";
+import { deleteSearchInput } from "./store/__Functions";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
@@ -16,6 +17,7 @@ function App() {
   const { loading_single_card } = useAppSelector((state) => state.card);
 
   useEffect(() => {
+    deleteSearchInput();
     dispatch(verifyToken());
     dispatch(getCards());
   }, [dispatch, verifyToken, getCards]);

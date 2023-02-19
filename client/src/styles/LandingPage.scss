@@ -153,19 +153,8 @@
 .loading-landing-page-message {
   font-size: 150%;
   font-family: var(--single-card-font);
-  animation: message_nimation 1500ms linear var(--animation_delay) infinite;
 }
 
-
-
-@keyframes message_nimation {
-  0%, 50%, 100% {
-    transform: scale(1)
-  }
-  25% {
-    transform: scale(1.2)
-  }
-}
 
 @keyframes landing_loading {
   0%  {

@@ -159,7 +159,7 @@
   position: relative;
 }
 
-.column-title-container :nth-child(1) {
+.column-title {
   background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -173,7 +173,7 @@
   justify-content: center;
 }
 
-.column-title-container :nth-child(2) {
+.colum-title-value {
   font-weight: normal;
   padding: 0;
   

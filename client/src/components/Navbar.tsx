@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   getCardsBySearchInput,
   setColumnSliceAvailable,
-  setCurrentInputValue,
 } from "../store/cardSlice";
 import { useAppDispatch } from "../store/store";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
@@ -12,10 +11,11 @@ import searchOptions from "../assets/search-options.svg";
 import searchEngineIcon from "../assets/search-engine-icon.svg";
 import "../styles/Navbar.scss";
 import SidebarMenu from "./SidebarMenu";
+import { deleteSearchInput, saveSearchInput } from "../store/__Functions";
 
 export interface InputSearchEngine {
-  input: string;
-  search?: string;
+  property: string;
+  input?: string;
 }
 
 const Navbar = () => {
@@ -23,22 +23,24 @@ const Navbar = () => {
 
   const [searchOption, setSearchOption] = useState<string>("job title");
   const [inputSearch, setInputSearch] = useState<InputSearchEngine>({
-    input: "role",
-    search: "",
+    property: "role",
+    input: "",
   });
 
   const HandleSubmit = (e: React.FormEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(setColumnSliceAvailable());
     const value = {
-      input: inputSearch.input,
-      search: inputSearch.search?.toLocaleLowerCase(),
+      property: inputSearch.property,
+      input: inputSearch.input?.toLocaleLowerCase(),
     };
+    deleteSearchInput();
+    saveSearchInput(value.input);
+    // dispatch(setCurrentPropertyValue(value));
     dispatch(getCardsBySearchInput(value));
-    dispatch(setCurrentInputValue(value));
     setInputSearch({
-      input: inputSearch.input,
-      search: "",
+      property: inputSearch.property,
+      input: "",
     });
   };
 
@@ -46,7 +48,7 @@ const Navbar = () => {
     const { value } = e.target;
     setInputSearch({
       ...inputSearch,
-      search: value,
+      input: value,
     });
   };
 
@@ -60,14 +62,14 @@ const Navbar = () => {
     if (value === "job-title") {
       setSearchOption("job title");
       setInputSearch({
-        input: "role",
-        search: "",
+        property: "role",
+        input: "",
       });
     } else {
       setSearchOption("company");
       setInputSearch({
-        input: "company",
-        search: "",
+        property: "company",
+        input: "",
       });
     }
   };
@@ -82,7 +84,7 @@ const Navbar = () => {
       <form onSubmit={(e) => HandleSubmit(e)} className="container-search">
         <input
           onChange={(e) => HandleChange(e)}
-          value={inputSearch.search}
+          value={inputSearch.input}
           type="text"
           className="search-input"
           placeholder={
