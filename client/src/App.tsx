@@ -1,11 +1,4 @@
-import {
-  BrowserRouter,
-  Routes,
-  Route,
-  Navigate,
-  useLocation,
-  useNavigate,
-} from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import LandingPage from "./components/LandingPage";
 import Login from "./components/Login";
 import Registration from "./components/Registration";
@@ -13,8 +6,9 @@ import { useAppDispatch, useAppSelector } from "./store/store";
 import { verifyToken } from "./store/userSlice";
 import { useEffect } from "react";
 import MainPage from "./components/MainPage";
-import { getCards } from "./store/cardSlice";
+import { getCards, getCardsSliced } from "./store/cardSlice";
 import UserLoader from "./components/UserLoader";
+import { deleteSearchInput } from "./store/__Functions";
 
 function App() {
   const isLoggedIn = useAppSelector((state) => state.user.isLoggedIn);
@@ -23,12 +17,13 @@ function App() {
   const { loading_single_card } = useAppSelector((state) => state.card);
 
   useEffect(() => {
+    deleteSearchInput();
     dispatch(verifyToken());
     dispatch(getCards());
   }, [dispatch, verifyToken, getCards]);
 
   return (
-    <div onLoad={() => <Navigate to="/login" />}>
+    <>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -52,7 +47,7 @@ function App() {
         </Routes>
       </BrowserRouter>
       {loading_single_card ? <UserLoader /> : null}
-    </div>
+    </>
   );
 }
 

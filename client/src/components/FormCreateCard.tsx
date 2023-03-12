@@ -16,6 +16,29 @@ import stageFourBackground from "../assets/stage-four-background.jpg";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import "../styles/FormCreateCard.scss";
+import { scrollFirstColumnIntoView } from "./SingleColumn";
+
+export const openFormCreateCard = (): void => {
+  setTimeout(() => {
+    const createCardForm = document.querySelector(".create-card-form");
+    const formContainer = document.querySelector(".form-container");
+    const closeCreateForm = document.querySelector(".close-create-form");
+
+    createCardForm?.classList.add("create-form-activated");
+    formContainer?.classList.add("form-container-activated");
+    closeCreateForm?.classList.add("close-create-form-active");
+  }, 50);
+};
+
+const closeFormCreateCard = (): void => {
+  const createCardForm = document.querySelector(".create-card-form");
+  const formContainer = document.querySelector(".form-container");
+  const closeCreateForm = document.querySelector(".close-create-form");
+
+  createCardForm?.classList.remove("create-form-activated");
+  formContainer?.classList.remove("form-container-activated");
+  closeCreateForm?.classList.remove("close-create-form-active");
+};
 
 const FormCreateCard = () => {
   const dispatch = useAppDispatch();
@@ -78,6 +101,7 @@ const FormCreateCard = () => {
         status: "",
         description: "",
       });
+      scrollFirstColumnIntoView();
     }
     SetTranslateVariable(`0vh`);
   };
@@ -90,8 +114,7 @@ const FormCreateCard = () => {
   };
 
   const HandleCloseForm = (): void => {
-    const createCardForm = document.querySelector(".create-card-form");
-    createCardForm?.classList.remove("create-form-activated");
+    closeFormCreateCard();
     setTimeout(() => {
       dispatch(deactivateForm());
       SetTranslateVariable(`0vh`);
@@ -151,6 +174,7 @@ const FormCreateCard = () => {
                 onChange={(e) => HandleFormChange(e)}
                 placeholder="Company Name *"
                 type="text"
+                spellCheck="false"
               />
               {!input.company ? (
                 <button className="not-allowed">Next</button>
@@ -181,6 +205,7 @@ const FormCreateCard = () => {
                 placeholder="Job Title *"
                 type="text"
                 className="role"
+                spellCheck="false"
               />
               {!input.role ? (
                 <button className="not-allowed stage-two-buttons">Next</button>
@@ -206,12 +231,12 @@ const FormCreateCard = () => {
                 Prev
               </button>
               <div
-                area-button={input.status === "applyed" ? "applyed" : ""}
+                area-button={input.status === "applied" ? "applied" : ""}
                 className="status-option status-one"
-                area-text="applyed"
-                onClick={() => SelectOption("applyed")}
+                area-text="applied"
+                onClick={() => SelectOption("applied")}
               >
-                Applyed
+                Applied
               </div>
               <div
                 area-button={input.status === "interview" ? "interview" : ""}
@@ -262,6 +287,7 @@ const FormCreateCard = () => {
                 onChange={(e) => HandleFormChange(e)}
                 placeholder="Description of the role"
                 className="description"
+                spellCheck="false"
               />
             </div>
 

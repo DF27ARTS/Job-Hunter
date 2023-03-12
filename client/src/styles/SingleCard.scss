@@ -10,7 +10,7 @@
   gap: 1vh;
 
   padding: 3vh 7vh 3vh 3vh;
-  border-radius: 2vh;
+  border-radius: 1.5vh;
   background: var(--card-background-color);
   overflow: hidden;
   transition: transform 300ms var(--transition-animated);
@@ -30,8 +30,21 @@
   display: flex;
   text-transform: capitalize;
   padding: 0.5vh;
+  overflow-x: auto ;
 
   z-index: 11;
+}
+
+.card-information-status::-webkit-scrollbar {
+  height: 3px;
+  border-radius: 5vh;
+  background: #cccccc56;
+}
+
+.card-information-status::-webkit-scrollbar-thumb {
+  height: 3px;
+  border-radius: 5vh;
+  background: #ccccccbb;
 }
 
 .card-information-role {
@@ -42,129 +55,12 @@
   padding: 0 .5vh;
   background: linear-gradient(45deg, var(--card-background-one, inherit), var(--card-background-two, inherit));
   -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent ;
+  background-clip: text;
+  color: transparent ;
 }
 
 
-.card-information-status {
-  position: relative;
-}
 
-.open-status-selector {
-  height: 2.2vh;
-  aspect-ratio: 1 / 1;
-  transform: rotate(90deg);
-  transition: transform 300ms var(--form-slider-animation);
-
-  transform-origin: 70% 70%;
-  box-shadow: 
-    0 0 0 1px var(--body-text-color) inset,
-    0 0 0 3px var(--card-background-color) inset,
-    0 0 0 4px var(--body-text-color) inset;
-  clip-path: polygon(100% 0, 100% 100%, 0 100%);
-  transform: 
-    rotate(45deg);
-  
-
-  display: flex;
-  margin-left: 3vh;
-  cursor: pointer;
-  align-items: center;
-  justify-content: center;
-}
-
-.card-information-status:focus-within .open-status-selector {
-  transform: rotate(-45deg);
-}
-
-.card-information-status:focus-within .container-select-status {
-  height: 10vh ;
-  padding: 2vh 0;
-  border: 2px solid var(--body-text-color);
-  border-right: none;
-  border-left: none;
-}
-
-.card-information-status:focus-within .container-select-status:before {
-  z-index: -1;
-  transition: 
-    z-index 200ms ease-in-out 200ms;
-}
-
-
-// Select status on the card
-.container-select-status {
-  position: absolute;
-  bottom: 110%;
-  left: 0;
-  
-  width: 100%;
-
-  display: flex;
-  gap: 1vh;
-  background: var(--card-background-color);
-  
-  height: 0px;
-  border: 2px solid transparent;
-  border-right: none;
-  border-left: none;
-  overflow: hidden;
-
-  transition: 
-    height 200ms ease-in-out,
-    border 200ms ease-in-out;
-
-}
-
-.container-select-status:before {
-  position: absolute;
-  content: "";
-  top: 0;
-  left: 0;
-  height: 100%;
-  width: 100%;
-
-  background: var(--card-background-color);
-  z-index: 100;
-}
-
-.single-card-option-singlecard {
-  padding: 1vh ;
-  flex-grow: 1;
-  border: 1px solid var(--body-text-color);
-  border-radius: 1vh;
-  background: var(--card-background-color);
-  color: inherit;
-
-
-  font-family: var(--single-card-font );
-  cursor: pointer;
-}
-
-.singlecard-applyed { border-color: var(--color-one) ;}
-.singlecard-interview { border-color: rgb(28, 163, 28);}
-.singlecard-rejected { border-color: rgb(204, 38, 38);}
-
-
-.container-card-menu {
-  position: absolute;
-  top: 0;
-  right: 2vh;
-  display: flex;
-  flex-direction: column;
-  padding: 2vh 0 3vh 0;
-  gap: 2vh;
-
-  height: 100%;
-  width: 4vh;
-}
-
-.container-card-menu > img {
-  height: 3.3vh;
-  width: 3.3vh;
-
-  cursor: pointer;
-}
 
 
 // Delete message
@@ -239,6 +135,200 @@
   height: 100%;
   cursor: pointer;
 }
+
+
+
+
+
+// single cards menu container
+.single-card-menu-container {
+
+  --single-card-background: var(--card-background-color);
+
+  position: absolute; 
+  top: 0;
+  bottom: 0;
+  right: 2vh;
+  margin: auto;
+  padding: 0 2.5vh 0 0;
+  border-radius: .5vh;
+  
+  height: 90%;
+  max-height: 25vh;
+  width: 2vh;
+  z-index: 20;
+  overflow: hidden;
+  transition: width 350ms ease-in-out;
+  background-color: var(--single-card-background);
+}
+
+.single-card-menu-containe-active {
+  width: 91.5%;
+}
+
+
+.single-card-menu-icon {
+  position: absolute;
+  top: 2vh;
+  right: 1vh;
+
+  height:4vh;
+  width: 1.5vh;
+  cursor: pointer;
+}
+
+.icon-clicked { animation: menu_icon_animation 300ms ease; }
+
+@keyframes menu_icon_animation {
+  0%, 100% { transform: scale(1) }
+  50% { transform: scale(.7) }
+}
+
+.menu-single-dot {
+  position: absolute;
+  content: "";
+  inset: 0;
+  margin: auto;
+
+  height: .5vh;
+  aspect-ratio: 1 / 1;
+  border-radius: 50%;
+  background: #ccc;
+}
+
+.menu-single-dot:nth-child(2) {
+  top: 0;
+  right: 0;
+  transform: translateY(-1vh);
+}
+
+.menu-single-dot:nth-child(3) {
+  top: 0;
+  right: 0;
+  transform: translateY(1vh);
+}
+
+
+
+
+
+// Card menu opstions container
+.single-card-menu-container-options {
+  height: 100%;
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  gap: .5vh;
+  padding: 1vh 0 1vh 4vh;
+}
+
+.single-card-menu-containe-active .single-card-menu-container-options  {
+  padding: 1vh 0 1vh 2vh;
+}
+
+.card-menu-single-option-container {
+  width: 100%;
+  flex-grow: 1;
+  min-width: max-content;
+
+  padding: 0 1.2vh;
+  border-radius: .5vh;
+  cursor: pointer;
+
+  display: flex;
+  align-items: center;
+
+  transition: background-color 200ms ease;
+}
+
+.card-menu-single-option-container:hover {
+  background-color: #fff1 ;
+}
+
+.card-menu-option-message {
+  flex-grow: 1;
+  font-family: var(--single-card-font);
+  font-size: 2.2vh;
+}
+
+.card-menu-option-icon {
+  height: 2.5vh;
+}
+
+
+
+
+// Single card select status container
+.single-card-select-status-container {
+  position: absolute;
+  inset: 0;
+  margin: auto;
+
+  height: 100%;
+  max-height: 22vh;
+  width: 1px;
+  border-radius: .5vh;
+  overflow: hidden;
+
+  background: var(--card-column-background);
+
+  display: flex;
+  flex-direction: column;
+  gap: .5vh;
+  padding: 1vh 2vh;
+
+  opacity: 0;
+  visibility: hidden;
+
+  transition: 
+    opacity 300ms ease-in-out,
+    visibility 300ms ease-in-out,
+    width 300ms ease-in-out;
+}
+
+.single-card-select-status-open {
+  opacity: 1;
+  visibility: visible;
+  width: 90%
+}
+
+
+.select-status-hidden-color::before { 
+  position: absolute; 
+  content: ""; 
+  inset: 0;
+  background: var(--card-column-background);
+}
+
+.single-card-status-option {
+  width: 100%;
+  flex-grow: 1;
+  border-radius: .5vh;
+  background-color: #fff1;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--single-card-font);
+  padding: 0 3vh;
+  transition: background-color 200ms ease;
+  cursor: default;
+  user-select: none;
+}
+
+.single-card-status-option[area-text=applied] { color: var(--card-background-one) }
+.single-card-status-option[area-text=interview] { color: var(--card-background-one) }
+.single-card-status-option[area-text=rejected] { color: var(--card-background-one) }
+
+
+.single-card-status-option:hover {
+  background-color: #fff2;
+}
+
+
+
+
 
 
 @keyframes single_card_close_button {

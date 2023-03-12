@@ -35,6 +35,27 @@ const verifyToken = async (req, res, next) => {
   }
 };
 
+router.get("/getusers", async (req, res) => {
+  try {
+    const users = await userProfile.findAll();
+    return res.json(users);
+  } catch (error) {
+    res.send(error.message);
+  }
+});
+
+router.delete("/deleteuser", async (req, res) => {
+  const { user_id } = req.query;
+  await userProfile.destroy({ where: { id: user_id } });
+  return res.json({ message: "User deleted" });
+});
+
+router.put("/updateuser", async (req, res) => {
+  const { user_id } = req.query;
+  await userProfile.update(req.body, { where: { id: user_id } });
+  res.json({ message: "user updated" });
+});
+
 router.post("/register", async (req, res) => {
   try {
     const { name, lastName, email, password } = req.body;

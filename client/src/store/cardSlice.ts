@@ -1,17 +1,26 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
-import { InputSearchEngine } from "../components/Navbar";
-import { API_URL, getToken } from "./userSlice";
+import { create } from "domain";
+import { removeLoadingCardClass } from "../components/CardsContainer";
+import { openFormCreateCard } from "../components/FormCreateCard";
+import { API_URL } from "./userSlice";
+import { deleteSearchInput, getToken } from "./__Functions";
 
 
 export interface Card {
   id?: number;
   title?: string;
+  lastCards?: boolean;
   company: string;
   role: string;
   status: string;
   description: string;
   date?: string;
+  
+}
+
+interface lastCard {
+  title: string;
 }
 
 interface cardState {
@@ -20,12 +29,15 @@ interface cardState {
   arrayDates: string[] | any;
   loading_cards: boolean;
   loading_single_card: boolean;
-  grid_columns: number;
   card_error: boolean;
   create_form_active: boolean; 
   searchError: boolean; 
   showCardsByStatus: boolean;
   cardCreatedLoading: boolean;
+  loadingSlice: boolean;
+  columnSliceAvailable: boolean;
+  currentPropertyValue: string;
+  LAST_COLUMN_CARD: lastCard;
 }
 
 const initialState:cardState = {
@@ -39,12 +51,15 @@ const initialState:cardState = {
   arrayDates: [],
   loading_cards: false,
   loading_single_card: false,
-  grid_columns: 1,
   card_error: false,
   create_form_active: false,
   searchError: false,
   showCardsByStatus: false,
   cardCreatedLoading: false,
+  loadingSlice: false,
+  columnSliceAvailable: true,
+  currentPropertyValue: "role",
+  LAST_COLUMN_CARD: { title: "" },
 }
 
 export const getCards = createAsyncThunk<Card[][] | any>(
@@ -63,19 +78,53 @@ export const getCards = createAsyncThunk<Card[][] | any>(
   }
 )
 
+export const getCardsSliced = createAsyncThunk< Card[][] | any, string, any>(
+  "cards/getCardsSliced",
+  async (date, ThunkAPI) => {
+    try {
+      const { data } = await axios.get(`${API_URL}/cards?initialDate=${date}`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })  
+      return data
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
 export const getCardsBySearchInput = createAsyncThunk<Card[][] | any, Card | any>(
-  "cards/getCardsById",
+  "cards/getCardsBySearchInput",
   async (search, ThunkAPI) => { 
     const config = {
       headers: { Authorization: `Bearer ${getToken()}` }
     };
     try {
-      const { data } = await axios.get(`${API_URL}/cards/search?input=${search.input}&search=${search.search}`,
+      const { data } = await axios.get(`${API_URL}/cards/search?property=${search.property}&input=${search.input}`,
         config
       )
       return data;
     } catch (error) {
       ThunkAPI.dispatch(getCards());
+      return ThunkAPI.rejectWithValue(error);
+    }
+  }
+)
+
+export const getSlicedCardsBySearchInput = createAsyncThunk<Card[][] | any, Card | any>(
+  "cards/getSlicedCardsBySearchInput",
+  async (search, ThunkAPI) => { 
+    const config = {
+      headers: { Authorization: `Bearer ${getToken()}` }
+    };
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/cards/search?property=${search.property}&input=${search.input}&initialDate=${search.initialDate}`,
+        config
+      )
+      return data;
+    } catch (error) {
       return ThunkAPI.rejectWithValue(error);
     }
   }
@@ -140,7 +189,7 @@ export const getDates = createAsyncThunk<any | string[]>(
   async (_, ThunkAPI) => {
     try {
       
-      const { data } = await axios.get(`${API_URL}/get_dates`, {
+      const { data } = await axios.get(`${API_URL}/cards/dates`, {
         headers: {
           Authorization: getToken(),
         },
@@ -152,13 +201,72 @@ export const getDates = createAsyncThunk<any | string[]>(
     }
   }
 )
-  
+
+export const getCardsByStatus = createAsyncThunk<any>(
+  "cards/getCardsByStatus",
+  async (_, ThunkAPI) => {
+    try {
+      const resApplied = await axios.get(`${API_URL}/cards/status`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+      const resInterview = await axios.get(`${API_URL}/cards/status?cardStatus=interview`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+      const resRejected = await axios.get(`${API_URL}/cards/status?cardStatus=rejected`, {
+        headers: {
+          Authorization: getToken(),
+        },
+      })
+
+      const data = [
+        [{title: "Applied", lastCards: resApplied.data.lastSlice}, ...resApplied.data.cards],
+        [{title: "Interview", lastCards: resInterview.data.lastSlice}, ...resInterview.data.cards],
+        [{title: "Rejected", lastCards: resRejected.data.lastSlice}, ...resRejected.data.cards],
+      ]
+
+      return data;
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
+interface StatusCardsSlice {
+  status: string,
+  start: number
+}
+
+export const getStatusCardsSlice = createAsyncThunk<any, StatusCardsSlice >(
+  "cards/getStatusCardsSlice",
+  async (object, ThunkAPI) => {
+    const { status, start } = object;
+    try {
+      const { data } = await axios.get(
+        `${API_URL}/cards/status?cardStatus=${status}&start=${start}`,
+        {
+          headers: {
+            Authorization: getToken(),
+          },
+        }
+      )
+
+      return data;
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
 export const deleteCardByDate = createAsyncThunk<any, any>(
   "cards/deleteCardByDate",
   async (date, ThunkAPI) => {
     try {
       
-      const {status} = await axios.delete(`${API_URL}/delete_by_date?date=${date}`, {
+      const {status} = await axios.delete(`${API_URL}/cards/date?date=${date}`, {
         headers: {
           Authorization: getToken(),
         },
@@ -181,7 +289,7 @@ export const deleteAllRejectedCards = createAsyncThunk(
   async (_, ThunkAPI) => {
     try {
       
-      const { status } = await axios.delete(`${API_URL}/delete_rejected`, {
+      const { status } = await axios.delete(`${API_URL}/cards/rejected`, {
         headers: {
           Authorization: getToken()
         }
@@ -198,6 +306,25 @@ export const deleteAllRejectedCards = createAsyncThunk(
   }
 )
 
+
+export const deleteCardsByDefineStatus = createAsyncThunk<number[] | any, number[] | any>(
+  "cards/deleteCardsByDefineStatus",
+  async (ArrayIds, ThunkAPI) => {
+    try {
+      ArrayIds.forEach( async (id: number) => {
+        await axios.delete(`${API_URL}/cards?card_id=${id}`, {
+          headers: {
+            Authorization: getToken()
+          }
+        })
+      });
+      return ArrayIds;
+    } catch (error) {
+      return ThunkAPI.rejectWithValue(error)
+    }
+  }
+)
+
 export const CardSlice = createSlice({
   name: "card",
   initialState: initialState,
@@ -207,9 +334,7 @@ export const CardSlice = createSlice({
       state.loading_cards = true
       state.loading_single_card = true
     },
-    closeCardError: (state) => {
-      state.card_error = false
-    },
+    closeCardError: (state) => { state.card_error = false },
     activateForm: (state) => {
       state.create_form_active = true;
     },
@@ -221,30 +346,31 @@ export const CardSlice = createSlice({
       state.cardToUpdate = action.payload
       state.create_form_active = true
     },
-    cleanCardToUpdate: (state) => {
-      state.cardToUpdate = {}
-    },
-    closeInputError: (state) => {
-      state.searchError = false
-    },
-    setShowByStatus: (state, {payload}) => {
-      state.showCardsByStatus = payload
-    },
+    cleanCardToUpdate: (state) => { state.cardToUpdate = {} },
+    closeInputError: (state) => { state.searchError = false },
+    setShowByStatus: (state, {payload}) => { state.showCardsByStatus = payload },
     closeLoading: (state) => { state.loading_single_card = false; },
-    openLoading: (state) => { state.loading_single_card = true ;}
+    openLoading: (state) => { state.loading_single_card = true ;},
+    cleanCurrentPropertyValue: (state) => {
+      state.currentPropertyValue = "role";
+      state.columnSliceAvailable = true;
+    },
+    setColumnSliceAvailable: (state) => { state.columnSliceAvailable =  true },
   },
   extraReducers: (builder) => {
     builder
       .addCase(getCards.pending, (state) => { state.loading_cards = true})
-      .addCase(getCards.fulfilled, (state, action) => {
+      .addCase(getCards.fulfilled, (state, {payload}) => {
+        const { cards, lastSlice } = payload;
+
         state.loading_cards = true
-        if (state.showCardsByStatus) {
-            state.cards = orderByStatus(action.payload)
-            state.grid_columns = orderByStatus(action.payload).length
-          } else {
-            state.cards = action.payload
-            state.grid_columns = action.payload.length
-          }
+        state.columnSliceAvailable = true
+        
+        state.cards = cards
+        state.LAST_COLUMN_CARD.title = cards[cards.length - 1][0].title
+
+        if (lastSlice) state.columnSliceAvailable = false
+        
         state.loading_cards = false
         state.loading_single_card = false
       })
@@ -252,34 +378,153 @@ export const CardSlice = createSlice({
         state.loading_cards = false
         state.loading_single_card = false
       })
+    builder
+      .addCase(getCardsByStatus.pending, (state) => { state.loading_cards = true})
+      .addCase(getCardsByStatus.fulfilled, (state, {payload}) => {
+        state.loading_cards = true
+        state.columnSliceAvailable = false
+        
+        state.cards = payload
+
+        state.loading_cards = false
+        state.loading_single_card = false
+      })
+      .addCase(getCardsByStatus.rejected, (state) => {
+        state.loading_cards = false
+        state.loading_single_card = false
+      })
+
+    builder
+      .addCase(getCardsSliced.pending, (state) => {
+        state.loadingSlice = true
+      })
+      .addCase(getCardsSliced.fulfilled, (state, { payload }) => {
+        const { cards, lastSlice } = payload;
+        state.cards = [...state.cards, ...cards]
+        state.columnSliceAvailable = true
+        state.loadingSlice = false
+        state.LAST_COLUMN_CARD.title = cards[cards.length - 1][0].title
+        
+        if (lastSlice) 
+          state.columnSliceAvailable = false
+        
+      })
+      .addCase(getCardsSliced.rejected, (state) => {
+        state.loadingSlice = false
+        state.columnSliceAvailable = true;
+      })
+    
+    builder
+      .addCase(getStatusCardsSlice.fulfilled, (state, { payload }) => {
+        removeLoadingCardClass()
+        const payloadStatus = `${payload.cards[0].status[0].toUpperCase()}${payload.cards[0].status.slice(1)}`
+        state.cards.map((cardsArray, index) => {
+          if (cardsArray[0].title === payloadStatus) {
+            state.cards[index] = [...state.cards[index], ...payload.cards]
+
+            if (payload.lastSlice) {
+              state.cards[index][0].lastCards = true;
+            }
+          }
+        })
+      })
+      .addCase(getStatusCardsSlice.rejected, (state) => {
+        removeLoadingCardClass()
+      })
 
     builder
       .addCase(getCardsBySearchInput.pending, (state) => {
         state.loading_cards = true
         state.loading_single_card = true
+        state.columnSliceAvailable = true
       })
-      .addCase(getCardsBySearchInput.fulfilled, (state, action) => {
+      .addCase(getCardsBySearchInput.fulfilled, (state, {payload}) => {
+        const { cards, lastSlice } = payload;
+
         state.loading_cards = true
+        state.columnSliceAvailable = true
+        state.LAST_COLUMN_CARD.title = cards[cards.length - 1][0].title
+
         if (state.showCardsByStatus) {
-            state.cards = orderByStatus(action.payload)
-            state.grid_columns = orderByStatus(action.payload).length
-          } else {
-            state.cards = action.payload
-            state.grid_columns = action.payload.length
-          }
+          const showByStatusCards = orderByStatus(cards)
+          state.cards = showByStatusCards
+        } else {
+          state.cards = cards
+        }
+
+        if (lastSlice) state.columnSliceAvailable = false
+        
         state.loading_cards = false
         state.loading_single_card = false
-        
       })
       .addCase(getCardsBySearchInput.rejected, (state) => {
         state.loading_cards = false;
         state.searchError = true;
-        state.loading_single_card = false
+        state.loading_single_card = false;
+      })
+
+    builder
+      .addCase(getSlicedCardsBySearchInput.pending, (state) => {
+        state.loadingSlice = true
+      })
+      .addCase(getSlicedCardsBySearchInput.fulfilled, (state, {payload}) => {
+        const { cards, lastSlice } = payload;
+
+        state.cards = [...state.cards, ...cards]
+        state.columnSliceAvailable = true
+        state.loadingSlice = false
+        state.LAST_COLUMN_CARD.title = cards[cards.length - 1][0].title
+        
+        if (lastSlice) 
+          state.columnSliceAvailable = false
+      })
+      .addCase(getSlicedCardsBySearchInput.rejected, (state) => {
+        state.loadingSlice = false
+        state.columnSliceAvailable = false
+        deleteSearchInput()
       })
 
     builder
       .addCase(createCard.pending, (state) => { state.cardCreatedLoading = true})
       .addCase(createCard.fulfilled, (state, action) => {
+
+        if (state.showCardsByStatus) {
+          let cardSaved = false;
+
+          if (!state.cards[0].length) {
+            state.columnSliceAvailable = false
+          }
+
+          // Map the cards to put the new card on its column
+          if (state.cards[0].length) {
+            state.cards.map((cardsArray, index) => {
+              if (cardsArray[1].status === action.payload.status) {
+                state.cards[index] = [state.cards[index][0], action.payload, ...state.cards[index].filter(card => !card.title)]
+                cardSaved = true;
+              }
+            })
+          }
+
+
+          // Create and order the new column in case it doesn't exist already
+          if (!cardSaved) {
+            const Array = [...state.cards, [{title: action.payload.status }, action.payload] ]
+            const newArray = Array.filter(array => array.length)
+            state.cards = newArray;
+            state.cards = state.cards.sort((a: any, b: any): any => {
+              if (a.length && b.length) {
+                const arrayA = a[0].title[0].charCodeAt()
+                const arrayB = b[0].title[0].charCodeAt()
+                return arrayA - arrayB
+              }
+            })
+          }
+
+          state.cardCreatedLoading = false
+          state.loading_cards = false
+          state.create_form_active = false
+          return
+        }
           
         if (state.cards[0].length && state.cards[0][1].date !== action.payload.date) {
           state.cards = [
@@ -289,11 +534,9 @@ export const CardSlice = createSlice({
             ],
             ...state.cards
           ]
-          state.grid_columns = state.grid_columns + 1
         }
         else if (!state.cards[0].length) {
           state.cards[0] = [{ title: action.payload.date }, action.payload];
-          state.grid_columns = 1
         } else {
           const newArray = [
             state.cards[0][0],
@@ -313,6 +556,7 @@ export const CardSlice = createSlice({
       .addCase(createCard.rejected, (state) => {
         state.cardCreatedLoading = false
         state.card_error = true
+        openFormCreateCard()
       })
 
     builder
@@ -320,7 +564,6 @@ export const CardSlice = createSlice({
       .addCase(deleteCard.fulfilled, (state, action) => {
         if (state.cards[0].length <= 2 && state.cards[1]) {
           state.cards = state.cards.filter(cardsArray => cardsArray !== state.cards[0])
-          state.grid_columns = state.cards.length
         }
         else if (state.cards[0].length <= 2) {
           state.cards[0] = []
@@ -349,7 +592,6 @@ export const CardSlice = createSlice({
         })
         if (state.showCardsByStatus) {
           state.cards = orderByStatus(state.cards)
-          state.grid_columns = orderByStatus(state.cards).length
         } 
         state.cardCreatedLoading = false
         state.create_form_active = false
@@ -362,9 +604,8 @@ export const CardSlice = createSlice({
       })
     
     builder
-      .addCase(getDates.fulfilled, (state, action) => {
-        state.arrayDates = action.payload;
-      })
+      .addCase(getDates.fulfilled, (state, action) => { state.arrayDates = action.payload;})
+      
     builder
       .addCase(deleteCardByDate.pending, (state) => { state.loading_single_card = true; })
       .addCase(deleteCardByDate.fulfilled, (state, action) => {
@@ -377,10 +618,33 @@ export const CardSlice = createSlice({
         }
       })
       .addCase(deleteCardByDate.rejected, (state) => { state.loading_single_card = false; })
+
     builder
       .addCase(deleteAllRejectedCards.pending, (state) => { state.loading_single_card = true })
       .addCase(deleteAllRejectedCards.fulfilled, (state) => { state.loading_single_card = false })
       .addCase(deleteAllRejectedCards.rejected, (state) => { state.loading_single_card = false })
+      
+      builder
+      .addCase(deleteCardsByDefineStatus.pending, (state) => { state.loading_single_card = true })
+      .addCase(deleteCardsByDefineStatus.fulfilled, (state, {payload}) => {
+        const  ArrayIds = payload;
+
+        ArrayIds.map((id: number) => {
+          state.cards.map((cardsArray: Card[], index: number) => {
+
+            cardsArray.map((card) => {
+
+              if (card.id && card.id === id) {
+                state.cards[index] = state.cards[index].filter(card => card.id !== id)
+                return
+              }
+            })
+          })
+        })
+
+        state.loading_single_card = false 
+      })
+      .addCase(deleteCardsByDefineStatus.rejected, (state) => { state.loading_single_card = false })
   }
 })
 
@@ -436,5 +700,7 @@ export const {
   setShowByStatus,
   closeLoading,
   openLoading,
+  cleanCurrentPropertyValue,
+  setColumnSliceAvailable,
 } = CardSlice.actions
 

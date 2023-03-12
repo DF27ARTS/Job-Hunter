@@ -1,25 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit"
 import axios from "axios"
 import { getCards } from "./cardSlice"
-
-// export const API_URL = import.meta.env.VITE_API_URL;
-export const API_URL = "https://jub-hunter-api.onrender.com"
+import { deleteToken, getToken, saveToken } from "./__Functions";
 
 
-export const saveToken = (token: string): void => {
-  const response = localStorage.setItem("token", token)
-  return response
-}
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+console.log(import.meta.env)
+// export const API_URL = "https://jub-hunter-api.onrender.com"
 
-export const getToken = (): string | null => {
-  const response = localStorage.getItem("token")
-  return response
-}
-
-export const deleteToken = (): void => {
-  const response = localStorage.removeItem("token")
-  return response
-}
 
 export interface User {
   id?: number;
@@ -27,19 +15,6 @@ export interface User {
   lastName?: string;
   email?: string;
   password?: string;
-}
-
-export const FormatNumber = (string: string | undefined): string | undefined => {
-  if (string) {
-    const [day, month, year] = string.split("/");
-    const Format = new Intl.NumberFormat(undefined, { minimumIntegerDigits: 2, });
-    const monthFormat = Format.format(parseInt(month));
-    const dayFormat = Format.format(parseInt(day));
-
-    return `${dayFormat}/${monthFormat}/${year}`
-  } else {
-    return undefined;
-  }
 }
 
 interface userState {

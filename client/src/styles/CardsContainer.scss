@@ -6,10 +6,8 @@
   flex: 1;
   margin: auto;
 
-  display: grid;
+  display: flex;
   gap: 3vh;
-  grid-template-columns: repeat(var(--columns-amount, 1), 50vh);
-  grid-template-rows: 90vh;
   overflow-y: hidden !important;
   overflow-x: scroll;
 
@@ -17,6 +15,7 @@
 }
 
 .without-cards-conainer {
+  display: grid;
   grid-template-areas: 
   "message      message       message"
   "column-one column-two column-three"
@@ -28,6 +27,8 @@
 .container-columns::-webkit-scrollbar-track {
   margin-inline-start: 3px;
   margin-inline-end: 3px;
+  background: hsla(0, 0%, 20%, 0.527);
+  border-radius: 10px;
 }
 
 .container-columns::-webkit-scrollbar {
@@ -41,155 +42,11 @@
   border-radius: 2vh;
 }
 
-.column {
-  position: relative;
-  padding: 2vh;
 
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2vh;
-  min-height: 80vh ;
-  
-  background: var(--card-column-background);
-  border-radius: 2vh;
-
-  opacity: 0;
-  visibility: hidden;
-  transition: 
-  opacity 400ms ease,
-  visibility 400ms ease,
-    transform 300ms var(--transition-animated);
-}
-
-.create-new-card-button {
-  position: absolute;
-  left: 10px;
-  top: 0;
-  bottom: 0;
-  margin: auto;
-
-  height: 50%;
-  aspect-ratio: 1 / 1;
-  background: var(--card-background-color);
-  border: 2px solid var(--body-text-color);
-  color: var(--body-text-color);
-  border-radius: 5px;
-
-  font-size: 3.2vh;
-  cursor: pointer;
-  transition: 
-    color var(--transition-animated) 400ms,
-    border var(--transition-animated) 200ms;
-}
-
-.create-new-card-button:hover,
-.create-new-card-button:focus {
-  border: 2px solid var(--color-one);
-  color: var(--color-two);
-}
-
-.column-animation {
-  transform: translateY(0) !important;
-  opacity: 1 !important;
-  visibility: visible !important;
-}
-
-.column:nth-child(2n - 1) {
-  transform: translateY(-30%);
-}
-
-.column:nth-child(2n) {
-  transform: translateY(30%);
-}
-
-.scroll-container {
-  flex: none;
-
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2vh;
-  flex-grow: 1;
-  width: 100%;
-  height: 85%;
-  padding: 0 .7vh 0 0;
-  
-  background: var(--card-column-background);
-  overflow-y: auto;
-  overflow-x: hidden;
-}
-
-.scroll-container::-webkit-scrollbar {
-  width: 4px;
-}
-
-.scroll-container::-webkit-scrollbar-thumb {
-  background: var(--card-background-color);
-  border-radius: 4px;
-}
-
-.scroll-container::-webkit-scrollbar-track {
-  margin-block-start: 2vh;
-  margin-block-end: 2vh;
-}
-
-.column-title-container {
-  background: var(--card-background-color);
-  width: 100%;
-
-  display: flex;
-  justify-content: center;
-  gap: 4vh;
-  border-radius: 1.8vh 1.8vh 0 0;
-
-  position: relative;
-}
-
-.column-title-container :nth-child(1) {
-  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  font-family: var(--fantacy-font);
-  padding: 0 .7vh;
-  font-size: 3.5vh;
-  user-select: none;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.column-title-container :nth-child(2) {
-  font-weight: normal;
-  padding: 0;
-  
-  display: flex;
-  align-items: center;
-  font-size: 3vh;
-  text-transform: capitalize;
-}
-
-.cards-amount {
-  position: absolute;
-  right: 1vh;
-  top: 1vh;
-  height: 4.5vh;
-  width: 4.5vh;
-  margin: auto ;
-  font-size: 2.2vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 50%;
-  border: 2px solid var(--body-text-color);
-}
 
 
 
 // Muck cards
-
 .conteiner-message-without-cards {
   grid-area: message;
 
@@ -242,16 +99,24 @@
   border-radius: 2vh 2vh 0 0;
   position: relative;
   overflow: hidden;
+
+  height: 100%;
+  width: 100%;
 }
 
+.loading-muck-card,
 .single-muck-card {
   background: var(--card-background-color);
   border-radius: 2vh;
   position: relative;
   overflow: hidden;
+
+  height: 100%;
+  width: 100%;
 }
 
 .muck-column-title::before,
+.loading-muck-card::before,
 .single-muck-card::before {
   position: absolute;
   content: " ";
@@ -260,9 +125,24 @@
   
   height: 150%;
   width: 150%;
+  filter: blur(5px);
   background: linear-gradient(45deg, var(--card-background-color), 40%, rgb(92, 92, 92), 60%, var(--card-background-color));
 
   animation: card-animated 5000ms linear infinite;
+}
+
+.loading-muck-card::before {
+  animation: card-animated 2000ms linear infinite;
+}
+
+.loading-muck-card {
+  height: 20vh !important;
+  flex: none;
+  display: none;
+}
+
+.loading-column-active .loading-muck-card {
+  display: block;
 }
 
 

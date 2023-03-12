@@ -17,36 +17,69 @@
 }
 
 .registration-loader {
-  height: 20vh;
-  width: 20vh;
+
+  position: relative;
+
+  height: 22vh;
+  width: 22vh;
 
   border-radius: 50%;
-  border: 5px solid #ccc3;
-  border-top: 5px solid rgb(35, 191, 243);
 
   display: flex;
   align-items: center;
   justify-content: center;
   padding: 0;
 
-  animation:  loader-form 1000ms linear infinite;
 }
 
-.job-hunter-icon {
-  height: 120%;
-  width: min-content;
+.registration-loader::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  left: 0;
 
+  height: 100%;
+  width: 100%;
+  z-index: 100;
   border-radius: 50%;
-  padding: 10px;
 
-  animation:  loader-form 1000ms linear infinite reverse;
+  border: 0 solid #ccc3;
+  border-top: 5px solid rgb(35, 191, 243);
+  animation:  loader-form 900ms ease 200ms infinite;
+}
+
+.second-loader,
+.third-loader {
+  height: 98.5%;
+  width: 98.5%;
+  border-radius: 50%;
+
+  position: absolute;
+}
+
+.second-loader {
+  top: 0;
+  left: 0;
+  border-top: 5px solid var(--color-one);
+  animation:  loader-form 900ms ease 100ms infinite;
+}
+
+.third-loader {
+  height: 97%;
+  width: 97%;
+
+  bottom: 0;
+  right: 0;
+  border-top: 5px solid rgb(48, 114, 184);
+  animation:  loader-form 900ms ease infinite;
+}
+
+
+.job-hunter-icon {
+  height: 100%;
 }
 
 @keyframes loader-form {
-  from {
-    transform: rotate(0deg),
-  }
-  to {
-    transform: rotate(360deg),
-  }
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }

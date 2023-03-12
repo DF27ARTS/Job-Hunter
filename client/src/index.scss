@@ -26,10 +26,23 @@
   --display-status: none;
   --sidebar-clip-path: 0px;
   --single-card-font: 'Merienda', cursive;
+
+
+  // Login and signup form variables
+  --form-stage-translate: 0;
+
+
+
+  // body variables
+  --scroll-y: auto;
 }
 
 *, *::after, *::before {
   box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 body {
@@ -44,7 +57,7 @@ body {
   color: var(--body-text-color);
 
   overflow-x: hidden;
-  overflow-y: auto;
+  overflow-y: var(--scroll-y);
 }
 
 body::-webkit-scrollbar {
