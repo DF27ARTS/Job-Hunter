@@ -14,6 +14,7 @@ import {
   deleteAllRejectedCards,
   deleteCardByDate,
   getCards,
+  getCardsByStatus,
   getDates,
   setShowByStatus,
 } from "../store/cardSlice";
@@ -44,6 +45,7 @@ const SidebarMenu = () => {
     }, 200);
 
     if (value) {
+      document.documentElement.style.setProperty("--scroll-y", "hidden");
       document.documentElement.style.setProperty("--display-status", "block");
       setTimeout(() => {
         document.documentElement.style.setProperty(
@@ -52,6 +54,7 @@ const SidebarMenu = () => {
         );
       }, 10);
     } else {
+      document.documentElement.style.setProperty("--scroll-y", "auto");
       document.documentElement.style.setProperty("--sidebar-clip-path", "0px");
       setTimeout(() => {
         document.documentElement.style.setProperty("--display-status", "none");
@@ -78,7 +81,11 @@ const SidebarMenu = () => {
     dispatch(cleanCurrentPropertyValue());
     dispatch(clearStorage());
     dispatch(setShowByStatus(value));
-    dispatch(getCards());
+    if (value) {
+      dispatch(getCardsByStatus());
+    } else {
+      dispatch(getCards());
+    }
     OpenAndcloseSidebar(false);
   };
 

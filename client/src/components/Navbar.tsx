@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import {
   getCardsBySearchInput,
@@ -18,6 +18,12 @@ export interface InputSearchEngine {
   input?: string;
 }
 
+// Scroll into view function
+export const ScrollIntoViewNavbar = (): void => {
+  const containerNavbar = document.querySelector(".container-navbar");
+  containerNavbar?.scrollIntoView(true);
+};
+
 const Navbar = () => {
   const dispatch = useAppDispatch();
 
@@ -36,7 +42,6 @@ const Navbar = () => {
     };
     deleteSearchInput();
     saveSearchInput(value.input);
-    // dispatch(setCurrentPropertyValue(value));
     dispatch(getCardsBySearchInput(value));
     setInputSearch({
       property: inputSearch.property,
@@ -50,6 +55,38 @@ const Navbar = () => {
       ...inputSearch,
       input: value,
     });
+  };
+
+  // Hsndler navbar select options
+  const selectOptionsContainerRef = useRef<HTMLDivElement | null>(null);
+  const selectOptionsIconRef = useRef<HTMLImageElement | null>(null);
+  const [selectOptionOpen, setSelectOption] = useState<boolean>(true);
+  const HandleSelectOptions = (value: boolean): void => {
+    const optionsContainer = selectOptionsContainerRef.current;
+    optionsContainer?.classList.toggle("current-options-open", value);
+    value
+      ? setTimeout(() => {
+          optionsContainer?.classList.toggle(
+            "current-options-hide-color",
+            !value
+          );
+        }, 350)
+      : optionsContainer?.classList.toggle(
+          "current-options-hide-color",
+          !value
+        );
+    setSelectOption(!value);
+  };
+
+  const HandleSelectOptionsIconClick = (value: boolean): void => {
+    const selectOptionIcon = selectOptionsIconRef.current;
+    selectOptionIcon?.classList.add("search-option-icon-animation");
+    HandleSelectOptions(value);
+  };
+
+  const HandleSelectOptionsAnimationEnd = () => {
+    const selectOptionIcon = selectOptionsIconRef.current;
+    selectOptionIcon?.classList.remove("search-option-icon-animation");
   };
 
   const SelectSearchOption = (value: string): void => {
@@ -72,6 +109,7 @@ const Navbar = () => {
         input: "",
       });
     }
+    HandleSelectOptions(false);
   };
 
   return (
@@ -87,6 +125,7 @@ const Navbar = () => {
           value={inputSearch.input}
           type="text"
           className="search-input"
+          spellCheck="false"
           placeholder={
             searchOption === "company"
               ? "Search by company name"
@@ -98,11 +137,18 @@ const Navbar = () => {
         </button>
         <div className="container-search-input">
           <img
+            ref={selectOptionsIconRef}
+            onAnimationEnd={() => HandleSelectOptionsAnimationEnd()}
+            onClick={() => HandleSelectOptionsIconClick(selectOptionOpen)}
             tabIndex={0}
             className="search-option-icon"
             src={searchOptions}
           />
-          <div tabIndex={0} className="current-options">
+
+          <div
+            ref={selectOptionsContainerRef}
+            className="current-options-hide-color current-options"
+          >
             <div
               area-text="job-title"
               className="option-selected"
