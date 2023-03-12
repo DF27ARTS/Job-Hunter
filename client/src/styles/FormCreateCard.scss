@@ -173,9 +173,13 @@
   object-fit: cover;
 
   -webkit-mask-image: url("../assets/create-form-svg.svg");
+  mask-image: url("../assets/create-form-svg.svg");
   -webkit-mask-size: contain;
+  mask-size: contain;
   -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
   -webkit-mask-position: start;
+  mask-position: start;
 }
 
 .stage-one {
@@ -366,7 +370,7 @@
     border-right: 0;
   }
 
-  .status-option[area-button=applyed] {
+  .status-option[area-button=applied] {
     border: 2px solid var(--color-two);
   }
 
@@ -435,8 +439,9 @@
   }
 
   .create-card-form-button {
-    height: 7vh;
-    width: 50%;
+    position: relative;
+    height: 8vh;
+    width: 70%;
     border-radius: 5vh;
     z-index: 100;
 
@@ -447,7 +452,7 @@
     font-size: 3vh;
     user-select: none;
     margin: 0;
-    position: static;
+    overflow: hidden;
 
     transition: 
       border 300ms var(--transition-animated);

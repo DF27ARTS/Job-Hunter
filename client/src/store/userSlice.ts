@@ -3,7 +3,9 @@ import axios from "axios"
 import { getCards } from "./cardSlice"
 import { deleteToken, getToken, saveToken } from "./__Functions";
 
-export const API_URL = import.meta.env.VITE_API_URL;
+
+export const API_URL = import.meta.env.VITE_API_URL || "http://localhost:3001";
+console.log(import.meta.env)
 // export const API_URL = "https://jub-hunter-api.onrender.com"
 
 

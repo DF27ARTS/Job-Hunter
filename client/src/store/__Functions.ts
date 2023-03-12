@@ -21,7 +21,6 @@ const SECRET_INPUT_KEY = (): string => {
 }
 
 export const saveSearchInput = (input: string | undefined): void => {
-  console.log(input)
   if (input) {
     localStorage.setItem(SECRET_INPUT_KEY(), input)
   }
@@ -48,5 +47,38 @@ export const FormatNumber = (string: string | undefined): string | undefined => 
     return `${dayFormat}/${monthFormat}/${year}`
   } else {
     return undefined;
+  }
+}
+
+
+
+
+
+
+// save (show cards amount status)
+export const setShowCardAmount = (value: string | undefined): void => {
+  if (value) {
+    const getCurrentArray = localStorage.getItem("ShowCardAmount")
+    const ColumnsWithShowCardAmountClosed = getCurrentArray ? `${getCurrentArray},${value}` : value
+    localStorage.setItem("ShowCardAmount", ColumnsWithShowCardAmountClosed)
+  }
+}
+
+export const getShowCardAmount = (value: string | undefined): boolean => {
+  if (value) {
+    const currentArray: string | null = localStorage.getItem("ShowCardAmount")
+    const cardStatus = currentArray?.split(",").find(currentValue =>  currentValue === value)
+    return cardStatus ? true : false
+  } else {
+    return false
+  }
+}
+
+export const deleteShowCardAmount = (value: string | undefined): void => {
+  if (value) {
+    const currentArray: string | null = localStorage.getItem("ShowCardAmount")
+
+    const cardsAmountFilter =  currentArray?.split(",").filter(currentValue =>  currentValue !== value).join(",") 
+    cardsAmountFilter !== undefined && localStorage.setItem("ShowCardAmount", cardsAmountFilter)
   }
 }
