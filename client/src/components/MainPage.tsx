@@ -4,7 +4,6 @@ import "../styles/MainPage.scss";
 import CardsContainer from "./CardsContainer";
 import FormCreateCard from "./FormCreateCard";
 import ErrorMessage from "./ErrorMessage";
-import UserLoader from "./UserLoader";
 
 const MainPage = () => {
   const { card_error, searchError, create_form_active } = useAppSelector(

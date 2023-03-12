@@ -16,6 +16,7 @@ import stageFourBackground from "../assets/stage-four-background.jpg";
 import JobHunter_Icon from "../assets/JobHunter-Icon.png";
 
 import "../styles/FormCreateCard.scss";
+import { scrollFirstColumnIntoView } from "./SingleColumn";
 
 export const openFormCreateCard = (): void => {
   setTimeout(() => {
@@ -76,7 +77,6 @@ const FormCreateCard = () => {
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>
   ): void => {
     e.preventDefault();
-
     if (cardToUpdate.id) {
       const value = {
         company: input.company,
@@ -101,6 +101,7 @@ const FormCreateCard = () => {
         status: "",
         description: "",
       });
+      scrollFirstColumnIntoView();
     }
     SetTranslateVariable(`0vh`);
   };
@@ -173,6 +174,7 @@ const FormCreateCard = () => {
                 onChange={(e) => HandleFormChange(e)}
                 placeholder="Company Name *"
                 type="text"
+                spellCheck="false"
               />
               {!input.company ? (
                 <button className="not-allowed">Next</button>
@@ -203,6 +205,7 @@ const FormCreateCard = () => {
                 placeholder="Job Title *"
                 type="text"
                 className="role"
+                spellCheck="false"
               />
               {!input.role ? (
                 <button className="not-allowed stage-two-buttons">Next</button>
@@ -228,12 +231,12 @@ const FormCreateCard = () => {
                 Prev
               </button>
               <div
-                area-button={input.status === "applyed" ? "applyed" : ""}
+                area-button={input.status === "applied" ? "applied" : ""}
                 className="status-option status-one"
-                area-text="applyed"
-                onClick={() => SelectOption("applyed")}
+                area-text="applied"
+                onClick={() => SelectOption("applied")}
               >
-                Applyed
+                Applied
               </div>
               <div
                 area-button={input.status === "interview" ? "interview" : ""}
@@ -284,6 +287,7 @@ const FormCreateCard = () => {
                 onChange={(e) => HandleFormChange(e)}
                 placeholder="Description of the role"
                 className="description"
+                spellCheck="false"
               />
             </div>
 
