@@ -1,5 +1,6 @@
 
 
+// Page styles
 .registration-container {
   background-image: url("../assets/registration-img.jpg");
   background-repeat: no-repeat;
@@ -26,12 +27,12 @@
 }
 
 .registration-form {
-  height: 85vh;
-  width: 55vh;
-  background: rgb(214, 215, 216);
+  height: 95vh;
+  width: 58vh;
+  background: var(--card-column-background);
   margin: 0 20vh;
 
-  padding: 5vh 7vh 10vh 5vh;
+  padding: 5vh 4vh 10vh 4vh;
   border-radius: 2vh;
 
   display: flex;
@@ -57,244 +58,273 @@
   font-size: 4vh;
   font-family: var(--fantacy-font);
 
-  color:  rgb(19, 18, 18);
+  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color:  transparent;
 }
 
-.eye-icon {
+
+// Password varification parameters
+.form-password-verification-parameters {
   position: absolute;
+  right: 105%;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  display: flex;
+  justify-content: center;
+  gap: 3vh;
+  flex-direction: column;
+  padding: 5vh;
+  width: 35vh;
+  height: 0;
+  overflow: hidden;
+
+  background: var(--card-background-color);
+  border-radius: 1vh;
+  z-index: 20;
+
+  animation: password_verification_animation 300ms ease forwards;
+}
+
+.block-text {
+  color: #818181;
+  text-decoration: line-through;
+}
+
+@keyframes password_verification_animation {
+  from { height: 0; }
+  to { height: 95vh; }
+}
+
+
+
+
+
+
+// Slider inputs container
+
+.inputs-slider-container {
+  height: 100%;
+  width: 100%;
+  border: 2px solid #cccccc6c;
+  border-radius: 1vh;
+
+  display: grid;
+  // grid-template-areas: 
+  //   "userName lastName userEmail password"
+  // ;
+  grid-template-columns: repeat(4, 100%);
+  grid-template-rows: 100%;
+  overflow: hidden;
+}
+
+.stage-form-background-image {
+  height: 100%;
+  object-fit: cover;
+
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+
+  filter: grayscale(0.7) brightness(1);
+  transition: filter 500ms ease-in-out;
+
+  -webkit-mask-image: url("../svgs/01_image.svg");
+  mask-image: url("../svgs/01_image.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+}
+
+.full-grayscale-active {
+  filter: grayscale(0) brightness(1.3);
+}
+
+
+
+
+//  Stage form container
+.stage-form-container {
+  height: 100%;
+  width: 100%;
+
+  display: flex;
+  gap: 10vh;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  transform: translateX(var(--form-stage-translate));
+  transition: transform ease 300ms;
+}
+
+.stage-message {
+  font-family: var(--single-card-font);
+  font-size: 3vh;
+}
+
+.stage-form-input {
+  border: none;
+  outline: none;
+  color: inherit;
+
+  height: 7vh;
+  width: 75%;
+  border-radius: 1vh;
+  background: var(--card-background-color);
+  padding: 0 3vh;
+
+  font-size: 2.2vh;
+  font-family: inherit;
+}
+
+.stage-form-input:focus {
+  background: #2c2c2c;
+}
+
+.stage-form-input::placeholder {
+  color: #ccc;
+  opacity: 0.7;
+}
+
+.stage-form-arrows {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  margin: auto;
+
+  height: 4vh;
+  aspect-ratio: 1 / 1;
+  border-top: 3px solid var(--body-text-color);
+  border-right: 3px solid var(--body-text-color);
+  cursor: pointer;
+}
+
+.stage-form-arrows.arrow-right {
+  right: 2vh;
+  transform: rotate(45deg);
+}
+
+.stage-form-arrows.arrow-left {
+  left: 2vh;
+  transform: rotate(-135deg);
+}
+
+
+
+
+// Stage one special styles
+.stage-form-one {
+  gap: 7vh;
+}
+
+.form-acount-message {
+  display: flex;
+  align-items: center;
+
+  width: 70%;
+}
+
+.form-message {
+  flex-grow: 1;
+}
+
+.form-acount-link {
+  text-decoration: none;
+  background: linear-gradient(90deg, var(--color-one), var(--color-two));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+
+  font-family: var(--single-card-font);
+  position: relative;
+}
+
+.form-acount-link::before {
+  position: absolute;
+  content: "";
+  bottom: 0;
+  left: 0;
   right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+  margin: auto;
+
+  height: 2px;
+  width: 0;
+  border-radius: 10vh;
+  background: linear-gradient(90deg, var(--color-one), var(--color-two));
+  transition: width 300ms ease;
+}
+
+.form-acount-link:hover::before {
+  width: 100%;
+}
+
+
+
+
+
+// Stage four special styles
+.stage-form-four {
+  gap: 5vh;
+}
+
+.stage-form-four .stage-form-input {
+  width: 100%;
+}
+
+.single-input-form-password {
+  position: relative;
+  width: 75%;
+}
+
+.form-is-visible-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 2vh;
+  margin: auto;
 
   height: 3vh;
-  width: 3vh;
-  cursor: pointer;
 }
 
-.registration-form[area-text=form-fill] .form-title,
-.registration-form[area-text=form-fill] .form-title {
-
-  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.container-logIn-link > p {
-  padding: 0;
-  margin: 0;
-  color:  rgb(19, 18, 18);
-}
-
-.container-logIn-link {
-  display: flex;
-  width: 100%;
-
-  align-items: center;
-  justify-content: center;
-  gap: 5vh;
-
-  font-size: 2.7vh;
-}
-
-.link-login {
-  text-decoration: none;
-}
-
-.link-login span {
-  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-
-  position: relative;
-}
-
-.link-login span::after {
-  position: absolute;
-  content: "";
-  bottom: 0;
-  left: 0;
-  right: 0;
-  margin: auto;
-
-  height: 1px;
-  width: 0;
-  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
-
-  transition: width 200ms ease-in-out;
-}
-
-.link-login span:hover::after {
-  width: 100%;
-}
-
-.silgle-input {
-  position: relative;
-
-  height: 11%;
-  width: 100%;
-}
-
-.silgle-input input {
-  position: absolute;
-  top: 0; 
-  left: 0;
-
-  height: 100%;
-  width: 100%;
-  border-radius: 1vh;
-  outline: none;
-  font-family: inherit;
-  font-size: 2.3vh;
-
-  padding-left: 2vh;
-  background: rgb(214, 215, 216);
+.form-submit-button {
+  padding: 2vh 5vh;
+  width: 75%;
   border: none;
-}
-
-.silgle-input::before,
-.silgle-input::after {
-  content: "";
-  height: 2px;
-  background: #fff;
-  border-radius: 2px;
-
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  z-index: 2;
-}
-
-.silgle-input::before {
-  width: 100%;
-}
-
-.silgle-input::after {
-  width: 0%;
-  right: 0;
-  margin: auto;
-  background-image: linear-gradient(90deg, var(--color-one), var(--color-two));
-
-  transition: width 200ms ease-in-out;
-}
-
-.silgle-input label {
-  position: absolute;
-  top: 50%; 
-  left: 2vh;
-  font-size: 2.3vh;
-  color:  rgb(19, 18, 18);
-
-  transform: translateY(-50%);
-  transition: 
-    font-size 300ms var(--transition-animated), 
-    top 300ms var(--transition-animated) ;
-}
-
-.silgle-input input:focus + label,
-.silgle-input input:not(:placeholder-shown) + label {
-  top: 0;
-  font-size: 2vh;
-}
-
-.silgle-input:has(input:focus)::after,
-.silgle-input:has(input:not(:placeholder-shown))::after {
-  width: 100%;
-}
-
-.button-container-registration {
-  height: 9vh;
-  width: 100%;
-  background: linear-gradient(90deg, var(--color-one), var(--color-two));
-
-  padding: 2px;
   border-radius: 1vh;
-}
+  background-color: var(--card-background-color);
+  color: inherit; 
 
-.button-container-registration > div {
-  height: 100%;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-
-  background: rgb(214, 215, 216);
-  border-radius: .7vh;
-
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.registration-button {
-  border-radius: .7vh;
-  border: none;
-  outline: none;
-
-  font-family: var(--fantacy-font);
-  font-size: 4vh;
-  background: rgb(214, 215, 216);
-  user-select: none;
   cursor: pointer;
-
-  color: #000;
+  font-size: 3vh;
+  font-family: var(--single-card-font);
+  transition: transform 300ms ease;
 }
 
-.registration-form[area-text=form-fill] .registration-button:hover,
-.registration-form[area-text=form-fill] .registration-button:focus {
-
-  background-image: linear-gradient( 90deg, var(--color-one), var(--color-two));
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+.unclickble-button {
+  color: #494949;
+  cursor: not-allowed;
 }
 
-
-
-@media screen and (max-width: 600px) {
-
-  .registration-form {
-    width: 100%;
-    max-width: 350px;
-    margin: 0 15px;
-  
-    padding: 30px 30px 30px 30px;
-    gap: 20px !important;
-    min-height: 550px !important;
-  }
-
-  .form-title {
-    font-size: 30px;
-  }
-
-  .container-logIn-link {
-    font-size: 17px;
-  }
-
-  .silgle-input {
-    height: 50px !important;
-  }
-
-  .silgle-input input {
-    font-size: 17px !important;
-  }
-
-  .silgle-input label {
-    font-size: 17px;
-  }
-  
-  .silgle-input input:focus + label,
-  .silgle-input input:not(:placeholder-shown) + label {
-    font-size: 15px;
-  }
-
-  .eye-icon {
-    height: 20px;
-    width: 20px;
-  }
-
-  .button-container-registration {
-    height: 60px;
-  }
-
-  .registration-button {
-    font-size: 30px;
-  }
+.form-submit-button:hover {
+  background: #474747;
 }
+
+.form-submit-button:focus {
+  transform: scale(0.9);
+}
+
+.unclickble-button:hover {
+  background-color: var(--card-background-color);
+}
+
+.unclickble-button:focus {
+  transform: scale(1);
+}
+
