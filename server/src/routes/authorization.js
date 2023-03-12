@@ -36,8 +36,12 @@ const verifyToken = async (req, res, next) => {
 };
 
 router.get("/getusers", async (req, res) => {
-  const users = await userProfile.findAll();
-  return res.json(users);
+  try {
+    const users = await userProfile.findAll();
+    return res.json(users);
+  } catch (error) {
+    res.send(error.message);
+  }
 });
 
 router.delete("/deleteuser", async (req, res) => {
