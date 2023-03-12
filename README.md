@@ -7,13 +7,21 @@
 
   <!-- Job hunter gallery -->
   <p> Gallery of the application </p>
-  <section>
-    <img width="80%" src="./client/src/job_hunter_assets/job-hunter-img-one.png" alt="application image"/>
-    <img width="80%" src="./client/src/job_hunter_assets/job-hunter-img-two.png" alt="application image"/>
-    <img width="80%" src="./client/src/job_hunter_assets/job-hunter-img-three.png" alt="application image"/>
-    <img width="80%" src="./client/src/job_hunter_assets/job-hunter-img-four.png" alt="application image"/>
-    <img width="80%" src="./client/src/job_hunter_assets/job-hunter-img-five.png" alt="application image"/>
+  
+  <section display="flex" justifyContent="center">
+    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-one.png" alt="application image"/> 
+    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-four.png" alt="application image"/>
+    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-five.png" alt="application image"/>
+    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-two.png" alt="application image"/>
+    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-three.png" alt="application image"/>
+    
+    
   </section>
+  
+  <br/>
+
+
+  <br/>
 
   <p>
     This application helps you manage and keep track of all the job
@@ -21,6 +29,11 @@
     allows you to easily monitor and organize your job search so you
     can stay on top of all your applications
   </p>
+  
+  <br/>
+
+
+  <br/>
 
   <p>The application includes the following features:</p>
   <ul>
@@ -76,94 +89,3 @@
   </p>
   
 </main>
-
-<style>
-  main {
-    display: flex;
-    flex-direction: column;
-    gap: 2vh;
-    padding: 3vh 0;
-  }
-
-  h1 {
-    font-family: 'Merienda', cursive;
-    background: linear-gradient(90deg, rgba(71,139,214,1), rgba(37,216,211,1));
-    -webkit-background-clip: text;
-    color: transparent;
-    
-    padding: 0 1vh;
-    align-self: center;
-  }
-
-  section {
-    display: flex;
-    gap: .2vh;
-    width: 100%;
-    height: 50vh;
-    left: 0;
-    right: 0;
-    margin: auto;
-  }
-
-  section img {
-    height: 100%;
-    width: 0;
-    flex-grow: 1;
-    object-fit: cover;
-    border: 1px solid #ccc;
-
-    filter: grayscale(.7)  ;
-    transition: 
-      width 300ms ease-in-out,
-      filter 500ms ease-in-out;
-  }
-
-  section img:hover {
-    filter: grayscale(0) contrast(1.2) ;
-    width: 50%;
-  }
-
-  p a {
-    text-decoration: none;
-    color: red;
-    font-weight: bold;
-    font-family: 'Merienda', cursive;
-    margin: 0 3vh;
-    padding: 0 1vh;
-    width: fit-content;
-    background: linear-gradient(90deg, rgba(71,139,214,1), rgba(37,216,211,1));
-    -webkit-background-clip: text;
-    color: transparent;
-
-    position: relative;
-  }
-
-  p a::before {
-    position: absolute;
-    content: "";
-    top: 100%;
-    left: 0;
-    right: 2vh;
-    margin: auto;
-    background: linear-gradient(90deg, rgba(71,139,214,1), rgba(37,216,211,1));
-    border-radius: 20vh;
-
-    height: 2px;
-    width: 0;
-    transition: width 200ms ease-in-out;
-  }
-
-  p a:hover {
-    background: linear-gradient(90deg, rgba(71,139,214,1), rgba(37,216,211,1));
-    -webkit-background-clip: text;
-    color: transparent;
-  }
-
-  p a:hover::before {
-    width: 85%;
-  }
-  
-  code {
-    font-weight: 700;
-  }
-</style>
