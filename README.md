@@ -62,7 +62,7 @@
     <li>JWT</li>
   </ul>
 
-  <p>Application link deployment <a href="https://gallery-front-288a.vercel.app/" >Jub hunter</a> </p>
+  <p>Application link deployment <a href="https://job-hunter-arkcl5zem-df27arts.vercel.app" >Jub hunter</a> </p>
 
   <br/>
 
