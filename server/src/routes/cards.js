@@ -148,12 +148,16 @@ router.get("/cards/status", [verifyToken], async (req, res) => {
     );
 
     const cardsToSend = allCards.slice(startPosition, endPosition);
+
+    /**
+       the lastSlice value will be true or false depending on
+      if the last card of the cardsToSend is equal to the last card of allCards
+      this will define if this reques has the last card or not
+     */
     lastSlice =
       cardsToSend[cardsToSend.length - 1] === allCards[allCards.length - 1];
 
-    return cardsToSend.length
-      ? res.status(200).json({ lastSlice, cards: cardsToSend })
-      : res.status(404).json({ message: "There's an error" });
+    return res.status(200).json({ lastSlice, cards: cardsToSend });
   } catch (error) {
     return res.status(404).json({ message: "There's an error", error: error });
   }
