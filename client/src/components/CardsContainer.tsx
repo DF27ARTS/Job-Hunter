@@ -29,7 +29,7 @@ const CardsContainer = () => {
       >
         {cards[0].length ? (
           cards.map<Card[] | any>((cardArray, index) => {
-            return cardArray.length > 1 ? (
+            return cardArray !== null && cardArray.length > 1 ? (
               <SingleColumn
                 key={index}
                 index={index}

@@ -222,14 +222,23 @@ export const getCardsByStatus = createAsyncThunk<any>(
         },
       })
 
+
       const data = [
-        [{title: "Applied", lastCards: resApplied.data.lastSlice}, ...resApplied.data.cards],
-        [{title: "Interview", lastCards: resInterview.data.lastSlice}, ...resInterview.data.cards],
-        [{title: "Rejected", lastCards: resRejected.data.lastSlice}, ...resRejected.data.cards],
+        resApplied
+          ? [{ title: "Applied", lastCards: resApplied.data.lastSlice }, ...resApplied.data.cards]
+          : null,
+        resInterview
+          ? [{ title: "Interview", lastCards: resInterview.data.lastSlice }, ...resInterview.data.cards]
+          : null,
+        resRejected
+          ? [{ title: "Rejected", lastCards: resRejected.data.lastSlice }, ...resRejected.data.cards]
+          : null,
       ]
+      console.log(data)
 
       return data;
     } catch (error) {
+      console.log(error)
       return ThunkAPI.rejectWithValue(error)
     }
   }
@@ -656,7 +665,7 @@ function orderByStatus(value:Card[][] | any ): any{
 
   value.map((cardArray:Card[]) => {
     cardArray.map((card: Card | any ) => {
-      if (card.status === "applyed") {
+      if (card.status === "applied") {
         if (!card.title) {
           applyed.push(card);
         }
