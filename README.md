@@ -2,90 +2,51 @@
   <link href="https://fonts.googleapis.com/css2?family=Merienda&display=swap" rel="stylesheet">
 </head>
 
-<main>
-  <h1>Jub Hunter</h1>
+# Jub Hunter
 
-  <!-- Job hunter gallery -->
-  <p> Gallery of the application </p>
+<!-- Job hunter gallery -->
+![application image](https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-one.png)
+![application image](https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-five.png)
+![application image](https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-two.png)
+![application image](https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-three.png)
+
+This application helps you manage and keep track of all the job applications you submit during your job search process. It allows you to easily monitor and organize your job search so you can stay on top of all your applications
+
+**The application includes the following features:**
   
-  <section display="flex" justifyContent="center">
-    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-one.png" alt="application image"/> 
-    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-four.png" alt="application image"/>
-    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-five.png" alt="application image"/>
-    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-two.png" alt="application image"/>
-    <img width="33%" src="https://github.com/DF27ARTS/Jub-Hunter/blob/main/client/src/Job_hunter_assets/job-hunter-img-three.png" alt="application image"/>
+* Landing page
+* Introductory video
+* Controled login and registration
+* Search engine
+* Filters by date and status
+* Infinite loading
+
+**Application created using the following technologies**
+
+* Typescript
+* ReactJS
+* Redux/Toolkit
+* HTML / SCSS
+* Javascript
+* NodeJS
+* ExpressJS
+* SequelizeJS
+* PostgreSQL
+* Bcript
+* Json Web Toket (JWT)
+
+Application link deployment [Jub hunter](https://gallery-front-288a.vercel.app/)
+
+**Start the application locally by following these steps:**
+
+1. Open a terminal. If you're using Visual Studio Code, you can do this by pressing  `CTRL + Ñ`
+2. Navigate to the server directory by entering the following command in the terminal: `cd server.`
+3. Once you're in the server directory, enter the command <code>npm run dev</code> to start the server.
+4. Open a new terminal to start the client. If you're using Visual Studio Code, click the plus sign `(+)` at the top-right corner of the terminal.
+5. Navigate to the client directory by entering the following command in the terminal `cd client`
+6. To start the client, enter the command `npm run dev` in the terminal.
+7. Finally, you should see a link displayed in the terminal that looks like this: `http://localhost:5173` Click on the link to go to the landing page
     
-    
-  </section>
-  
-  <br/>
+If you encounter any issues, feel free to send me an email at [diego27fernando72@gmail.com](mailto:diego27fernando72@gmail.com)
 
-
-  <br/>
-
-  <p>
-    This application helps you manage and keep track of all the job
-    applications you submit during your job search process. It
-    allows you to easily monitor and organize your job search so you
-    can stay on top of all your applications
-  </p>
-  
-  <br/>
-
-
-  <br/>
-
-  <p>The application includes the following features:</p>
-  <ul>
-    <li>Landing page</li>
-    <li>Introductory video</li>
-    <li>Controled login and registration</li>
-    <li>Search engine</li>
-    <li>Filters by date and status</li>
-    <li>Infinite loading</li>
-  </ul>
-
-  </br>
-
-  <p>Application created using</p>
-  <ul>
-    <li>Typescript</li>
-    <li>ReactJS</li>
-    <li>Redux/Toolkit</li>
-    <li>HTML / SCSS</li>
-    <li>Javascript</li>
-    <li>NodeJS</li>
-    <li>ExpressJS</li>
-    <li>SequelizeJS</li>
-    <li>PostgreSQL</li>
-    <li>Bcript</li>
-    <li>JWT</li>
-  </ul>
-
-  <p>Application link deployment <a href="https://job-hunter-arkcl5zem-df27arts.vercel.app" >Jub hunter</a> </p>
-
-  <br/>
-
-  <p>Start the application locally by following these steps:</p>
-
-  <ol>
-    <li>Open a terminal. If you're using Visual Studio Code, you can do this by pressing  <code>CTRL + Ñ</code> </li>
-    <li>Navigate to the server directory by entering the following command in the terminal: <code>cd server.</code> </li>
-    <li>Once you're in the server directory, enter the command <code>npm run dev</code> to start the server. </li>
-    <li>Open a new terminal to start the client. If you're using Visual Studio Code, click the plus sign <code>(+)</code> at the top-right corner of the terminal.</li>
-    <li>Navigate to the client directory by entering the following command in the terminal <code>cd client</code></li>
-    <li>To start the client, enter the command <code>npm run dev</code> in the terminal.</li>
-    <li>Finally, you should see a link displayed in the terminal that looks like this: <code>http://localhost:5173</code> Click on the link to go to the landing page</li>
-    <li> 
-      If you encounter any issues, feel free to send me an email at 
-      <a href="mailto:diego27fernando72@gmail.com">
-        <code>diego27fernando72@gmail.com</code>  
-      </a>
-    </li>
-  </ol>
-
-  <p>
-    I hope you enjoy the application
-  </p>
-  
-</main>
+I hope you enjoy the application
