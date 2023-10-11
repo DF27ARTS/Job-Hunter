@@ -9,7 +9,7 @@
   width: 100%;
   gap: 1vh;
 
-  padding: 3vh 7vh 3vh 3vh;
+  padding: 1.5rem 1rem;
   border-radius: 1.5vh;
   background: var(--card-background-color);
   overflow: hidden;
@@ -148,22 +148,31 @@
   position: absolute; 
   top: 0;
   bottom: 0;
-  right: 2vh;
+  right: 0;
   margin: auto;
-  padding: 0 2.5vh 0 0;
+  padding: 0 1.75rem 0 0;
   border-radius: .5vh;
   
-  height: 90%;
+  height: 100%;
   max-height: 25vh;
   width: 2vh;
   z-index: 20;
   overflow: hidden;
-  transition: width 350ms ease-in-out;
   background-color: var(--single-card-background);
+  
+  & *:not(.single-card-menu-icon, .menu-single-dot) {
+    opacity: 0;
+    transition: opacity 200ms ease-in-out 100ms;
+  }
+  transition: width 350ms ease-in-out;
 }
 
 .single-card-menu-containe-active {
-  width: 91.5%;
+  width: 100%;
+
+  & *:not(.single-card-menu-icon, .menu-single-dot) {
+    opacity: 1;
+  }
 }
 
 
@@ -175,6 +184,7 @@
   height:4vh;
   width: 1.5vh;
   cursor: pointer;
+  z-index: 5;
 }
 
 .icon-clicked { animation: menu_icon_animation 300ms ease; }
@@ -232,7 +242,7 @@
   flex-grow: 1;
   min-width: max-content;
 
-  padding: 0 1.2vh;
+  padding: 0 .5rem;
   border-radius: .5vh;
   cursor: pointer;
 

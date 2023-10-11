@@ -41,9 +41,9 @@ const CardsContainer = () => {
         ) : (
           <>
             <div className="conteiner-message-without-cards">
-              <span className="user-message">Wellcome</span>
+              <span className="user-message">¡Wellcome!</span>
               <span className="user-message">
-                {`${user?.name} ${user?.lastName}`}
+                {`${user?.name} ${user?.lastName}, nice to have you here`}
               </span>
             </div>
 

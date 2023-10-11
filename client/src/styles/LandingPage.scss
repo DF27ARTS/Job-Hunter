@@ -12,9 +12,21 @@
 
   perspective: 3000px;
   perspective-origin: 50% 150%;
+  overflow-x: hidden;
+  overflow-y: scroll;
 
-  justify-content: flex-start !important;
-  padding: 5vh !important ;
+  justify-content: flex-start;
+  padding: 5vh 0 0 0;
+
+  &::-webkit-scrollbar {
+    width: .55rem;
+    background: var(--body-background);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    border-radius: 50rem;
+    background: var(--card-background-color);
+  }
 }
 
 // Links container
@@ -41,24 +53,25 @@
   text-decoration: none;
   color: #9c9c9c; 
   transition: 
-    transform 300ms var(--transition-animated),
+    transform 1000ms ease-out,
     color 300ms ease,
     border 300ms ease;
 }
 
-.landing-signup:hover {
+.landing-login:hover {
   color: #fff;
   border-color: #fff;
 }
 
-.landing-login {
+.landing-signup {
   background-image: radial-gradient( circle farthest-corner at 10% 20%,  rgba(171,102,255,1) 0%, rgba(116,182,247,1) 90% );
   border: none;
   color: #fff;
 }
 
-.landing-login:hover {
-  transform: translateY(-2.5px) translateX(2.5px);
+.landing-signup:hover {
+  transform: translateY(-.35rem);
+  transition: transform 250ms ease-out;
 }
 
 .landing-login:focus {
@@ -360,10 +373,15 @@
 }
 
 .landing-gallery {
+  position: relative;
   grid-area: gallery;
   width: 100%;
   display: flex;
   gap: 1vh;
+
+  .gallery-exit-text {
+    display: none;
+  }
 }
 
 
@@ -375,6 +393,15 @@
   
   inset: 0;
   margin: auto;
+
+  .gallery-exit-text {
+    display: block;
+    width: fit-content;
+    position: absolute;
+    inset: auto 0 2rem 0;
+    margin: auto;
+    font-size: 1.25rem;
+  }
 }
 
 
@@ -399,7 +426,7 @@
 
 .landing-gallery-selected .single-lading-gallery-image:hover {
   filter: grayscale(0) contrast(1.2);
-  width: 70%;
+  width: 55%;
 }
 
 
@@ -412,7 +439,6 @@
 }
 
 .landing-cards-message {
-  // font-weight: 100;
   font-family: var(--single-card-font);
 }
 
@@ -422,7 +448,6 @@
 
 
 // Example cards on the landing page
-
 .cards-perspective {
   perspective: 3000px;
   perspective-origin: 50% 20%;

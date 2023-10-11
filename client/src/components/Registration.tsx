@@ -9,6 +9,7 @@ import UserLoader from "./UserLoader";
 import ErrorMessage from "./ErrorMessage";
 import openEye from "../assets/open-eye.svg";
 import closeEye from "../assets/close-eye.svg";
+import checkIcon from "../assets/check-icon.svg";
 
 // Form image
 import stage_one_img from "../assets/stage-two-background.jpg";
@@ -129,13 +130,11 @@ const Registration = () => {
         >
           {passwordStageIsIntersecting ? (
             <ul className="form-password-verification-parameters">
-              <p className="single-verification-messages">
-                Password Verifications
-              </p>
+              <p>Password Verifications</p>
               <li
                 className={
                   ContainsAtLeastOneUppercaseLetter
-                    ? "single-verification-messages block-text"
+                    ? "single-verification-messages password-checked"
                     : "single-verification-messages"
                 }
               >
@@ -144,7 +143,7 @@ const Registration = () => {
               <li
                 className={
                   ContainsAtLeastOneNumber
-                    ? "single-verification-messages block-text"
+                    ? "single-verification-messages password-checked"
                     : "single-verification-messages"
                 }
               >
@@ -153,7 +152,7 @@ const Registration = () => {
               <li
                 className={
                   ContainsAnSpecialCaracter
-                    ? "single-verification-messages block-text"
+                    ? "single-verification-messages password-checked"
                     : "single-verification-messages"
                 }
               >
@@ -162,7 +161,7 @@ const Registration = () => {
               <li
                 className={
                   MoreThanEight
-                    ? "single-verification-messages block-text"
+                    ? "single-verification-messages password-checked"
                     : "single-verification-messages"
                 }
               >
@@ -171,7 +170,7 @@ const Registration = () => {
               <li
                 className={
                   LessThanFifteen
-                    ? "single-verification-messages block-text"
+                    ? "single-verification-messages password-checked"
                     : "single-verification-messages"
                 }
               >
@@ -209,7 +208,7 @@ const Registration = () => {
               <div className="form-acount-message">
                 <p className="form-message">Have an acount already</p>
                 <Link to="/login" className="form-acount-link">
-                  Lon in
+                  Log in
                 </Link>
               </div>
 

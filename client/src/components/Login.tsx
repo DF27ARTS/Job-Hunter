@@ -168,14 +168,14 @@ const Login = () => {
 
               {FormFill && input.confirm_password === input.password ? (
                 <button type="submit" className="form-submit-button">
-                  Sign up
+                  Log in
                 </button>
               ) : (
                 <button
                   type="button"
                   className="form-submit-button unclickble-button"
                 >
-                  Sign up
+                  Log in
                 </button>
               )}
 

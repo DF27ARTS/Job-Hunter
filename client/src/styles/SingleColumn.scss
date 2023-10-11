@@ -55,7 +55,7 @@
   inset: 0;
   margin: auto;
   
-  height: 95%;
+  height: 100%;
   width: 0%;
   background: var(--card-background-color);
   border-radius: 2vh;
@@ -80,7 +80,7 @@
 }
 
 .single-column-menu-is-open {
-  width: 95% ; 
+  width: 100% ; 
   opacity: 1;
   padding: 7vh 7vh 3vh 3vh;
   visibility: visible;
@@ -453,16 +453,16 @@
   justify-content: space-evenly;
   align-items: center;
   cursor: pointer;
-  transform: scale(0);
-  transition: transform var(--transition-animated) 300ms;
+  opacity: 0;
+  transition: opacity var(--transition-animated) 300ms;
 
   height: 3.5vh;
   aspect-ratio: 1 / 1;
   z-index: 15;
 }
 
-.column-container:hover .column-card-menu-icon {
-  transform: scale(1);
+.column-container:is(:hover, :focus-within) .column-card-menu-icon {
+  opacity: 1;
 }
 
 .column-card-menu-icon-clicked-animation {

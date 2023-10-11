@@ -34,7 +34,6 @@
 
 
   // body variables
-  --scroll-y: auto;
 }
 
 *, *::after, *::before {
@@ -57,13 +56,12 @@ body {
   color: var(--body-text-color);
 
   overflow-x: hidden;
-  overflow-y: var(--scroll-y);
-}
+  overflow-y: auto;
 
-body::-webkit-scrollbar {
-  width: 0;
+  &::-webkit-scrollbar {
+    width: 0;
+  }
 }
-
 
 @media screen and (max-width: 600px) {
   :root {

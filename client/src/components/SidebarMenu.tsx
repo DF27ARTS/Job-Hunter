@@ -20,8 +20,10 @@ import {
 } from "../store/cardSlice";
 import { openFormCreateCard } from "./FormCreateCard";
 import { deleteSearchInput, FormatNumber } from "../store/__Functions";
+import { useNavigate } from "react-router-dom";
 
 const SidebarMenu = () => {
+  const navigate = useNavigate();
   const { cards, create_form_active, arrayDates, showCardsByStatus } =
     useAppSelector((state) => state.card);
 
@@ -68,6 +70,7 @@ const SidebarMenu = () => {
     dispatch(logOutUser());
     dispatch(closeLoading());
     OpenAndcloseSidebar(false);
+    navigate("/");
   };
 
   const createNewCardSidebar = (): void => {

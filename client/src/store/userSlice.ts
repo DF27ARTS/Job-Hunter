@@ -4,8 +4,8 @@ import { getCards } from "./cardSlice"
 import { deleteToken, getToken, saveToken } from "./__Functions";
 
 
-export const API_URL = import.meta.env.VITE_API_URL || "https://jub-hunter-api.onrender.com";
-// export const API_URL = "https://jub-hunter-api.onrender.com";
+export const API_URL = "https://adelaide-sugar-glider-jqnq.1.ie-1.fl0.io";
+// export const API_URL = "http://localhost:3001";
 
 export interface User {
   id?: number;

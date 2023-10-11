@@ -23,13 +23,13 @@ import jobHunterImgFive from "../Job_hunter_assets/job-hunter-img-five.png";
 import Job_Hunter_Video from "../Job_hunter_assets/Job-hunter-video.mp4";
 
 const LandingPage = () => {
+  const galleryContainerRef = useRef<HTMLDivElement | null>(null);
   const { isLoggedIn, loading } = useAppSelector((state) => state.user);
 
   const appGallery = [
     jobHunterImgOne,
     jobHunterImgTwo,
     jobHunterImgThree,
-    jobHunterImgFour,
     jobHunterImgFive,
   ];
 
@@ -133,11 +133,15 @@ const LandingPage = () => {
           <section className="container-landing-links">
             {!isLoggedIn ? (
               <>
-                <Link tabIndex={0} className="landing-signup" to="/login">
-                  Sign up
-                </Link>
-                <Link tabIndex={0} className="landing-login" to="/registration">
+                <Link tabIndex={0} className="landing-login" to="/login">
                   Log in
+                </Link>
+                <Link
+                  tabIndex={0}
+                  className="landing-signup"
+                  to="/registration"
+                >
+                  Sign up
                 </Link>
               </>
             ) : null}
@@ -216,13 +220,18 @@ const LandingPage = () => {
             </div>
             <div className="landing-gallery">
               {appGallery.map((image, index) => (
-                <img
-                  key={index}
-                  onDoubleClick={() => collapseGallerySection()}
-                  onClick={() => expandGallerySection()}
-                  src={image}
-                  className="single-lading-gallery-image"
-                />
+                <>
+                  <img
+                    key={index}
+                    onDoubleClick={() => collapseGallerySection()}
+                    onClick={(e) => expandGallerySection()}
+                    src={image}
+                    className="single-lading-gallery-image"
+                  />
+                  <span className="gallery-exit-text">
+                    Double click to exit
+                  </span>
+                </>
               ))}
             </div>
           </section>

@@ -51,7 +51,6 @@
   grid-area: message;
 
   display: flex;
-  flex-direction: column;
   gap: 0vh;
   align-items: center;
   justify-content: center;
@@ -59,8 +58,14 @@
   font-size: 3vh;
 }
 
+.user-message {
+  font-size: 4vh;
+  font-family: var(--fantacy-font);
+
+  padding: 0 1vh;
+}
+
 .user-message:first-child {
-  font-size: 8vh;
   font-family: var(--fantacy-font);
 
   background: linear-gradient(90deg, var(--color-one), var(--color-two));
@@ -68,13 +73,6 @@
 
   -webkit-background-clip: text;
   color: transparent;
-}
-
-.user-message:last-child {
-  font-size: 4vh;
-  font-family: var(--fantacy-font);
-
-  padding: 0 1vh;
 }
 
 .single-muck-column-one { grid-area: column-one }
