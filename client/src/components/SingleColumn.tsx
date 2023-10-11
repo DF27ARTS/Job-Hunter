@@ -255,7 +255,7 @@ const SingleColumn = ({ cardArray, index, currenDate }: SingleColumnProps) => {
         <div
           onClick={() =>
             HandleOpenAlertMessage(
-              "This action will delete this column and all the cards in it",
+              "This action will delete this column and all the cards it contains",
               "delete all cards"
             )
           }
@@ -279,7 +279,7 @@ const SingleColumn = ({ cardArray, index, currenDate }: SingleColumnProps) => {
             <span
               onClick={() =>
                 HandleOpenAlertMessage(
-                  "This antion will delete all cards width the applied status from this day",
+                  "This action will remove all cards with the status 'applied' from this column",
                   "delete all cards with especific status",
                   "applied"
                 )
@@ -291,7 +291,7 @@ const SingleColumn = ({ cardArray, index, currenDate }: SingleColumnProps) => {
             <span
               onClick={() =>
                 HandleOpenAlertMessage(
-                  "This antion will delete all cards width the interview status from this day",
+                  "This action will remove all cards with the status 'interview' from this column",
                   "delete all cards with especific status",
                   "interview"
                 )
@@ -303,7 +303,7 @@ const SingleColumn = ({ cardArray, index, currenDate }: SingleColumnProps) => {
             <span
               onClick={() =>
                 HandleOpenAlertMessage(
-                  "This antion will delete all cards width the rejected status from this day",
+                  "This action will remove all cards with the status 'rejected' from this column",
                   "delete all cards with especific status",
                   "rejected"
                 )
@@ -328,7 +328,7 @@ const SingleColumn = ({ cardArray, index, currenDate }: SingleColumnProps) => {
               onClick={() => HandleAlertMessageButton()}
               className="button menu-alert-message-button"
             >
-              Okay
+              I'm sure
             </button>
           </div>
         ) : null}

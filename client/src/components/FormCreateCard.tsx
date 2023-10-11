@@ -190,7 +190,7 @@ const FormCreateCard = () => {
 
           <div className="stage-two">
             <img src={stageTowBackground} className="stage-two-img" />
-            <span>Write the job title in here!!!</span>
+            <span>Write the job title here!!!</span>
             <div area-text="" className="inputs">
               <button
                 className="stage-two-buttons"

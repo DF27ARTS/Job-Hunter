@@ -281,12 +281,12 @@
   border-radius: .5vh;
   overflow: hidden;
 
-  background: var(--card-column-background);
+  background: var(--card-background-color);
 
   display: flex;
   flex-direction: column;
   gap: .5vh;
-  padding: 1vh 2vh;
+  padding: 1vh 3vh;
 
   opacity: 0;
   visibility: hidden;
@@ -300,7 +300,7 @@
 .single-card-select-status-open {
   opacity: 1;
   visibility: visible;
-  width: 90%
+  width: 100%
 }
 
 
@@ -323,7 +323,7 @@
   font-family: var(--single-card-font);
   padding: 0 3vh;
   transition: background-color 200ms ease;
-  cursor: default;
+  cursor: pointer;
   user-select: none;
 }
 

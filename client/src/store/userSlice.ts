@@ -47,6 +47,7 @@ export const logInUser = createAsyncThunk<Object, User>(
   "user/logInUser",
   async (data, ThunkAPI) => {
     try {
+      console.log("data: ", data)
       const response = await axios.post(`${API_URL}/registration/login`, data)
       saveToken(response.data.token)
       ThunkAPI.dispatch(getCards())

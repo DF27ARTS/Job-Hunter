@@ -182,7 +182,7 @@ const Registration = () => {
           <h2 className="form-title">Sing up Form</h2>
           <div className="inputs-slider-container">
             <div className="stage-form-container stage-form-one">
-              <h3 className="stage-message">Enter your firts name!!</h3>
+              <h3 className="stage-message">Enter your firts name!</h3>
               <input
                 type="text"
                 className="stage-form-input"
@@ -221,7 +221,7 @@ const Registration = () => {
             </div>
 
             <div className="stage-form-container stage-form-two">
-              <h3 className="stage-message">Enter your last name!!</h3>
+              <h3 className="stage-message">Enter your last name!</h3>
               <input
                 className="stage-form-input"
                 required={true}
@@ -256,7 +256,7 @@ const Registration = () => {
             </div>
 
             <div className="stage-form-container stage-form-three">
-              <h3 className="stage-message">Enter your email!!</h3>
+              <h3 className="stage-message">Enter your email!</h3>
               <input
                 className="stage-form-input"
                 required={true}
@@ -293,7 +293,7 @@ const Registration = () => {
               ref={passwordStageRef}
               className="stage-form-container stage-form-four"
             >
-              <h3 className="stage-message">Enter your password!!</h3>
+              <h3 className="stage-message">Enter your password!</h3>
 
               <div tabIndex={0} className="single-input-form-password">
                 <input
